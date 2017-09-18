@@ -903,10 +903,10 @@
                                 <id>default-compile</id>
                                 <phase>none</phase>
                             </execution>
-                            <execution>
-                                <id>default-testCompile</id>
-                                <phase>none</phase>
-                            </execution>
+                            <!--<execution>-->
+                                <!--<id>default-testCompile</id>-->
+                                <!--<phase>none</phase>-->
+                            <!--</execution>-->
                         </executions>
                     </plugin>
                     <plugin>
@@ -922,14 +922,14 @@
                                     <goal>compile</goal>
                                 </goals>
                             </execution>
-                            <execution>
-                                <id>test-compile</id>
-                                <phase>test-compile</phase>
-                                <goals>
-                                    <goal>add-source</goal>
-                                    <goal>testCompile</goal>
-                                </goals>
-                            </execution>
+                            <!--<execution>-->
+                                <!--<id>test-compile</id>-->
+                                <!--<phase>test-compile</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>add-source</goal>-->
+                                    <!--<goal>testCompile</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
                         </executions>
                         <configuration>
                             <recompileMode>incremental</recompileMode>

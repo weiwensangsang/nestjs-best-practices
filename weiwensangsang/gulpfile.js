@@ -139,10 +139,10 @@ gulp.task('eslint:fix', function () {
 });
 
 gulp.task('test', ['inject:test', 'ngconstant:dev'], function (done) {
-    new KarmaServer({
-        configFile: __dirname + '/' + config.test + 'karma.conf.js',
-        singleRun: true
-    }, done).start();
+    // new KarmaServer({
+    //     configFile: __dirname + '/' + config.test + 'karma.conf.js',
+    //     singleRun: true
+    // }, done).start();
 });
 
 
