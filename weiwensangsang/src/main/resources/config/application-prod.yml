@@ -21,9 +21,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/weiwensangsang?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        url: jdbc:mysql://rm-m5eu355c7mm5a986lo.mysql.rds.aliyuncs.com/bsb_test?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: xiazhen
+        password: Dwzm1gdqdmm
         hikari:
             data-source-properties:
                 cachePrepStmts: true
