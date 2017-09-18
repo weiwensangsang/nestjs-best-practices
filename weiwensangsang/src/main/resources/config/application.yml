@@ -92,7 +92,7 @@ jhipster:
         license:
         license-url:
     ribbon:
-        display-on-active-profiles: dev
+        display-on-active-profiles: dev, prod
 
 # ===================================================================
 # Application specific properties
