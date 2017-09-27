@@ -369,6 +369,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
+        <!-- Compiler -->
+        <dependency>
+            <groupId>com.itranswarp</groupId>
+            <artifactId>compiler</artifactId>
+            <version>1.0</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
     <build>
