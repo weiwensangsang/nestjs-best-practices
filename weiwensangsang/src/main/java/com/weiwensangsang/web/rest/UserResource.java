@@ -1,21 +1,23 @@
 package com.weiwensangsang.web.rest;
 
-import com.weiwensangsang.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.weiwensangsang.config.Constants;
 import com.weiwensangsang.domain.User;
+import com.weiwensangsang.repository.PhoneRepository;
 import com.weiwensangsang.repository.UserRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.MailService;
 import com.weiwensangsang.service.UserService;
 import com.weiwensangsang.service.dto.UserDTO;
-import com.weiwensangsang.web.rest.vm.ManagedUserVM;
+import com.weiwensangsang.service.util.phone.PhoneUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import com.weiwensangsang.web.rest.util.PaginationUtil;
+import com.weiwensangsang.web.rest.vm.ManagedUserVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +29,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.
@@ -67,8 +70,11 @@ public class UserResource {
 
     private final UserService userService;
 
+    @Autowired
+    private PhoneRepository phoneRepository;
+
     public UserResource(UserRepository userRepository, MailService mailService,
-            UserService userService) {
+                        UserService userService) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
@@ -94,23 +100,23 @@ public class UserResource {
 
         if (managedUserVM.getId() != null) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
-                .body(null);
-        // Lowercase the user login before comparing with database
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
+                    .body(null);
+            // Lowercase the user login before comparing with database
         } else if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
-                .body(null);
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
+                    .body(null);
         } else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
-                .body(null);
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
+                    .body(null);
         } else {
             User newUser = userService.createUser(managedUserVM);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "A user is created with identifier " + newUser.getLogin(), newUser.getLogin()))
-                .body(newUser);
+                    .headers(HeaderUtil.createAlert("A user is created with identifier " + newUser.getLogin(), newUser.getLogin()))
+                    .body(newUser);
         }
     }
 
@@ -138,7 +144,7 @@ public class UserResource {
         Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM);
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
-            HeaderUtil.createAlert("A user is updated with identifier " + managedUserVM.getLogin(), managedUserVM.getLogin()));
+                HeaderUtil.createAlert("A user is updated with identifier " + managedUserVM.getLogin(), managedUserVM.getLogin()));
     }
 
     /**
@@ -176,8 +182,8 @@ public class UserResource {
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByLogin(login)
-                .map(UserDTO::new));
+                userService.getUserWithAuthoritiesByLogin(login)
+                        .map(UserDTO::new));
     }
 
     /**
@@ -192,6 +198,29 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "A user is deleted with identifier " + login, login)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("A user is deleted with identifier " + login, login)).build();
     }
+
+    @PostMapping("/users/phone")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> getLocation() {
+        phoneRepository.findAllNotLocation().forEach(phone -> {
+            phone.setType(PhoneUtil.getLocation(phone.getPhone()));
+            phoneRepository.save(phone);
+        });
+        return ResponseEntity.ok("成功");
+    }
+
+    @PostMapping("/users/phone/all")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> getAllLocation() {
+        phoneRepository.findAll().forEach(phone -> {
+            phone.setType(PhoneUtil.getLocation(phone.getPhone()));
+            phoneRepository.save(phone);
+        });
+        return ResponseEntity.ok("成功");
+    }
+
 }

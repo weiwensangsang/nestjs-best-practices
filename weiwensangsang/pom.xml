@@ -375,6 +375,17 @@
             <artifactId>compiler</artifactId>
             <version>1.0</version>
         </dependency>
+        <!--HTTP-->
+        <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.13</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
     <build>
