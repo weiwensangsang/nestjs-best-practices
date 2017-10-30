@@ -26,9 +26,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -223,4 +226,14 @@ public class UserResource {
         return ResponseEntity.ok("成功");
     }
 
+    @PostMapping("/users/ip")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> getAllIP(HttpServletRequest request) {
+        Instant x = userRepository.findOneEE();
+        log.error(x.toString());
+        log.error("H: "+request.getRemoteHost());
+
+        return ResponseEntity.ok("成功");
+    }
 }
