@@ -1,0 +1,36 @@
+{
+  "relationships": [],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "state",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "activated",
+      "fieldType": "Boolean"
+    }
+  ],
+  "changelogDate": "20171219165908",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "javadoc": "Task entity.@author The JHipster team.",
+  "entityTableName": "faker"
+}

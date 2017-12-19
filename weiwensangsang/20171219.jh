@@ -1,0 +1,74 @@
+entity ElectricBike {
+	bikeOrder Long,
+	name String,
+    oil Long,
+    distance Long,
+    type String,
+    state String,
+    information String,
+    integrity Long,
+    sumPath String
+}
+
+entity LocationElectricBike {
+	type String,
+    state String
+}
+
+// an ignored comment
+/** not an ignored comment */
+entity Location {
+	positionX Long,
+    positionY Long,
+	city String,
+	eBikeNumber Long,
+    type String,
+    state String
+}
+
+entity Path {
+    type String,
+    state String,
+    length Long
+}
+
+/**
+ * Task entity.
+ * @author The JHipster team.
+ */
+entity Faker {
+	phone String,
+	name String,
+    type String,
+    state String,
+    activated Boolean
+}
+
+entity SmsCode {
+	phone String,
+    code String,
+    type String,
+    state String
+}
+
+
+entity LogHistory {
+	type String,
+    state String,
+    content String
+}
+
+relationship ManyToOne {
+	LocationElectricBike{electricBike} to ElectricBike,
+    LocationElectricBike{location} to Location,
+    LogHistory{creator} to Faker,
+    Path{fromWhere} to Location,
+    Path{toWhere} to Location
+}
+
+// defining multiple oneToOne relationships
+
+
+// Set pagination options
+paginate LogHistory with pagination
+

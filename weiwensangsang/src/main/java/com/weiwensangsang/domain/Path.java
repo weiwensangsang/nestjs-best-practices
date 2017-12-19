@@ -1,0 +1,118 @@
+package com.weiwensangsang.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A Path.
+ */
+@Entity
+@Table(name = "path")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class Path implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "jhi_type")
+    private String type;
+
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "length")
+    private Long length;
+
+    @ManyToOne
+    private Location fromWhere;
+
+    @ManyToOne
+    private Location toWhere;
+
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
+    public Location getFromWhere() {
+        return fromWhere;
+    }
+
+    public void setFromWhere(Location location) {
+        this.fromWhere = location;
+    }
+
+    public Location getToWhere() {
+        return toWhere;
+    }
+
+    public void setToWhere(Location location) {
+        this.toWhere = location;
+    }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Path path = (Path) o;
+        if (path.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), path.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Path{" +
+            "id=" + getId() +
+            ", type='" + getType() + "'" +
+            ", state='" + getState() + "'" +
+            ", length='" + getLength() + "'" +
+            "}";
+    }
+}

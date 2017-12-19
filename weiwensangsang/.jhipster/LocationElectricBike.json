@@ -1,0 +1,35 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipType": "many-to-one",
+      "relationshipName": "electricBike",
+      "otherEntityName": "electricBike",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipType": "many-to-one",
+      "relationshipName": "location",
+      "otherEntityName": "location",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "state",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20171219165905",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "entityTableName": "location_electric_bike"
+}

@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span>Log History</span> {{vm.logHistory.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Type</span></dt>
+        <dd>
+            <span>{{vm.logHistory.type}}</span>
+        </dd>
+        <dt><span>State</span></dt>
+        <dd>
+            <span>{{vm.logHistory.state}}</span>
+        </dd>
+        <dt><span>Content</span></dt>
+        <dd>
+            <span>{{vm.logHistory.content}}</span>
+        </dd>
+        <dt><span>Creator</span></dt>
+        <dd>
+            <a ui-sref="faker-detail({id:vm.logHistory.creator.id})">{{vm.logHistory.creator.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="log-history-detail.edit({id:vm.logHistory.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>

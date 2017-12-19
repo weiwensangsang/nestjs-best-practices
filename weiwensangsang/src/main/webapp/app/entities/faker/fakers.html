@@ -1,0 +1,64 @@
+<div>
+    <h2>Fakers</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="faker.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Faker
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span>ID</span></th>
+                    <th><span>Phone</span></th>
+                    <th><span>Name</span></th>
+                    <th><span>Type</span></th>
+                    <th><span>State</span></th>
+                    <th><span>Activated</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="faker in vm.fakers track by faker.id">
+                    <td><a ui-sref="faker-detail({id:faker.id})">{{faker.id}}</a></td>
+                    <td>{{faker.phone}}</td>
+                    <td>{{faker.name}}</td>
+                    <td>{{faker.type}}</td>
+                    <td>{{faker.state}}</td>
+                    <td>{{faker.activated}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="faker-detail({id:faker.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="faker.edit({id:faker.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="faker.delete({id:faker.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

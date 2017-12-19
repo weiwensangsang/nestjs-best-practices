@@ -1,0 +1,30 @@
+{
+  "relationships": [],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "state",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20171219165909",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "entityTableName": "sms_code"
+}

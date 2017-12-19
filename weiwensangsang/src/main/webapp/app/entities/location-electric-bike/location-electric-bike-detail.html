@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span>Location Electric Bike</span> {{vm.locationElectricBike.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Type</span></dt>
+        <dd>
+            <span>{{vm.locationElectricBike.type}}</span>
+        </dd>
+        <dt><span>State</span></dt>
+        <dd>
+            <span>{{vm.locationElectricBike.state}}</span>
+        </dd>
+        <dt><span>Electric Bike</span></dt>
+        <dd>
+            <a ui-sref="electric-bike-detail({id:vm.locationElectricBike.electricBike.id})">{{vm.locationElectricBike.electricBike.id}}</a>
+        </dd>
+        <dt><span>Location</span></dt>
+        <dd>
+            <a ui-sref="location-detail({id:vm.locationElectricBike.location.id})">{{vm.locationElectricBike.location.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="location-electric-bike-detail.edit({id:vm.locationElectricBike.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>

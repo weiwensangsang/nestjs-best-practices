@@ -43,6 +43,13 @@ public class CacheConfiguration {
             cm.createCache(com.weiwensangsang.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(com.weiwensangsang.domain.Phone.class.getName(), jcacheConfiguration);
 
+            cm.createCache(com.weiwensangsang.domain.ElectricBike.class.getName(), jcacheConfiguration);
+            cm.createCache(com.weiwensangsang.domain.Location.class.getName(), jcacheConfiguration);
+            cm.createCache(com.weiwensangsang.domain.Path.class.getName(), jcacheConfiguration);
+            cm.createCache(com.weiwensangsang.domain.Faker.class.getName(), jcacheConfiguration);
+            cm.createCache(com.weiwensangsang.domain.SmsCode.class.getName(), jcacheConfiguration);
+            cm.createCache(com.weiwensangsang.domain.LogHistory.class.getName(), jcacheConfiguration);
+            cm.createCache(com.weiwensangsang.domain.LocationElectricBike.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

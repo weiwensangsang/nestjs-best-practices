@@ -7,6 +7,16 @@
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/1_add_phone.xml" relativeToChangelogFile="false"/>
 
+    <include file="config/liquibase/changelog/20171219165904_added_entity_ElectricBike.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165906_added_entity_Location.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165907_added_entity_Path.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165908_added_entity_Faker.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165909_added_entity_SmsCode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165910_added_entity_LogHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165905_added_entity_LocationElectricBike.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20171219165907_added_entity_constraints_Path.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165910_added_entity_constraints_LogHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171219165905_added_entity_constraints_LocationElectricBike.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

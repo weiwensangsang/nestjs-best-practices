@@ -1,0 +1,40 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipType": "many-to-one",
+      "relationshipName": "fromWhere",
+      "otherEntityName": "location",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipType": "many-to-one",
+      "relationshipName": "toWhere",
+      "otherEntityName": "location",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "state",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "length",
+      "fieldType": "Long"
+    }
+  ],
+  "changelogDate": "20171219165907",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "entityTableName": "path"
+}
