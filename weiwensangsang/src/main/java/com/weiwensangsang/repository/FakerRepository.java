@@ -1,6 +1,6 @@
 package com.weiwensangsang.repository;
 
-import com.weiwensangsang.domain.Faker;
+import com.weiwensangsang.domain.bike.Faker;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;

@@ -1,5 +1,6 @@
-package com.weiwensangsang.domain;
+package com.weiwensangsang.domain.bike;
 
+import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,12 +10,13 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * A LogHistory.
+ * Task entity.@author The JHipster team.
  */
+@ApiModel(description = "Task entity.@author The JHipster team.")
 @Entity
-@Table(name = "log_history")
+@Table(name = "faker")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LogHistory implements Serializable {
+public class Faker implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,19 +24,22 @@ public class LogHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "jhi_type")
     private String type;
 
     @Column(name = "state")
     private String state;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "activated")
+    private Boolean activated;
 
-    @ManyToOne
-    private Faker creator;
-
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     private Instant createDate;
 
     public Instant getCreateDate() {
@@ -54,6 +59,22 @@ public class LogHistory implements Serializable {
         this.id = id;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getType() {
         return type;
     }
@@ -70,20 +91,12 @@ public class LogHistory implements Serializable {
         this.state = state;
     }
 
-    public String getContent() {
-        return content;
+    public Boolean isActivated() {
+        return activated;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Faker getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Faker faker) {
-        this.creator = faker;
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -95,11 +108,11 @@ public class LogHistory implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LogHistory logHistory = (LogHistory) o;
-        if (logHistory.getId() == null || getId() == null) {
+        Faker faker = (Faker) o;
+        if (faker.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), logHistory.getId());
+        return Objects.equals(getId(), faker.getId());
     }
 
     @Override
@@ -109,11 +122,13 @@ public class LogHistory implements Serializable {
 
     @Override
     public String toString() {
-        return "LogHistory{" +
+        return "Faker{" +
             "id=" + getId() +
+            ", phone='" + getPhone() + "'" +
+            ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
             ", state='" + getState() + "'" +
-            ", content='" + getContent() + "'" +
+            ", activated='" + isActivated() + "'" +
             "}";
     }
 }

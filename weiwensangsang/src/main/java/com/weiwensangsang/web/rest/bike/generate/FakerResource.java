@@ -1,7 +1,7 @@
-package com.weiwensangsang.web.rest;
+package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
-import com.weiwensangsang.domain.Faker;
+import com.weiwensangsang.domain.bike.Faker;
 
 import com.weiwensangsang.repository.FakerRepository;
 import com.weiwensangsang.web.rest.util.HeaderUtil;

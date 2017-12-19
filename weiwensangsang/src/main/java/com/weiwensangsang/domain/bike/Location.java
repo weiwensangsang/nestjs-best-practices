@@ -1,4 +1,4 @@
-package com.weiwensangsang.domain;
+package com.weiwensangsang.domain.bike;
 
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;

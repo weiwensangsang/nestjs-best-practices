@@ -1,6 +1,6 @@
 package com.weiwensangsang.repository;
 
-import com.weiwensangsang.domain.SmsCode;
+import com.weiwensangsang.domain.bike.SmsCode;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;

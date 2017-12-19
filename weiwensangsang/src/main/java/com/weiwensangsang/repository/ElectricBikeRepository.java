@@ -1,6 +1,6 @@
 package com.weiwensangsang.repository;
 
-import com.weiwensangsang.domain.ElectricBike;
+import com.weiwensangsang.domain.bike.ElectricBike;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;

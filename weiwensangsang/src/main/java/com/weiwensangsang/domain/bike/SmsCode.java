@@ -1,4 +1,4 @@
-package com.weiwensangsang.domain;
+package com.weiwensangsang.domain.bike;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -34,7 +34,7 @@ public class SmsCode implements Serializable {
     @Column(name = "state")
     private String state;
 
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     private Instant createDate;
 
     @Column(name = "end_date")

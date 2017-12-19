@@ -1,7 +1,7 @@
-package com.weiwensangsang.web.rest;
+package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
-import com.weiwensangsang.domain.SmsCode;
+import com.weiwensangsang.domain.bike.SmsCode;
 
 import com.weiwensangsang.repository.SmsCodeRepository;
 import com.weiwensangsang.web.rest.util.HeaderUtil;

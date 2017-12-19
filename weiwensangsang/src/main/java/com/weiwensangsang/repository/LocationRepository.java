@@ -1,6 +1,6 @@
 package com.weiwensangsang.repository;
 
-import com.weiwensangsang.domain.Location;
+import com.weiwensangsang.domain.bike.Location;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;

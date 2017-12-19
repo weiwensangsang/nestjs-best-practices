@@ -1,7 +1,7 @@
-package com.weiwensangsang.web.rest;
+package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
-import com.weiwensangsang.domain.LocationElectricBike;
+import com.weiwensangsang.domain.bike.LocationElectricBike;
 
 import com.weiwensangsang.repository.LocationElectricBikeRepository;
 import com.weiwensangsang.web.rest.util.HeaderUtil;

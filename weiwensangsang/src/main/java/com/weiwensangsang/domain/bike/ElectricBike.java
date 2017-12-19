@@ -1,4 +1,4 @@
-package com.weiwensangsang.domain;
+package com.weiwensangsang.domain.bike;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

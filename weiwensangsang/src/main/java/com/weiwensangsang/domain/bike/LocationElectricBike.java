@@ -1,19 +1,20 @@
-package com.weiwensangsang.domain;
+package com.weiwensangsang.domain.bike;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
- * A Path.
+ * A LocationElectricBike.
  */
 @Entity
-@Table(name = "path")
+@Table(name = "location_electric_bike")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Path implements Serializable {
+public class LocationElectricBike implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,14 +28,22 @@ public class Path implements Serializable {
     @Column(name = "state")
     private String state;
 
-    @Column(name = "length")
-    private Long length;
+    @Column(name = "created_date")
+    private Instant createDate;
+
+    public Instant getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Instant createDate) {
+        this.createDate = createDate;
+    }
 
     @ManyToOne
-    private Location fromWhere;
+    private ElectricBike electricBike;
 
     @ManyToOne
-    private Location toWhere;
+    private Location location;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -61,28 +70,20 @@ public class Path implements Serializable {
         this.state = state;
     }
 
-    public Long getLength() {
-        return length;
+    public ElectricBike getElectricBike() {
+        return electricBike;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
+    public void setElectricBike(ElectricBike electricBike) {
+        this.electricBike = electricBike;
     }
 
-    public Location getFromWhere() {
-        return fromWhere;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setFromWhere(Location location) {
-        this.fromWhere = location;
-    }
-
-    public Location getToWhere() {
-        return toWhere;
-    }
-
-    public void setToWhere(Location location) {
-        this.toWhere = location;
+    public void setLocation(Location location) {
+        this.location = location;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -94,11 +95,11 @@ public class Path implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Path path = (Path) o;
-        if (path.getId() == null || getId() == null) {
+        LocationElectricBike locationElectricBike = (LocationElectricBike) o;
+        if (locationElectricBike.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), path.getId());
+        return Objects.equals(getId(), locationElectricBike.getId());
     }
 
     @Override
@@ -108,11 +109,10 @@ public class Path implements Serializable {
 
     @Override
     public String toString() {
-        return "Path{" +
+        return "LocationElectricBike{" +
             "id=" + getId() +
             ", type='" + getType() + "'" +
             ", state='" + getState() + "'" +
-            ", length='" + getLength() + "'" +
             "}";
     }
 }
