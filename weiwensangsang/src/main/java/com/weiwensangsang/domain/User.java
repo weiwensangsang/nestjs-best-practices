@@ -230,4 +230,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", activationKey='" + activationKey + '\'' +
             "}";
     }
+
+    public static User Anonymous() {
+        User a = new User();
+        a.setId(2L);
+        return a;
+    }
 }

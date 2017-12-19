@@ -2,9 +2,12 @@ package com.weiwensangsang.web.rest.run;
 
 import com.codahale.metrics.annotation.Timed;
 import com.itranswarp.compiler.JavaStringCompiler;
+import com.weiwensangsang.domain.Authority;
 import com.weiwensangsang.security.AuthoritiesConstants;
+import com.weiwensangsang.service.authority.BsbAuthority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +27,14 @@ public class OpenResource {
 
     private final Logger log = LoggerFactory.getLogger(OpenResource.class);
 
+    @Autowired
+    private BsbAuthority bsbAuthority;
+
     @PostMapping("/use/compiler/java")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity compiler(@Valid @RequestBody String code) throws Exception {
+        log.error(bsbAuthority.current().toString());
         JavaStringCompiler compiler = new JavaStringCompiler();
         String javaCode = "package on.the.fly;\n" +
                 "public class TryTest" + " {\n" + code + "}\n";
