@@ -15,13 +15,13 @@
         vm.personInfo = {};
 
 
-        vm.goToStationMain = goToStationMain;
+        vm.goToStation = goToStation;
 
 
-        function goToStationMain(page) {
+        function goToStation(page) { console.log(123);
             switch (page) {
                 case 'data':
-                   console.log(123);
+                    console.log(123);
                     break;
             }
         }
