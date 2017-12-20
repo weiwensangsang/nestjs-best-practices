@@ -5,9 +5,9 @@
         .module('weiwensangsangApp')
         .controller('ManageNavController', ManageNavController);
 
-    ManageNavController.$inject = [];
+    ManageNavController.$inject = ['$state'];
 
-    function ManageNavController() {
+    function ManageNavController($state) {
         var vm = this;
 
         vm.showViewPageBtn = false;
@@ -15,13 +15,14 @@
         vm.personInfo = {};
 
 
-        vm.goToStation = goToStation;
+        vm.goToFaker = goToFaker;
 
 
-        function goToStation(page) { console.log(123);
-            switch (page) {
-                case 'data':
+        function goToFaker(data) {
+            switch (data) {
+                case 'faker':
                     console.log(123);
+                    $state.go('faker');
                     break;
             }
         }
