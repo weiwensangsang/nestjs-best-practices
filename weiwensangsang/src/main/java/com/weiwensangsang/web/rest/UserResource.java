@@ -8,6 +8,7 @@ import com.weiwensangsang.repository.UserRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.MailService;
 import com.weiwensangsang.service.UserService;
+import com.weiwensangsang.service.authority.BsbAuthority;
 import com.weiwensangsang.service.dto.UserDTO;
 import com.weiwensangsang.service.util.phone.PhoneUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
@@ -75,6 +76,9 @@ public class UserResource {
 
     @Autowired
     private PhoneRepository phoneRepository;
+
+    @Autowired
+    private BsbAuthority bsbAuthority;
 
     public UserResource(UserRepository userRepository, MailService mailService,
                         UserService userService) {
@@ -236,4 +240,11 @@ public class UserResource {
 
         return ResponseEntity.ok("成功");
     }
+
+    @GetMapping("/user-infos")
+    @Timed
+    public ResponseEntity<?> getUserInfo() {
+        return ResponseEntity.ok(bsbAuthority.current());
+    }
+
 }
