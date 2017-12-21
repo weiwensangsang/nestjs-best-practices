@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -130,5 +131,17 @@ public class Faker implements Serializable {
             ", state='" + getState() + "'" +
             ", activated='" + isActivated() + "'" +
             "}";
+    }
+
+    private Faker() {
+        createDate = Instant.now();
+        activated = false;
+    }
+
+    public static Faker create(String phone) {
+        Faker user = new Faker();
+        user.setPhone(phone);
+        user.setType("normal");
+        return user;
     }
 }

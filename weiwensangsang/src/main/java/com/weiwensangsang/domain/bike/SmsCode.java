@@ -37,17 +37,6 @@ public class SmsCode implements Serializable {
     @Column(name = "created_date")
     private Instant createDate;
 
-    @Column(name = "end_date")
-    private Instant endDate;
-
-    public Instant getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Instant endDate) {
-        this.endDate = endDate;
-    }
-
     public Instant getCreateDate() {
         return createDate;
     }
@@ -127,5 +116,17 @@ public class SmsCode implements Serializable {
             ", type='" + getType() + "'" +
             ", state='" + getState() + "'" +
             "}";
+    }
+
+    private SmsCode() {
+        createDate =Instant.now();
+        type = "A";
+    }
+
+    public static SmsCode create(String phone, String code) {
+        SmsCode c = new SmsCode();
+        c.setPhone(phone);
+        c.setCode(code);
+        return c;
     }
 }

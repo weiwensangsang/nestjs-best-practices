@@ -1,19 +1,26 @@
 package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
+import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Faker;
-
+import com.weiwensangsang.domain.bike.SmsCode;
 import com.weiwensangsang.repository.FakerRepository;
+import com.weiwensangsang.repository.SmsCodeRepository;
+import com.weiwensangsang.service.util.RandomUtil;
+import com.weiwensangsang.service.util.sdk.demo.mail.SendSMS;
+import com.weiwensangsang.service.util.sdk.exception.SmsException;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +41,9 @@ public class FakerResource {
         this.fakerRepository = fakerRepository;
     }
 
+    @Autowired
+    public SmsCodeRepository smsCodeRepository;
+
     /**
      * POST  /fakers : Create a new faker.
      *
@@ -50,8 +60,8 @@ public class FakerResource {
         }
         Faker result = fakerRepository.save(faker);
         return ResponseEntity.created(new URI("/api/fakers/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -72,8 +82,8 @@ public class FakerResource {
         }
         Faker result = fakerRepository.save(faker);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, faker.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, faker.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -86,7 +96,7 @@ public class FakerResource {
     public List<Faker> getAllFakers() {
         log.debug("REST request to get all Fakers");
         return fakerRepository.findAll();
-        }
+    }
 
     /**
      * GET  /fakers/:id : get the "id" faker.
@@ -114,5 +124,37 @@ public class FakerResource {
         log.debug("REST request to delete Faker : {}", id);
         fakerRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PostMapping("/fakers/create")
+    @Timed
+    public ResponseEntity<?> createFaker(@RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
+        Long number = Long.parseLong(phone);
+        if (fakerRepository.findOneByPhone(phone).isPresent()) {
+            return ResponseEntity.ok(ResponseMessage.message("验证码只有一次机会"));
+        }
+        SmsCode code = SmsCode.create(phone, RandomUtil.get4SMSCode());
+        try {
+            SendSMS.sendActivated(phone, code.getCode());
+            smsCodeRepository.save(code);
+            fakerRepository.save(Faker.create(phone));
+            return ResponseEntity.ok(ResponseMessage.message("已经发送验证码"));
+        } catch (SmsException e) {
+            return ResponseEntity.ok(ResponseMessage.message("短信异常"));
+        }
+
+    }
+
+    @PutMapping("/fakers/activate")
+    @Timed
+    public ResponseEntity<?> activateFaker(@RequestBody SmsCode data) throws URISyntaxException {
+        SmsCode code = smsCodeRepository.findOneByPhone(data.getPhone()).get();
+        if (!code.getCode().equals(data.getCode())) {
+            return ResponseEntity.ok(ResponseMessage.message("激活失败"));
+        }
+        Faker user = fakerRepository.findOneByPhone(data.getPhone()).get();
+        user.setActivated(true);
+        fakerRepository.save(user);
+        return ResponseEntity.ok(ResponseMessage.message("激活成功"));
     }
 }
