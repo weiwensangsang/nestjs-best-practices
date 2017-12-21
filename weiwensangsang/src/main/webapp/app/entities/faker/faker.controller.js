@@ -12,7 +12,8 @@
         var vm = this;
 
         vm.fakers = [];
-        vm.phone = 12345;
+        vm.phone = 18311045471;
+        vm.fakerCreate = fakerCreate;
         loadAll();
 
         function loadAll() {
@@ -20,9 +21,13 @@
                 vm.fakers = result;
                 vm.searchQuery = null;
             });
-            FakerCreate.save({}, vm.phone, function onUpdateSuccess(result) {
+
+        }
+
+        function fakerCreate() {
+            FakerCreate.save({}, vm.phone, function success(result) {
                 console.log(result.message);
-            }, function onUpdateError() {
+            }, function error() {
             });
         }
     }

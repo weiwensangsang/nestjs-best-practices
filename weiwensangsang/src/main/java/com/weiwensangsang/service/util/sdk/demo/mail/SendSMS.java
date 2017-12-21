@@ -31,7 +31,7 @@ public class SendSMS {
     public static void sendActivated(String phone, String code) throws ClientProtocolException, IOException, SmsException {
         SendCloudSms sms = new SendCloudSms();
         sms.setMsgType(0);
-        sms.setTemplateId(11145);
+        sms.setTemplateId(11161);
         sms.addPhone(phone);
         sms.addVars("code", code);
         SendCloud sc = SendCloudBuilder.build();

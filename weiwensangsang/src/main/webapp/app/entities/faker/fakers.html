@@ -4,12 +4,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="faker.new" >
+                <div class="form-group">
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span >
-                        Create new Faker
-                    </span>
-                </button>
+                    <label class="control-label" for="field_phone">输入手机号以收到激活码</label>
+                    <input type="text" class="form-control" name="phone" id="field_phone"
+                           ng-model="vm.phone"
+                    />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.fakerCreate()">
+                        <span>发送激活码</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
