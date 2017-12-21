@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -128,7 +129,7 @@ public class FakerResource {
 
     @PostMapping("/fakers/create")
     @Timed
-    public ResponseEntity<?> createFaker(@RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
+    public ResponseEntity<?> createFaker(@Valid @RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
         Long number = Long.parseLong(phone);
         if (fakerRepository.findOneByPhone(phone).isPresent()) {
             return ResponseEntity.ok(ResponseMessage.message("验证码只有一次机会"));
