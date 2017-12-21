@@ -132,7 +132,7 @@ public class FakerResource {
     public ResponseEntity<?> createFaker(@Valid @RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
         Long number = Long.parseLong(phone);
         if (fakerRepository.findOneByPhone(phone).isPresent()) {
-            return ResponseEntity.ok(ResponseMessage.message("验证码只有一次机会"));
+            return ResponseEntity.badRequest().body(ResponseMessage.message("验证码只有一次机会"));
         }
         SmsCode code = SmsCode.create(phone, RandomUtil.get4SMSCode());
         try {
@@ -141,7 +141,7 @@ public class FakerResource {
             fakerRepository.save(Faker.create(phone));
             return ResponseEntity.ok(ResponseMessage.message("已经发送验证码"));
         } catch (SmsException e) {
-            return ResponseEntity.ok(ResponseMessage.message("短信异常"));
+            return ResponseEntity.badRequest().body(ResponseMessage.message("短信异常"));
         }
 
     }
@@ -151,7 +151,7 @@ public class FakerResource {
     public ResponseEntity<?> activateFaker(@RequestBody SmsCode data) throws URISyntaxException {
         SmsCode code = smsCodeRepository.findOneByPhone(data.getPhone()).get();
         if (!code.getCode().equals(data.getCode())) {
-            return ResponseEntity.ok(ResponseMessage.message("激活失败"));
+            return ResponseEntity.badRequest().body(ResponseMessage.message("激活失败"));
         }
         Faker user = fakerRepository.findOneByPhone(data.getPhone()).get();
         user.setActivated(true);
