@@ -1,66 +1,35 @@
 <div>
-    <h2>Locations</h2>
+    <h2>网络拓扑管理</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="location.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span >
-                        Create new Location
-                    </span>
-                </button>
+            <div class="col-xs-2 no-padding-left">
+                <div style="margin:10px">
+                    <div class="btn btn-primary" ng-click="vm.action('cover')"><span
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">覆盖旧的拓扑</span>
+                    </div>
+                </div>
+                <div style="margin:10px">
+                    <div class="btn btn-primary" ng-click="vm.action('6')"><span
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">6x6 随机网络</span>
+                    </div>
+                </div>
+                <div style="margin:10px">
+                    <div class="btn btn-primary" ng-click="vm.action('5')"><span
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">5x5 随机网络</span>
+                    </div>
+                </div>
+                <div style="margin:10px">
+                    <div class="btn btn-primary" ng-click="vm.action('4')"><span
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">4x4 随机网络</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-10">
+                <h1>网络结构</h1>
+
             </div>
         </div>
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr>
-                    <th><span>ID</span></th>
-                    <th><span>Position X</span></th>
-                    <th><span>Position Y</span></th>
-                    <th><span>City</span></th>
-                    <th><span>E Bike Number</span></th>
-                    <th><span>Type</span></th>
-                    <th><span>State</span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="location in vm.locations track by location.id">
-                    <td><a ui-sref="location-detail({id:location.id})">{{location.id}}</a></td>
-                    <td>{{location.positionX}}</td>
-                    <td>{{location.positionY}}</td>
-                    <td>{{location.city}}</td>
-                    <td>{{location.eBikeNumber}}</td>
-                    <td>{{location.type}}</td>
-                    <td>{{location.state}}</td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="location-detail({id:location.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="location.edit({id:location.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="location.delete({id:location.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+
 </div>

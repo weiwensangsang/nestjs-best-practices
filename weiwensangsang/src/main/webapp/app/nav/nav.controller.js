@@ -23,8 +23,8 @@
                 case 'faker':
                     $state.go('faker');
                     break;topology
-                case 'topology':
-                     $state.go('faker');
+                case 'location':
+                     $state.go('location');
                      break;
             }
         }
