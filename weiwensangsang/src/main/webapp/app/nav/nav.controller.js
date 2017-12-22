@@ -15,15 +15,17 @@
         vm.personInfo = {};
 
 
-        vm.goToFaker = goToFaker;
+        vm.goToWhere = goToWhere;
 
 
-        function goToFaker(data) {
+        function goToWhere(data) {
             switch (data) {
                 case 'faker':
-                    console.log(123);
                     $state.go('faker');
-                    break;
+                    break;topology
+                case 'topology':
+                     $state.go('faker');
+                     break;
             }
         }
 
