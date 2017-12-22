@@ -64,8 +64,5 @@
   },
   "scripts": {
     "test": "gulp test"
-  },
-  "dependencies": {
-    "angularjs-toaster": "^2.2.0"
   }
 }
