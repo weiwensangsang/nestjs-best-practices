@@ -5,9 +5,9 @@
         .module('weiwensangsangApp')
         .controller('FakerController', FakerController);
 
-    FakerController.$inject = ['Faker', 'FakerCreate', 'toaster'];
+    FakerController.$inject = ['Faker', 'FakerCreate', 'toaster', '$state'];
 
-    function FakerController(Faker, FakerCreate, toaster) {
+    function FakerController(Faker, FakerCreate, toaster, $state) {
 
         var vm = this;
 
@@ -27,8 +27,8 @@
         function fakerCreate() {
             FakerCreate.save({}, vm.phone, function success(result) {
                 toaster.pop('success', ' ', result.message);
+                $state.go('faker', null, { reload: 'faker' });
             }, function error(result) {
-                console.log(result);
                 toaster.pop('error', ' ', result.data.message);
             });
         }

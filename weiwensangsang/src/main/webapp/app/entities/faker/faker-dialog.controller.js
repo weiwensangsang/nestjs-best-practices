@@ -30,9 +30,11 @@
             vm.dto.code = vm.smsCode;
             FakerActivate.save({}, vm.dto , function success(result) {
                 toaster.pop('success', ' ', result.message);
+                clear();
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
+
         }
 
         function save () {
