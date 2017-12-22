@@ -6,6 +6,7 @@ import com.weiwensangsang.domain.bike.Faker;
 import com.weiwensangsang.domain.bike.SmsCode;
 import com.weiwensangsang.repository.FakerRepository;
 import com.weiwensangsang.repository.SmsCodeRepository;
+import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.util.RandomUtil;
 import com.weiwensangsang.service.util.sdk.demo.mail.SendSMS;
 import com.weiwensangsang.service.util.sdk.exception.SmsException;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -121,6 +123,7 @@ public class FakerResource {
      */
     @DeleteMapping("/fakers/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteFaker(@PathVariable Long id) {
         log.debug("REST request to delete Faker : {}", id);
         fakerRepository.delete(id);
@@ -132,6 +135,9 @@ public class FakerResource {
     public ResponseEntity<?> createFaker(@Valid @RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
         Long number = Long.parseLong(phone);
         if (fakerRepository.findOneByPhone(phone).isPresent()) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("验证码只有一次机会"));
+        }
+        if (smsCodeRepository.findOneByPhone(phone).isPresent()) {
             return ResponseEntity.badRequest().body(ResponseMessage.message("验证码只有一次机会"));
         }
         SmsCode code = SmsCode.create(phone, RandomUtil.get4SMSCode());
@@ -146,9 +152,9 @@ public class FakerResource {
 
     }
 
-    @PutMapping("/fakers/activate")
+    @PostMapping("/fakers/activate")
     @Timed
-    public ResponseEntity<?> activateFaker(@RequestBody SmsCode data) throws URISyntaxException {
+    public ResponseEntity<?> activateFaker(@Valid @RequestBody SmsCode data) throws URISyntaxException {
         SmsCode code = smsCodeRepository.findOneByPhone(data.getPhone()).get();
         if (!code.getCode().equals(data.getCode())) {
             return ResponseEntity.badRequest().body(ResponseMessage.message("激活失败"));

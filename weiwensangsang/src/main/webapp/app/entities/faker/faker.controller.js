@@ -28,7 +28,8 @@
             FakerCreate.save({}, vm.phone, function success(result) {
                 toaster.pop('success', ' ', result.message);
             }, function error(result) {
-                toaster.pop('error', ' ', result.message);
+                console.log(result);
+                toaster.pop('error', ' ', result.data.message);
             });
         }
     }

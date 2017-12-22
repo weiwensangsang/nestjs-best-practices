@@ -49,10 +49,10 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down"></span>
                             </button>
-                            <button type="submit"
+                            <button type="submit" ng-if = '!faker.activated'
                                     ui-sref="faker.edit({id:faker.id})"
                                     class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span>激活</span>
                                 <span class="hidden-sm-down"></span>
                             </button>
                             <button type="submit"

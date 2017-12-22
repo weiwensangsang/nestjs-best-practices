@@ -4,52 +4,30 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myFakerLabel">Create or edit a Faker</h4>
+        <h4 class="modal-title" id="myFakerLabel">Activate a Faker</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.faker.id">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.faker.id" readonly />
-        </div>
         <div class="form-group">
             <label class="control-label" for="field_phone">Phone</label>
             <input type="text" class="form-control" name="phone" id="field_phone"
-                    ng-model="vm.faker.phone"
+                    ng-model="vm.faker.phone" readonly
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.faker.name"
+            <label class="control-label">激活码</label>
+            <input type="text" class="form-control"
+                    ng-model="vm.smsCode"
                     />
         </div>
-        <div class="form-group">
-            <label class="control-label" for="field_type">Type</label>
-            <input type="text" class="form-control" name="type" id="field_type"
-                    ng-model="vm.faker.type"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_state">State</label>
-            <input type="text" class="form-control" name="state" id="field_state"
-                    ng-model="vm.faker.state"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_activated">Activated</label>
-                <input type="checkbox" name="activated" id="field_activated"
-                          ng-model="vm.faker.activated"/>
-        </div>
-
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="vm.activate()">
+            <span>激活</span>
         </button>
+
     </div>
 </form>
