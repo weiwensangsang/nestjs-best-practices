@@ -145,6 +145,6 @@ public class LocationResource {
             return ResponseEntity.badRequest().body(ResponseMessage.message("存在旧拓扑"));
         }
         algoService.generateTopo(height, weight);
-        return ResponseEntity.ok(ResponseMessage.message("删除成功"));
+        return ResponseEntity.ok(ResponseMessage.message("创建成功"));
     }
 }

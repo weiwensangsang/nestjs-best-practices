@@ -24,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,13 +40,14 @@ public class AlgoService {
     private LocationRepository locationRepository;
 
     public void generateTopo(Long height, Long weight) {
-        Long x = 1L;
-        Long y = 1L;
-        for (; x<= height; x++) {
-            for (; y<= weight; y++) {
-                locationRepository.save(Location.create(x, y));
+        List<Location> locations = new ArrayList<Location>();
+        for (Long x = 1L; x<= height; x++) {
+            for (Long y = 1L; y<= weight; y++) {
+                locations.add(Location.create(x, y));
             }
         }
+        log.error(locations.size() +"");
+        locationRepository.save(locations);
         generateEdge(height, weight);
     }
 

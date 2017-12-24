@@ -5,21 +5,21 @@
         .module('weiwensangsangApp')
         .controller('LocationController', LocationController);
 
-    LocationController.$inject = ['Location', 'toaster', 'DeleteLocation'];
+    LocationController.$inject = ['Location', 'toaster', 'DeleteLocation', 'GenerateLocation', '$state'];
 
-    function LocationController(Location, toaster, DeleteLocation) {
+    function LocationController(Location, toaster, DeleteLocation, GenerateLocation, $state) {
 
         var vm = this;
 
         vm.locations = [];
         vm.action = action;
 
-        loadAll();
+        //loadAll();
 
         function loadAll() {
             Location.query(function(result) {
+                console.log(result)
                 vm.locations = result;
-                vm.searchQuery = null;
             });
         }
 
@@ -31,16 +31,28 @@
              });
          }
 
+         function generateTopo(x, y) {
+
+                      GenerateLocation.save({height: x, weight: y},{}, function success(result) {
+                           toaster.pop('success', ' ', result.message);
+                      }, function error(result) {
+                           toaster.pop('error', ' ', result.data.message);
+                      });
+                  }
+
         function action(data) {
             switch (data) {
                  case 'cover':
                       deleteTopo();
+                      $state.go('location');
                       break;
-                 case 'location':
+                 case '6':
+                      generateTopo(6, 6);
                       $state.go('location');
                       break;
                  }
             }
+
         }
 
 
