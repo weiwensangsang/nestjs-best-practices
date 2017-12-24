@@ -1,14 +1,20 @@
 package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
+import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Location;
 
 import com.weiwensangsang.repository.LocationRepository;
+import com.weiwensangsang.repository.PathRepository;
+import com.weiwensangsang.security.AuthoritiesConstants;
+import com.weiwensangsang.service.AlgoService;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -33,6 +39,13 @@ public class LocationResource {
     public LocationResource(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
     }
+
+    @Autowired
+    private PathRepository pathRepository;
+
+    @Autowired
+    private AlgoService algoService;
+
 
     /**
      * POST  /locations : Create a new location.
@@ -114,5 +127,24 @@ public class LocationResource {
         log.debug("REST request to delete Location : {}", id);
         locationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PostMapping("/locations/delete-all")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> deleteAll() {
+        pathRepository.deleteAll();
+        locationRepository.deleteAll();
+        return ResponseEntity.ok(ResponseMessage.message("删除成功"));
+    }
+
+    @PostMapping("/locations/generate/height/{height}/weight/{weight}")
+    @Timed
+    public ResponseEntity<?> generate(@PathVariable Long height, @PathVariable Long weight) {
+        if (!locationRepository.findAll().isEmpty()) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("存在旧拓扑"));
+        }
+        algoService.generateTopo(height, weight);
+        return ResponseEntity.ok(ResponseMessage.message("删除成功"));
     }
 }

@@ -122,13 +122,25 @@ public class Location implements Serializable {
     @Override
     public String toString() {
         return "Location{" +
-            "id=" + getId() +
-            ", positionX='" + getPositionX() + "'" +
-            ", positionY='" + getPositionY() + "'" +
-            ", city='" + getCity() + "'" +
-            ", eBikeNumber='" + geteBikeNumber() + "'" +
-            ", type='" + getType() + "'" +
-            ", state='" + getState() + "'" +
-            "}";
+            "id=" + id +
+            ", positionX=" + positionX +
+            ", positionY=" + positionY +
+            ", city='" + city + '\'' +
+            ", eBikeNumber=" + eBikeNumber +
+            ", type='" + type + '\'' +
+            ", state='" + state + '\'' +
+
+            '}';
+    }
+
+    private Location() {
+        eBikeNumber = 0L;
+    }
+
+    public static Location create(Long x, Long y) {
+        Location l = new Location();
+        l.setPositionX(x);
+        l.setPositionY(y);
+        return l;
     }
 }

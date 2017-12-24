@@ -22,7 +22,7 @@
             switch (data) {
                 case 'faker':
                     $state.go('faker');
-                    break;topology
+                    break;
                 case 'location':
                      $state.go('location');
                      break;
