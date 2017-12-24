@@ -14,7 +14,7 @@
         vm.locations = [];
         vm.action = action;
 
-        //loadAll();
+
 
         function loadAll() {
             Location.query(function(result) {
