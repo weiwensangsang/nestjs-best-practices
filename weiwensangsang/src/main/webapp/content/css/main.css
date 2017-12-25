@@ -335,13 +335,15 @@ ui bootstrap tweaks
 }
 
 svg {
-    background-color: #FFF;
+    background-color: #F5F5F5;
     cursor: default;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+    height:500px;
+    width:100%;
 }
 
 svg:not(.active):not(.ctrl) {

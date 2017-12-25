@@ -13,9 +13,7 @@
             colors = d3.scale.category10();
 
         var svg = d3.select('svg')
-            .attr('oncontextmenu', 'return false;')
-            .attr('width', width)
-            .attr('height', height);
+            .attr('oncontextmenu', 'return false;');
 
 // set up initial nodes and links
 //  - nodes are known by 'id', not by index in array.
