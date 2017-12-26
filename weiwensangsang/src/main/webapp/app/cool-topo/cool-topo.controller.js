@@ -5,9 +5,16 @@
         .module('weiwensangsangApp')
         .controller('CoolTopoController', CoolTopoController);
 
-    CoolTopoController.$inject = ['$state'];
+    CoolTopoController.$inject = ['$state', 'Location'];
 
-    function CoolTopoController($state) {
+    function CoolTopoController($state, Location) {
+        var vm = this;
+
+        vm.locations = [];
+
+        
+
+
         var width  = 800,
             height = 500,
             colors = d3.scale.category10();
@@ -15,16 +22,9 @@
         var svg = d3.select('svg')
             .attr('oncontextmenu', 'return false;');
 
-        var nodes = [
-                {id: 0},
-                {id: 1},
-                {id: 2}
-            ];
-        var lastNodeId = 2;
-        var links = [
-                {source: nodes[0], target: nodes[1]},
-                {source: nodes[1], target: nodes[2]}
-            ];
+        var nodes = [];
+        var lastNodeId = 0;
+        var links = [];
 
 // init D3 force layout
         var force = d3.layout.force()
@@ -339,13 +339,15 @@
         }
 
 // app starts here
-        svg.on('mousedown', mousedown)
-            .on('mousemove', mousemove)
-            .on('mouseup', mouseup);
-        d3.select(window)
-            .on('keydown', keydown)
-            .on('keyup', keyup);
-        restart();
+        function dataIsReady() {
+            svg.on('mousedown', mousedown)
+                .on('mousemove', mousemove)
+                .on('mouseup', mouseup);
+            d3.select(window)
+                .on('keydown', keydown)
+                .on('keyup', keyup);
+            restart();
+       }
 
     }
 })();

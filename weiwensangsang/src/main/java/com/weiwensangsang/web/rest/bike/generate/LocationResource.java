@@ -4,11 +4,13 @@ import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Location;
 
+import com.weiwensangsang.domain.bike.Path;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.PathRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.AlgoService;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
+import com.weiwensangsang.web.rest.vm.TopoVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,10 +98,10 @@ public class LocationResource {
      */
     @GetMapping("/locations")
     @Timed
-    public List<Location> getAllLocations() {
+    public TopoVM getAllLocations() {
         log.debug("REST request to get all Locations");
-        return locationRepository.findAll();
-        }
+        return TopoVM.create(locationRepository.findAll(), pathRepository.findAll());
+    }
 
     /**
      * GET  /locations/:id : get the "id" location.
@@ -135,7 +137,9 @@ public class LocationResource {
     public ResponseEntity<?> deleteAll() {
         pathRepository.deleteAll();
         locationRepository.deleteAll();
-        return ResponseEntity.ok(ResponseMessage.message("删除成功"));
+        List<Location> locations = locationRepository.save(Location.init());
+        pathRepository.save(Path.init(locations));
+        return ResponseEntity.ok(ResponseMessage.message("重置成功"));
     }
 
     @PostMapping("/locations/generate/height/{height}/weight/{weight}")

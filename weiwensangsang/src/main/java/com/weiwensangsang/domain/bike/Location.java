@@ -6,6 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -143,4 +145,15 @@ public class Location implements Serializable {
         l.setPositionY(y);
         return l;
     }
+
+    public static List<Location> init() {
+        List<Location> locations = new ArrayList<Location>();
+        for(int i = 0; i<= 2; i++) {
+            Location l = new Location();
+            l.setPositionX(Integer.toUnsignedLong(i));
+            locations.add(l);
+        }
+        return locations;
+    }
+
 }

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -114,5 +116,18 @@ public class Path implements Serializable {
             ", state='" + getState() + "'" +
             ", length='" + getLength() + "'" +
             "}";
+    }
+
+    public static List<Path> init(List<Location> locations) {
+        List<Path> paths = new ArrayList<Path>();
+        Path l1 = new Path();
+        l1.setFromWhere(locations.get(0));
+        l1.setToWhere(locations.get(1));
+        paths.add(l1);
+        Path l2 = new Path();
+        l2.setFromWhere(locations.get(1));
+        l2.setToWhere(locations.get(2));
+        paths.add(l2);
+        return paths;
     }
 }
