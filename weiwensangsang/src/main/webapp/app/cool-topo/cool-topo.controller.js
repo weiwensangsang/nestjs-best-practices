@@ -40,27 +40,27 @@
             .on('tick', tick)
 
 // define arrow markers for graph links
-        svg.append('svg:defs').append('svg:marker')
-            .attr('id', 'end-arrow')
-            .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 6)
-            .attr('markerWidth', 3)
-            .attr('markerHeight', 3)
-            .attr('orient', 'auto')
-            .append('svg:path')
-            .attr('d', 'M0,-5L10,0L0,5')
-            .attr('fill', '#000');
-
-        svg.append('svg:defs').append('svg:marker')
-            .attr('id', 'start-arrow')
-            .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 4)
-            .attr('markerWidth', 3)
-            .attr('markerHeight', 3)
-            .attr('orient', 'auto')
-            .append('svg:path')
-            .attr('d', 'M10,-5L0,0L10,5')
-            .attr('fill', '#000');
+//         svg.append('svg:defs').append('svg:marker')
+//             .attr('id', 'end-arrow')
+//             .attr('viewBox', '0 -5 10 10')
+//             .attr('refX', 6)
+//             .attr('markerWidth', 3)
+//             .attr('markerHeight', 3)
+//             .attr('orient', 'auto')
+//             .append('svg:path')
+//             .attr('d', 'M0,-5L10,0L0,5')
+//             .attr('fill', '#000');
+//
+//         svg.append('svg:defs').append('svg:marker')
+//             .attr('id', 'start-arrow')
+//             .attr('viewBox', '0 -5 10 10')
+//             .attr('refX', 4)
+//             .attr('markerWidth', 3)
+//             .attr('markerHeight', 3)
+//             .attr('orient', 'auto')
+//             .append('svg:path')
+//             .attr('d', 'M10,-5L0,0L10,5')
+//             .attr('fill', '#000');
 
 // line displayed when dragging new nodes
         var drag_line = svg.append('svg:path')
@@ -93,8 +93,8 @@
                     dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
                     normX = deltaX / dist,
                     normY = deltaY / dist,
-                    sourcePadding = d.left ? 17 : 12,
-                    targetPadding = d.right ? 17 : 12,
+                    sourcePadding = d.left ? 12 : 12,
+                    targetPadding = d.right ? 12 : 12,
                     sourceX = d.source.x + (sourcePadding * normX),
                     sourceY = d.source.y + (sourcePadding * normY),
                     targetX = d.target.x - (targetPadding * normX),
@@ -113,17 +113,13 @@
             path = path.data(links);
 
             // update existing links
-            path.classed('selected', function(d) { return d === selected_link; })
-                .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
-                .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; });
+            path.classed('selected', function(d) { return d === selected_link; });
 
 
             // add new links
             path.enter().append('svg:path')
                 .attr('class', 'link')
                 .classed('selected', function(d) { return d === selected_link; })
-                .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
-                .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; })
                 .on('mousedown', function(d) {
                     if(d3.event.ctrlKey) return;
 
