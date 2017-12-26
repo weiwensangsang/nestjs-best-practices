@@ -15,19 +15,15 @@
         var svg = d3.select('svg')
             .attr('oncontextmenu', 'return false;');
 
-// set up initial nodes and links
-//  - nodes are known by 'id', not by index in array.
-//  - reflexive edges are indicated on the node (as a bold black circle).
-//  - links are always source < target; edge directions are set by 'left' and 'right'.
         var nodes = [
-                {id: 0, reflexive: false},
-                {id: 1, reflexive: true },
-                {id: 2, reflexive: false}
-            ],
-            lastNodeId = 2,
-            links = [
-                {source: nodes[0], target: nodes[1], left: false, right: true },
-                {source: nodes[1], target: nodes[2], left: false, right: true }
+                {id: 0},
+                {id: 1},
+                {id: 2}
+            ];
+        var lastNodeId = 2;
+        var links = [
+                {source: nodes[0], target: nodes[1]},
+                {source: nodes[1], target: nodes[2]}
             ];
 
 // init D3 force layout
@@ -39,28 +35,6 @@
             .charge(-500)
             .on('tick', tick)
 
-// define arrow markers for graph links
-//         svg.append('svg:defs').append('svg:marker')
-//             .attr('id', 'end-arrow')
-//             .attr('viewBox', '0 -5 10 10')
-//             .attr('refX', 6)
-//             .attr('markerWidth', 3)
-//             .attr('markerHeight', 3)
-//             .attr('orient', 'auto')
-//             .append('svg:path')
-//             .attr('d', 'M0,-5L10,0L0,5')
-//             .attr('fill', '#000');
-//
-//         svg.append('svg:defs').append('svg:marker')
-//             .attr('id', 'start-arrow')
-//             .attr('viewBox', '0 -5 10 10')
-//             .attr('refX', 4)
-//             .attr('markerWidth', 3)
-//             .attr('markerHeight', 3)
-//             .attr('orient', 'auto')
-//             .append('svg:path')
-//             .attr('d', 'M10,-5L0,0L10,5')
-//             .attr('fill', '#000');
 
 // line displayed when dragging new nodes
         var drag_line = svg.append('svg:path')
