@@ -44,7 +44,8 @@
                 link.target = nodes[vm.result.paths[i].toWhere.positionX];
                 links.push(link);
             }
-            var lastNodeId = vm.result.locationList.length;
+
+            var lastNodeId = vm.result.locationList.length - 2;
 // init D3 force layout
             var force = d3.layout.force()
                 .nodes(nodes)
