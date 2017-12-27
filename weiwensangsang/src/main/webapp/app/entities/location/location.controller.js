@@ -57,11 +57,11 @@
             switch (data) {
                 case 'reset':
                     resetTopo();
-                    $state.go('location', null, { reload: 'location' });
+                    $state.go('location');
                     break;
                 case 'save':
                     generateTopo();
-                    $state.go('location', null, { reload: 'location' });
+                    $state.go('location');
                     break;
             }
         }
