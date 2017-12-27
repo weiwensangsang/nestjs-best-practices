@@ -18,7 +18,7 @@
                 vm.result = result;
                 deferA.resolve()
             });
-        }, 500);
+        }, 0);
 
         var p = $q.all({
             dataA: deferA.promise,
