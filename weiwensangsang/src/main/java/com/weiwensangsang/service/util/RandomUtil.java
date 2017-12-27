@@ -99,4 +99,9 @@ public final class RandomUtil {
         return Long.parseLong(get4SMSCode());
     }
 
+    public static Long getLength() {
+        Random random = new Random();
+        return Integer.toUnsignedLong(random.nextInt(10)) + 1;
+    }
+
 }

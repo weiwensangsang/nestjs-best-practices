@@ -1,5 +1,6 @@
 package com.weiwensangsang.domain.bike;
 
+import com.weiwensangsang.service.util.RandomUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -116,6 +117,10 @@ public class Path implements Serializable {
             ", state='" + getState() + "'" +
             ", length='" + getLength() + "'" +
             "}";
+    }
+
+    private Path() {
+        length = RandomUtil.getLength();
     }
 
     public static List<Path> init(List<Location> locations) {
