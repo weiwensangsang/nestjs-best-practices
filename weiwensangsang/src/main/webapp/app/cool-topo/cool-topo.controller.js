@@ -62,7 +62,7 @@
                 .attr('d', 'M0,0L0,0');
 
 // handles to link and node element groups
-            var path = svg.append('svg:g').selectAll('path'),
+            var path = svg.append('svg:g').selectAll('g'),
                 circle = svg.append('svg:g').selectAll('g');
 
 // mouse event vars
@@ -81,7 +81,7 @@
 // update force layout (called automatically each iteration)
             function tick() {
                 // draw directed edges with proper padding from node centers
-                path.attr('d', function (d) {
+                path.selectAll('path').attr('d', function (d) {
                     var deltaX = d.target.x - d.source.x,
                         deltaY = d.target.y - d.source.y,
                         dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
@@ -109,13 +109,13 @@
                 path = path.data(links);
 
                 // update existing links
-                path.classed('selected', function (d) {
+                path.selectAll('path').classed('selected', function (d) {
                     return d === selected_link;
                 });
 
-
+                var gp = path.enter().append('svg:g');
                 // add new links
-                path.enter().append('svg:path')
+                gp.append('svg:path')
                     .attr('class', 'link')
                     .classed('selected', function (d) {
                         return d === selected_link;
