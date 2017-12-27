@@ -130,4 +130,11 @@ public class Path implements Serializable {
         paths.add(l2);
         return paths;
     }
+
+    public static Path create(Location from, Location to) {
+        Path l = new Path();
+        l.setFromWhere(from);
+        l.setToWhere(to);
+        return l;
+    }
 }

@@ -3,7 +3,6 @@ package com.weiwensangsang.web.rest.bike.generate;
 import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Location;
-
 import com.weiwensangsang.domain.bike.Path;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.PathRepository;
@@ -19,9 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -65,8 +64,8 @@ public class LocationResource {
         }
         Location result = locationRepository.save(location);
         return ResponseEntity.created(new URI("/api/locations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -87,8 +86,8 @@ public class LocationResource {
         }
         Location result = locationRepository.save(location);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, location.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, location.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -142,13 +141,25 @@ public class LocationResource {
         return ResponseEntity.ok(ResponseMessage.message("重置成功"));
     }
 
-    @PostMapping("/locations/generate/height/{height}/weight/{weight}")
+    @PostMapping("/locations/generate")
     @Timed
-    public ResponseEntity<?> generate(@PathVariable Long height, @PathVariable Long weight) {
-        if (!locationRepository.findAll().isEmpty()) {
-            return ResponseEntity.badRequest().body(ResponseMessage.message("存在旧拓扑"));
-        }
-        algoService.generateTopo(height, weight);
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> generate(@Valid @RequestBody TopoVM data) {
+        log.debug(data.toString());
+
+        data.getNodes().forEach(node -> {
+            locationRepository.findOneByPositionX(node.getId())
+                    .map(location -> location)
+                    .orElseGet(() -> locationRepository.save(Location.create(node.getId())));
+        });
+        data.getLinks().forEach(path -> {
+            Location from = locationRepository.findOneByPositionX(path.getSource().getId()).get();
+            Location to = locationRepository.findOneByPositionX(path.getTarget().getId()).get();
+            pathRepository.findOneByFromWhereAndToWhere(from, to)
+                    .map(path1 -> path1)
+                    .orElseGet(() -> pathRepository.save(Path.create(from, to)));
+        });
+
         return ResponseEntity.ok(ResponseMessage.message("创建成功"));
     }
 }

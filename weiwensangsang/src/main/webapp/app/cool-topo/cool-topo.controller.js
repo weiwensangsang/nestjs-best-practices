@@ -5,16 +5,15 @@
         .module('weiwensangsangApp')
         .controller('CoolTopoController', CoolTopoController);
 
-    CoolTopoController.$inject = ['$state', 'Location', '$q', '$timeout'];
+    CoolTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope'];
 
-    function CoolTopoController($state, Location, $q, $timeout) {
+    function CoolTopoController($state, Location, $q, $timeout, $rootScope) {
         var vm = this;
         vm.result = {};
 
         var deferA = $q.defer();
         setTimeout(function () {
             Location.query(function (result) {
-                console.log(result)
                 vm.result = result;
                 deferA.resolve()
             });
@@ -39,7 +38,6 @@
                 node.id = vm.result.locationList[i].positionX;
                 nodes.push(node);
             }
-
             for (var i = 0; i <= vm.result.paths.length - 1; i++) {
                 var link = {};
                 link.source = nodes[vm.result.paths[i].fromWhere.positionX];
@@ -104,6 +102,8 @@
 
 // update graph (called when needed)
             function restart() {
+                $rootScope.nodes = nodes;
+                $rootScope.links = links;
                 // path (link) group
                 path = path.data(links);
 

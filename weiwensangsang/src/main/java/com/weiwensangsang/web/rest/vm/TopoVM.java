@@ -13,6 +13,10 @@ public class TopoVM {
 
     private List<Path> paths;
 
+    private List<Node> nodes;
+
+    private List<Link> links;
+
     public List<Location> getLocationList() {
         return locationList;
     }
@@ -32,9 +36,27 @@ public class TopoVM {
     @Override
     public String toString() {
         return "TopoVM{" +
-            "locationList=" + locationList +
-            ", paths=" + paths +
-            '}';
+                "locationList=" + locationList +
+                ", paths=" + paths +
+                ", nodes=" + nodes +
+                ", links=" + links +
+                '}';
+    }
+
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
     public static TopoVM create(List<Location> locationList, List<Path> paths) {

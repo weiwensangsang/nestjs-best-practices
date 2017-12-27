@@ -146,6 +146,13 @@ public class Location implements Serializable {
         return l;
     }
 
+    public static Location create(Long x) {
+        Location l = new Location();
+        l.setPositionX(x);
+        l.setPositionY(x);
+        return l;
+    }
+
     public static List<Location> init() {
         List<Location> locations = new ArrayList<Location>();
         for(int i = 0; i<= 2; i++) {
