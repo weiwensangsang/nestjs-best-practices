@@ -25,6 +25,8 @@
         function resetTopo() {
             DeleteLocation.save(function success(result) {
                 toaster.pop('success', ' ', result.message);
+                //var obj1 = JSON.parse(result.message);
+                //toaster.pop('success', ' ', obj1.result.index[1].detail);
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
