@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Faker;
 import com.weiwensangsang.domain.bike.Location;
-import com.weiwensangsang.domain.bike.Location_;
 import com.weiwensangsang.domain.bike.SmsCode;
 import com.weiwensangsang.repository.FakerRepository;
 import com.weiwensangsang.repository.LocationRepository;
