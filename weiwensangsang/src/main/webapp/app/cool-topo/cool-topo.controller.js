@@ -42,6 +42,7 @@
                 var link = {};
                 link.source = nodes[vm.result.paths[i].fromWhere.positionX];
                 link.target = nodes[vm.result.paths[i].toWhere.positionX];
+                link.length = vm.result.paths[i].length;
                 links.push(link);
             }
 
@@ -52,8 +53,10 @@
                 .links(links)
                 .size([width, height])
                 .linkDistance(150)
-                .charge(-500)
-                .on('tick', tick)
+                .charge(-166 * (lastNodeId + 2))
+                //加一个配置表
+                .on('tick', tick);
+                //console.log(-166 * (lastNodeId + 2));
 
 
 // line displayed when dragging new nodes
@@ -62,6 +65,7 @@
                 .attr('d', 'M0,0L0,0');
 
 // handles to link and node element groups
+            var length = svg.append('svg:g').selectAll('text');
             var path = svg.append('svg:g').selectAll('path'),
                 circle = svg.append('svg:g').selectAll('g');
 
@@ -107,7 +111,7 @@
                 $rootScope.links = links;
                 // path (link) group
                 path = path.data(links);
-
+                length = length.data(links);
                 // update existing links
                 path.classed('selected', function (d) {
                     return d === selected_link;
@@ -117,6 +121,9 @@
                 // add new links
                 path.enter().append('svg:path')
                     .attr('class', 'link')
+                    .attr('id', function (d, i) {
+                        return 'path' + i
+                    })
                     .classed('selected', function (d) {
                         return d === selected_link;
                     })
@@ -130,7 +137,18 @@
                         selected_node = null;
                         restart();
                     });
-
+                length.enter().append('svg:text')
+                    .attr('x', 63 - 12)
+                    .attr('y', 0)
+                    .attr('class', 'id')
+                    .style('font-size', '24px')
+                    .append('textPath').attr('xlink:href', function (d, i) {
+                    return '#path' + i;
+                })
+                    .text(function (d) {
+                        //console.log(d);
+                        return d.length;
+                    });
                 // remove old links
                 path.exit().remove();
 
@@ -386,9 +404,6 @@
             svg.on('mousedown', mousedown)
                 .on('mousemove', mousemove)
                 .on('mouseup', mouseup);
-            d3.select(window)
-                .on('keydown', keydown)
-                .on('keyup', keyup);
             restart();
             //  }
         });

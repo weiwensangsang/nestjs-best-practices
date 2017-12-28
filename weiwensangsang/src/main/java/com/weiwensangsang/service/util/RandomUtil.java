@@ -2,6 +2,7 @@ package com.weiwensangsang.service.util;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.List;
 import java.util.Random;
 
 public final class RandomUtil {
@@ -101,7 +102,8 @@ public final class RandomUtil {
 
     public static Long getLength() {
         Random random = new Random();
-        return Integer.toUnsignedLong(random.nextInt(10)) + 1;
+        Long[] longs = {1L, 3L, 4L, 5L, 7L, 8L};
+        return longs[random.nextInt(5)];
     }
 
 }
