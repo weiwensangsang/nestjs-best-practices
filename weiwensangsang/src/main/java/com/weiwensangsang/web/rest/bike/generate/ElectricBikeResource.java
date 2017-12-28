@@ -136,11 +136,16 @@ public class ElectricBikeResource {
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> controlElectricBike(@Valid @RequestBody String control) {
+
+
         if (control.equals("reset")) {
             relationRepository.deleteAll();
             electricBikeRepository.deleteAll();
             return ResponseEntity.ok(ResponseMessage.message("删除所有电单车"));
         } else {
+            if (electricBikeRepository.findAll().size() != 0) {
+                return ResponseEntity.ok(ResponseMessage.message("单车已投放"));
+            }
             locationRepository.findAll().forEach(location -> {
                 for (int i = 0; i <= location.geteBikeNumber().intValue() - 1; i++) {
                     ElectricBike result = electricBikeRepository.save(ElectricBike.create());

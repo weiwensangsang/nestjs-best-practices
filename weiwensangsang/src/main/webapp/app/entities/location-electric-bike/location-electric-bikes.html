@@ -1,13 +1,19 @@
 <div>
-    <h2>Location Electric Bikes</h2>
+    <h2>电动单车</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="location-electric-bike.new" >
+                <button class="btn btn-primary" ng-click="vm.action('put')" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span >
-                        Create new Location Electric Bike
+                        投放单车
+                    </span>
+                </button>
+                <button class="btn btn-primary" ng-click="vm.action('reset')" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        单车回收
                     </span>
                 </button>
             </div>

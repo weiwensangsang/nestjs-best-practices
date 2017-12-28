@@ -27,7 +27,7 @@
                      $state.go('location');
                      break;
                 case 'bike':
-                $state.go('electric-bike');
+                $state.go('location-electric-bike');
                 break;
             }
         }
