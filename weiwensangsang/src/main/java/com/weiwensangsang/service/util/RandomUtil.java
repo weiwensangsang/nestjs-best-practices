@@ -121,4 +121,10 @@ public final class RandomUtil {
         return random.nextInt(limit);
     }
 
+    public static String getCity() {
+        Random random = new Random();
+        String[] s = {"北京", "上海", "杭州", "南昌", "广州","海口"};
+        return s[random.nextInt(6)];
+    }
+
 }
