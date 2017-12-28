@@ -1,5 +1,5 @@
 <div>
-    <h2>电动单车</h2>
+    <h2>电动单车投放管理</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
@@ -24,33 +24,29 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr>
-                    <th><span>ID</span></th>
-                    <th><span>Type</span></th>
-                    <th><span>State</span></th>
-                    <th><span>Electric Bike</span></th>
-                    <th><span>Location</span></th>
+                    <th><span>电动单车序列号</span></th>
+                    <th><span>当前油量</span></th>
+                    <th><span>累计路程</span></th>
+                    <th><span>完好度</span></th>
+                    <th><span>当前位置</span></th>
+                    <th><span>此地单车总量</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="locationElectricBike in vm.locationElectricBikes track by locationElectricBike.id">
-                    <td><a ui-sref="location-electric-bike-detail({id:locationElectricBike.id})">{{locationElectricBike.id}}</a></td>
-                    <td>{{locationElectricBike.type}}</td>
-                    <td>{{locationElectricBike.state}}</td>
                     <td>
                         <a ui-sref="electric-bike-detail({id:locationElectricBike.electricBike.id})">{{locationElectricBike.electricBike.id}}</a>
                     </td>
+                    <td>{{locationElectricBike.electricBike.oil}}</td>
+                    <td>{{locationElectricBike.electricBike.distance}}</td>
+                    <td>{{locationElectricBike.electricBike.integrity}}</td>
                     <td>
-                        <a ui-sref="location-detail({id:locationElectricBike.location.id})">{{locationElectricBike.location.id}}</a>
+                        <a ui-sref="location-detail({id:locationElectricBike.location.id})">{{locationElectricBike.location.positionX}}</a>
                     </td>
+                    <td>{{locationElectricBike.location.eBikeNumber}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="location-electric-bike-detail({id:locationElectricBike.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down"></span>
-                            </button>
                             <button type="submit"
                                     ui-sref="location-electric-bike.edit({id:locationElectricBike.id})"
                                     class="btn btn-primary btn-sm">
@@ -65,6 +61,7 @@
                             </button>
                         </div>
                     </td>
+
                 </tr>
             </tbody>
         </table>
