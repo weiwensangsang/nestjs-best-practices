@@ -1,21 +1,31 @@
 package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
+import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.ElectricBike;
-
+import com.weiwensangsang.domain.bike.Location;
+import com.weiwensangsang.domain.bike.LocationElectricBike;
 import com.weiwensangsang.repository.ElectricBikeRepository;
+import com.weiwensangsang.repository.LocationElectricBikeRepository;
+import com.weiwensangsang.repository.LocationRepository;
+import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
+import com.weiwensangsang.web.rest.vm.RelationVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing ElectricBike.
@@ -29,6 +39,12 @@ public class ElectricBikeResource {
     private static final String ENTITY_NAME = "electricBike";
 
     private final ElectricBikeRepository electricBikeRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
+
+    @Autowired
+    private LocationElectricBikeRepository relationRepository;
 
     public ElectricBikeResource(ElectricBikeRepository electricBikeRepository) {
         this.electricBikeRepository = electricBikeRepository;
@@ -50,8 +66,8 @@ public class ElectricBikeResource {
         }
         ElectricBike result = electricBikeRepository.save(electricBike);
         return ResponseEntity.created(new URI("/api/electric-bikes/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -72,8 +88,8 @@ public class ElectricBikeResource {
         }
         ElectricBike result = electricBikeRepository.save(electricBike);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, electricBike.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, electricBike.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -86,7 +102,7 @@ public class ElectricBikeResource {
     public List<ElectricBike> getAllElectricBikes() {
         log.debug("REST request to get all ElectricBikes");
         return electricBikeRepository.findAll();
-        }
+    }
 
     /**
      * GET  /electric-bikes/:id : get the "id" electricBike.
@@ -115,4 +131,55 @@ public class ElectricBikeResource {
         electricBikeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @PostMapping("/electric-bikes/control")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> controlElectricBike(@Valid @RequestBody String control) {
+        if (control.equals("reset")) {
+            relationRepository.deleteAll();
+            electricBikeRepository.deleteAll();
+            return ResponseEntity.ok(ResponseMessage.message("删除所有电单车"));
+        } else {
+            locationRepository.findAll().forEach(location -> {
+                for (int i = 0; i <= location.geteBikeNumber().intValue() - 1; i++) {
+                    ElectricBike result = electricBikeRepository.save(ElectricBike.create());
+                    relationRepository.save(LocationElectricBike.create(result, location));
+                }
+            });
+            return ResponseEntity.ok(ResponseMessage.message("生成电单车成功"));
+        }
+    }
+
+    @GetMapping("/electric-bikes/get-all")
+    @Timed
+    public ResponseEntity<?> getElectricBike() {
+        List<RelationVM> data = new ArrayList<>();
+        locationRepository.findAll().forEach(location -> {
+            data.add(RelationVM.create(
+                    location,
+                    relationRepository.findAllByLocation(location)
+                            .stream()
+                            .map(LocationElectricBike::getElectricBike)
+                            .collect(Collectors.toList()))
+            );
+        });
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/electric-bikes/get/{index}")
+    @Timed
+    public ResponseEntity<?> getElectricBikeById(@PathVariable Long index) {
+        Location location = locationRepository.findOneByPositionX(index).get();
+        RelationVM vm = RelationVM.create(
+                location,
+                relationRepository.findAllByLocation(location)
+                        .stream()
+                        .map(LocationElectricBike::getElectricBike)
+                        .collect(Collectors.toList()));
+
+        return ResponseEntity.ok(vm);
+    }
+
+
 }

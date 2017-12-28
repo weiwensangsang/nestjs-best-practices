@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,4 +16,5 @@ import java.util.Optional;
 @Repository
 public interface FakerRepository extends JpaRepository<Faker, Long> {
     Optional<Faker> findOneByPhone(String phone);
+    List<Faker> findAllByActivated(Boolean activated);
 }

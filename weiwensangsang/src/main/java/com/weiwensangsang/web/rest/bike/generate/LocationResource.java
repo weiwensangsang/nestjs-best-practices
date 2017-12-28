@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.Path;
+import com.weiwensangsang.repository.ElectricBikeRepository;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.PathRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
@@ -46,6 +47,9 @@ public class LocationResource {
 
     @Autowired
     private AlgoService algoService;
+
+    @Autowired
+    private ElectricBikeRepository bikeRepository;
 
 
     /**
@@ -134,6 +138,9 @@ public class LocationResource {
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> deleteAll() {
+        if (bikeRepository.findAll().size() != 0) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("请先删除所有电单车!"));
+        }
         pathRepository.deleteAll();
         locationRepository.deleteAll();
         List<Location> locations = locationRepository.save(Location.init());

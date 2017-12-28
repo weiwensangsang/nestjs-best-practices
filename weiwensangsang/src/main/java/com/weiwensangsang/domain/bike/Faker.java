@@ -136,6 +136,7 @@ public class Faker implements Serializable {
     private Faker() {
         createDate = Instant.now();
         activated = false;
+        state = "未定";
     }
 
     public static Faker create(String phone) {

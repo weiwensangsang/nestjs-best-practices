@@ -1,5 +1,6 @@
 package com.weiwensangsang.domain.bike;
 
+import com.weiwensangsang.service.util.RandomUtil;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -136,7 +137,7 @@ public class Location implements Serializable {
     }
 
     private Location() {
-        eBikeNumber = 0L;
+        eBikeNumber = RandomUtil.getBike();
     }
 
     public static Location create(Long x, Long y) {

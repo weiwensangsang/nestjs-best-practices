@@ -115,4 +115,15 @@ public class LocationElectricBike implements Serializable {
             ", state='" + getState() + "'" +
             "}";
     }
+
+    private LocationElectricBike() {
+        createDate = Instant.now();
+    }
+
+    public static LocationElectricBike create(ElectricBike electricBike, Location location) {
+        LocationElectricBike relation = new LocationElectricBike();
+        relation.setLocation(location);
+        relation.setElectricBike(electricBike);
+        return relation;
+    }
 }

@@ -3,8 +3,11 @@ package com.weiwensangsang.web.rest.bike.generate;
 import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Faker;
+import com.weiwensangsang.domain.bike.Location;
+import com.weiwensangsang.domain.bike.Location_;
 import com.weiwensangsang.domain.bike.SmsCode;
 import com.weiwensangsang.repository.FakerRepository;
+import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.SmsCodeRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.util.RandomUtil;
@@ -46,6 +49,9 @@ public class FakerResource {
 
     @Autowired
     public SmsCodeRepository smsCodeRepository;
+
+    @Autowired
+    public LocationRepository locationRepository;
 
     /**
      * POST  /fakers : Create a new faker.
@@ -132,6 +138,7 @@ public class FakerResource {
 
     @PostMapping("/fakers/create")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createFaker(@Valid @RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
         Long number = Long.parseLong(phone);
         if (fakerRepository.findOneByPhone(phone).isPresent()) {
@@ -163,5 +170,20 @@ public class FakerResource {
         user.setActivated(true);
         fakerRepository.save(user);
         return ResponseEntity.ok(ResponseMessage.message("激活成功"));
+    }
+
+    @PostMapping("/fakers/locate")
+    @Timed
+    public ResponseEntity<?> locateFaker() throws URISyntaxException {
+        List<Location> locations = locationRepository.findAll();
+        if (locations.size() <= 2) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("请先生成拓扑"));
+        }
+        fakerRepository.findAllByActivated(true)
+                .forEach(faker -> {
+                    faker.setState(locations.get(RandomUtil.getLocate(locations.size() - 1)).getPositionX().toString());
+                    fakerRepository.save(faker);
+                });
+        return ResponseEntity.ok(ResponseMessage.message("随机放置成功"));
     }
 }

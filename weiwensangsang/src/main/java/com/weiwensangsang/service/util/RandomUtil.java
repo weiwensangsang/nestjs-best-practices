@@ -106,4 +106,19 @@ public final class RandomUtil {
         return longs[random.nextInt(5)];
     }
 
+    public static Long getBike() {
+        Random random = new Random();
+        return Integer.toUnsignedLong(random.nextInt(4));
+    }
+
+    public static Long getBikeOil() {
+        Random random = new Random();
+        return Integer.toUnsignedLong(random.nextInt(99) + 1);
+    }
+
+    public static int getLocate(int limit) {
+        Random random = new Random();
+        return random.nextInt(limit);
+    }
+
 }

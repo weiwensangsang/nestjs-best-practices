@@ -1,5 +1,6 @@
 package com.weiwensangsang.domain.bike;
 
+import com.weiwensangsang.service.util.RandomUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -164,5 +165,15 @@ public class ElectricBike implements Serializable {
             ", integrity='" + getIntegrity() + "'" +
             ", sumPath='" + getSumPath() + "'" +
             "}";
+    }
+    private ElectricBike() {
+        oil = RandomUtil.getBikeOil();
+        distance = 0L;
+        integrity = 100L;
+    }
+
+    public static ElectricBike create() {
+        ElectricBike bike = new ElectricBike();
+        return bike;
     }
 }

@@ -31,6 +31,7 @@
             FakerActivate.save({}, vm.dto , function success(result) {
                 toaster.pop('success', ' ', result.message);
                 clear();
+                $state.go('faker', null, { reload: 'faker' });
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });

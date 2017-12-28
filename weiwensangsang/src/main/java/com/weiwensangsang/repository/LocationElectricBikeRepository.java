@@ -1,9 +1,12 @@
 package com.weiwensangsang.repository;
 
+import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -12,5 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface LocationElectricBikeRepository extends JpaRepository<LocationElectricBike, Long> {
-
+    List<LocationElectricBike> findAllByLocation(Location location);
 }
