@@ -168,6 +168,10 @@ public class FakerResource {
         }
         Faker user = fakerRepository.findOneByPhone(data.getPhone()).get();
         user.setActivated(true);
+        List<Location> locations = locationRepository.findAll();
+        if (locations.size() > 2) {
+            user.setState(locations.get(RandomUtil.getLocate(locations.size() - 1)).getPositionX().toString());
+        }
         fakerRepository.save(user);
         return ResponseEntity.ok(ResponseMessage.message("激活成功"));
     }

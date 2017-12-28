@@ -26,6 +26,9 @@
                 case 'location':
                      $state.go('location');
                      break;
+                case 'bike':
+                $state.go('electric-bike');
+                break;
             }
         }
 

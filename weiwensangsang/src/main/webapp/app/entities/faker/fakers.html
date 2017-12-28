@@ -50,8 +50,8 @@
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
                                     ui-sref="faker-detail({id:faker.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
+                                    class="btn btn-info btn-sm" ng-if="faker.state!='未定'">
+                                <span>快乐骑车</span>
                                 <span class="hidden-sm-down"></span>
                             </button>
                             <button type="submit" ng-if = '!faker.activated'
