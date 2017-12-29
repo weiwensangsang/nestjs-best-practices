@@ -28,7 +28,7 @@
         function fakerCreate() {
             FakerCreate.save({}, vm.phone, function success(result) {
                 toaster.pop('success', ' ', result.message);
-                $state.go('faker', null, { reload: 'faker' });
+                $state.go('faker', null, { reload: true });
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
@@ -37,7 +37,7 @@
         function fakerLocate() {
             FakerLocate.save(function success(result) {
                 toaster.pop('success', ' ', result.message);
-                $state.go('faker', null, { reload: 'faker' });
+                $state.go('faker', null, { reload: true });
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });

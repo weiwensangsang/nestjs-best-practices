@@ -29,9 +29,6 @@
                 case 'bike':
                     $state.go('location-electric-bike');
                     break;
-                case 'run':
-                    $state.go('path');
-                    break;
             }
         }
 

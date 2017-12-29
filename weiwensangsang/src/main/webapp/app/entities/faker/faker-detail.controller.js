@@ -6,10 +6,10 @@
         .controller('FakerDetailController', FakerDetailController);
 
     FakerDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Faker', 'LocationElectricBike'
-                                    ,'ControlBike', 'toaster'];
+                                    ,'ControlBike', 'toaster','$state'];
 
     function FakerDetailController($scope, $rootScope, $stateParams, previousState, entity, Faker, LocationElectricBike
-                                    ,ControlBike, toaster) {
+                                    ,ControlBike, toaster, $state) {
         var vm = this;
 
         vm.faker = entity;
@@ -33,6 +33,7 @@
         function unlock(bikeid) {
             ControlBike.save({phone: vm.faker.phone, bike: bikeid},'unlock', function success(result) {
                 toaster.pop('success', ' ', result.message);
+                // 这里跳转到新页面
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });

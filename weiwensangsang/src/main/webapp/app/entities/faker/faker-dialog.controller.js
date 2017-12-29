@@ -5,9 +5,11 @@
         .module('weiwensangsangApp')
         .controller('FakerDialogController', FakerDialogController);
 
-    FakerDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Faker', 'FakerActivate', 'toaster'];
+    FakerDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Faker', 'FakerActivate', 'toaster'
+                                    ,'$state'];
 
-    function FakerDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Faker, FakerActivate, toaster) {
+    function FakerDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Faker, FakerActivate, toaster
+                                    ,$state) {
         var vm = this;
 
         vm.faker = entity;
@@ -31,7 +33,7 @@
             FakerActivate.save({}, vm.dto , function success(result) {
                 toaster.pop('success', ' ', result.message);
                 clear();
-
+                $state.go('home');
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });

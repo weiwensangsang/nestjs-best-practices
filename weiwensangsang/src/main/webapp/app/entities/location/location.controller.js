@@ -27,6 +27,7 @@
                 toaster.pop('success', ' ', result.message);
                 //var obj1 = JSON.parse(result.message);
                 //toaster.pop('success', ' ', obj1.result.index[1].detail);
+                $state.go('home');
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
@@ -50,6 +51,7 @@
 
             GenerateLocation.save({nodes: nodes, links: links}, function success(result) {
                 toaster.pop('success', ' ', result.message);
+                $state.go('home');
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
@@ -59,11 +61,9 @@
             switch (data) {
                 case 'reset':
                     resetTopo();
-                    $state.go('location', null, {reload: true});
                     break;
                 case 'save':
                     generateTopo();
-                    $state.go('location', null, {reload: true});
                     break;
             }
         }
