@@ -15,13 +15,17 @@
         vm.faker = entity;
         vm.previousState = previousState.name;
         vm.locationElectricBikes = [];
+        vm.currentBike = null;
+        vm.weather = null;
         vm.unlock = unlock;
         vm.lock = lock;
         loadAll();
 
         function loadAll() {
-            LocationBikeAll.query({position: vm.faker.state}, {}, function (result) {
-                vm.locationElectricBikes = result;
+            LocationBikeAll.query({position: vm.faker.state, faker: vm.faker.phone}, {}, function (result) {
+                vm.locationElectricBikes = result.locationElectricBikes;
+                vm.currentBike = result.bike;
+                vm.weather = angular.fromJson(result.weather);
                 vm.searchQuery = null;
             });
         }

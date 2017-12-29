@@ -1,11 +1,15 @@
 package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
+import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
 
+import com.weiwensangsang.repository.ElectricBikeRepository;
 import com.weiwensangsang.repository.LocationElectricBikeRepository;
 import com.weiwensangsang.repository.LocationRepository;
+import com.weiwensangsang.service.util.weather.WeatherUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
+import com.weiwensangsang.web.rest.vm.LocationBikeWeatherVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +39,9 @@ public class LocationElectricBikeResource {
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private ElectricBikeRepository bikeRepository;
 
     public LocationElectricBikeResource(LocationElectricBikeRepository locationElectricBikeRepository) {
         this.locationElectricBikeRepository = locationElectricBikeRepository;
@@ -124,9 +131,22 @@ public class LocationElectricBikeResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @PostMapping("/location-electric-bikes/location/{position}")
+    @PostMapping("/location-electric-bikes/location/{position}/faker/{faker}")
     @Timed
-    public ResponseEntity<?> getAllLocationElectricBikesByLocation(@PathVariable Long position) {
-        return ResponseEntity.ok(locationElectricBikeRepository.findAllByLocation(locationRepository.findOneByPositionX(position).get()));
+    public ResponseEntity<?> getAllLocationElectricBikesByLocation(@PathVariable Long position, @PathVariable String phone) {
+        Location location = locationRepository.findOneByPositionX(position).get();
+        return bikeRepository.findOneByType(phone)
+            .map(bike->{
+                return ResponseEntity.ok(LocationBikeWeatherVM.create(
+                    locationElectricBikeRepository.findAllByLocation(location),
+                        bike, WeatherUtil.ask(location.getCity()))
+                );
+            })
+            .orElseGet(()->{
+                return ResponseEntity.ok(LocationBikeWeatherVM.create(
+                    locationElectricBikeRepository.findAllByLocation(location)
+                    , WeatherUtil.ask(location.getCity()))
+                );
+            });
     }
 }
