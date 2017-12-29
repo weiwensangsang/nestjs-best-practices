@@ -4,13 +4,16 @@ import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
 
 import com.weiwensangsang.repository.LocationElectricBikeRepository;
+import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -29,6 +32,9 @@ public class LocationElectricBikeResource {
     private static final String ENTITY_NAME = "locationElectricBike";
 
     private final LocationElectricBikeRepository locationElectricBikeRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
 
     public LocationElectricBikeResource(LocationElectricBikeRepository locationElectricBikeRepository) {
         this.locationElectricBikeRepository = locationElectricBikeRepository;
@@ -88,6 +94,8 @@ public class LocationElectricBikeResource {
         return locationElectricBikeRepository.findAll();
         }
 
+
+
     /**
      * GET  /location-electric-bikes/:id : get the "id" locationElectricBike.
      *
@@ -114,5 +122,11 @@ public class LocationElectricBikeResource {
         log.debug("REST request to delete LocationElectricBike : {}", id);
         locationElectricBikeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PostMapping("/location-electric-bikes/location/{position}")
+    @Timed
+    public ResponseEntity<?> getAllLocationElectricBikesByLocation(@PathVariable Long position) {
+        return ResponseEntity.ok(locationElectricBikeRepository.findAllByLocation(locationRepository.findOneByPositionX(position).get()));
     }
 }

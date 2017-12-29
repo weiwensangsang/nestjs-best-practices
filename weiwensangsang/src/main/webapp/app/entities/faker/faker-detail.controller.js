@@ -6,10 +6,10 @@
         .controller('FakerDetailController', FakerDetailController);
 
     FakerDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Faker', 'LocationElectricBike'
-                                    ,'ControlBike', 'toaster','$state'];
+                                    ,'ControlBike', 'toaster','$state', 'LocationBikeAll'];
 
     function FakerDetailController($scope, $rootScope, $stateParams, previousState, entity, Faker, LocationElectricBike
-                                    ,ControlBike, toaster, $state) {
+                                    ,ControlBike, toaster, $state, LocationBikeAll) {
         var vm = this;
 
         vm.faker = entity;
@@ -19,7 +19,7 @@
         loadAll();
 
         function loadAll() {
-            LocationElectricBike.query(function (result) {
+            LocationBikeAll.query({position: vm.faker.state}, {}, function (result) {
                 vm.locationElectricBikes = result;
                 vm.searchQuery = null;
             });
