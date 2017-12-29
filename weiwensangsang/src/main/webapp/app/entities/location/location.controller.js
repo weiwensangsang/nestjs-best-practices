@@ -48,7 +48,7 @@
             }
 
 
-            GenerateLocation.save({nodes:nodes,links:links}, function success(result) {
+            GenerateLocation.save({nodes: nodes, links: links}, function success(result) {
                 toaster.pop('success', ' ', result.message);
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
@@ -59,11 +59,11 @@
             switch (data) {
                 case 'reset':
                     resetTopo();
-                    $state.go('home');
+                    $state.go('location', null, {reload: true});
                     break;
                 case 'save':
                     generateTopo();
-                    $state.go('home');
+                    $state.go('location', null, {reload: true});
                     break;
             }
         }

@@ -1,30 +1,44 @@
 
 <div>
-    <h2><span>Faker</span> {{vm.faker.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span>Phone</span></dt>
-        <dd>
-            <span>{{vm.faker.phone}}</span>
-        </dd>
-        <dt><span>名字</span></dt>
-        <dd>
-            <span>{{vm.faker.name}}</span>
-        </dd>
-        <dt><span>Type</span></dt>
-        <dd>
-            <span>{{vm.faker.type}}</span>
-        </dd>
-        <dt><span>当前位置</span></dt>
-        <dd>
-            <span>{{vm.faker.state}}</span>
-        </dd>
-        <dt><span>是否激活</span></dt>
-        <dd>
-            <span>{{vm.faker.activated}}</span>
-        </dd>
-    </dl>
+    <h4><span>我是</span> {{vm.faker.phone}}</h4>
+    <h4><span>我在</span>站点{{vm.faker.state}}, 我看到了:</h4>
+
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr>
+                <th><span>电动单车序列号</span></th>
+                <th><span>完好度</span></th>
+                <th><span>当前位置</span></th>
+                <th><span>行驶状态</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="locationElectricBike in vm.locationElectricBikes track by locationElectricBike.id">
+                <td>
+                    <a ui-sref="electric-bike-detail({id:locationElectricBike.electricBike.id})">{{locationElectricBike.electricBike.id}}</a>
+                </td>
+                <td>{{locationElectricBike.electricBike.integrity}}</td>
+                <td>
+                    <a ui-sref="location-detail({id:locationElectricBike.location.id})">站点{{locationElectricBike.location.positionX}}</a>
+                </td>
+                <td>{{locationElectricBike.electricBike.type}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                ng-click="vm.unlock(locationElectricBike.id)"
+                                class="btn btn-primary btn-sm">
+                            <span>开锁</span>
+                            <span class="hidden-sm-down"></span>
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <button type="submit"
             ui-sref="{{ vm.previousState }}"
@@ -32,8 +46,4 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
 
-    <button type="button" ui-sref="faker-detail.edit({id:vm.faker.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down"> Edit</span>
-    </button>
 </div>

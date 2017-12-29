@@ -170,6 +170,7 @@ public class ElectricBike implements Serializable {
         oil = RandomUtil.getBikeOil();
         distance = 0L;
         integrity = 100L;
+        type = "lock";
     }
 
     public static ElectricBike create() {

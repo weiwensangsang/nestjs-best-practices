@@ -3,12 +3,15 @@ package com.weiwensangsang.web.rest.bike.generate;
 import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.ElectricBike;
+import com.weiwensangsang.domain.bike.Faker;
 import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
 import com.weiwensangsang.repository.ElectricBikeRepository;
+import com.weiwensangsang.repository.FakerRepository;
 import com.weiwensangsang.repository.LocationElectricBikeRepository;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
+import com.weiwensangsang.service.util.weather.WeatherUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import com.weiwensangsang.web.rest.vm.RelationVM;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -45,6 +48,9 @@ public class ElectricBikeResource {
 
     @Autowired
     private LocationElectricBikeRepository relationRepository;
+
+    @Autowired
+    private FakerRepository fakerRepository;
 
     public ElectricBikeResource(ElectricBikeRepository electricBikeRepository) {
         this.electricBikeRepository = electricBikeRepository;
@@ -172,18 +178,41 @@ public class ElectricBikeResource {
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/electric-bikes/get/{index}")
+    @GetMapping("/electric-bikes/get/{position}")
     @Timed
-    public ResponseEntity<?> getElectricBikeById(@PathVariable Long index) {
-        Location location = locationRepository.findOneByPositionX(index).get();
+    public ResponseEntity<?> getElectricBikeById(@PathVariable Long position) {
+        Location location = locationRepository.findOneByPositionX(position).get();
         RelationVM vm = RelationVM.create(
                 location,
                 relationRepository.findAllByLocation(location)
                         .stream()
                         .map(LocationElectricBike::getElectricBike)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()),
+                WeatherUtil.ask(location.getCity()));
 
         return ResponseEntity.ok(vm);
+    }
+
+    @PostMapping("/electric-bikes/lock-control/phone/{phone}/bike/{bikeid}")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<?> controlElectricBike(@PathVariable String phone, @PathVariable Long bikeid, @Valid @RequestBody String control) {
+
+        if (control.equals("unlock")) {
+            if (electricBikeRepository.findOneByType(phone).isPresent()) {
+                return ResponseEntity.badRequest().body(ResponseMessage.message("您有未解锁的车"));
+            } else {
+                ElectricBike bike = electricBikeRepository.findOne(bikeid);
+                bike.setType(phone);
+                electricBikeRepository.save(bike);
+                return ResponseEntity.ok(ResponseMessage.message("解锁成功"));
+            }
+        } else if (control.equals("lock")) {
+            ElectricBike bike = electricBikeRepository.findOneByType(phone).get();
+            bike.setType("lock");
+            return ResponseEntity.ok(ResponseMessage.message("还车成功"));
+        }
+        return ResponseEntity.badRequest().body(ResponseMessage.message("type error"));
     }
 
 

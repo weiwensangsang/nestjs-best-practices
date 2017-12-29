@@ -29,6 +29,7 @@
                     <th><span>累计路程</span></th>
                     <th><span>完好度</span></th>
                     <th><span>当前位置</span></th>
+                    <th><span>行驶状态</span></th>
                     <th><span>此地单车总量</span></th>
                     <th></th>
                 </tr>
@@ -42,8 +43,9 @@
                     <td>{{locationElectricBike.electricBike.distance}}</td>
                     <td>{{locationElectricBike.electricBike.integrity}}</td>
                     <td>
-                        <a ui-sref="location-detail({id:locationElectricBike.location.id})">{{locationElectricBike.location.positionX}}</a>
+                        <a ui-sref="location-detail({id:locationElectricBike.location.id})">站点{{locationElectricBike.location.positionX}}</a>
                     </td>
+                    <td>{{locationElectricBike.electricBike.type}}</td>
                     <td>{{locationElectricBike.location.eBikeNumber}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

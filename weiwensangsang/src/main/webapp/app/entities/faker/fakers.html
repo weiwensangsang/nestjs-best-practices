@@ -29,22 +29,18 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr>
-                    <th><span>ID</span></th>
                     <th><span>Phone</span></th>
-                    <th><span>Name</span></th>
-                    <th><span>Type</span></th>
+                    <!--<th><span>Type</span></th>-->
                     <th><span>当前位置</span></th>
-                    <th><span>Activated</span></th>
+                    <th><span>是否激活</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="faker in vm.fakers track by faker.id">
-                    <td><a ui-sref="faker-detail({id:faker.id})">{{faker.id}}</a></td>
                     <td>{{faker.phone}}</td>
-                    <td>{{faker.name}}</td>
-                    <td>{{faker.type}}</td>
-                    <td>{{faker.state}}</td>
+                    <!--<td>{{faker.type}}</td>-->
+                    <td>站点{{faker.state}}</td>
                     <td>{{faker.activated}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
