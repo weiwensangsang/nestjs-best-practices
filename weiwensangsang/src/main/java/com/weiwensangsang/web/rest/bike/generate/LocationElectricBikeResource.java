@@ -133,9 +133,9 @@ public class LocationElectricBikeResource {
 
     @PostMapping("/location-electric-bikes/location/{position}/faker/{faker}")
     @Timed
-    public ResponseEntity<?> getAllLocationElectricBikesByLocation(@PathVariable Long position, @PathVariable String phone) {
+    public ResponseEntity<?> getAllLocationElectricBikesByLocation(@PathVariable Long position, @PathVariable String faker) {
         Location location = locationRepository.findOneByPositionX(position).get();
-        return bikeRepository.findOneByType(phone)
+        return bikeRepository.findOneByType(faker)
             .map(bike->{
                 return ResponseEntity.ok(LocationBikeWeatherVM.create(
                     locationElectricBikeRepository.findAllByLocation(location),
