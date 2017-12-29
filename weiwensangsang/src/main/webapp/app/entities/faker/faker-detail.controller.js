@@ -23,9 +23,11 @@
 
         function loadAll() {
             LocationBikeAll.query({position: vm.faker.state, faker: vm.faker.phone}, {}, function (result) {
+                console.log(result);
                 vm.locationElectricBikes = result.locationElectricBikes;
                 vm.currentBike = result.bike;
                 vm.weather = angular.fromJson(result.weather);
+                console.log(vm.weather);
                 vm.searchQuery = null;
             });
         }
