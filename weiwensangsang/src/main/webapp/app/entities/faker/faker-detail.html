@@ -10,7 +10,7 @@
                 <th><span>电动单车序列号</span></th>
                 <th><span>完好度</span></th>
                 <th><span>当前位置</span></th>
-                <th><span>行驶状态</span></th>
+                <th><span>解锁人</span></th>
                 <th></th>
             </tr>
             </thead>
@@ -26,7 +26,7 @@
                 <td>{{locationElectricBike.electricBike.type}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
+                        <button type="submit" ng-if = "locationElectricBike.electricBike.type === 'lock'"
                                 ng-click="vm.unlock(locationElectricBike.id)"
                                 class="btn btn-primary btn-sm">
                             <span>开锁</span>

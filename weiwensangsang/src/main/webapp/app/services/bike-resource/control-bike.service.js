@@ -8,7 +8,7 @@
     ControlBike.$inject = ['$resource'];
 
     function ControlBike($resource) {
-        var service = $resource('api/electric-bikes/lock-control/phone/:phone/bike/:bikeid', {}, {
+        var service = $resource('api/electric-bikes/lock-control/phone/:phone/bike/:bike', {}, {
             'save': {method: 'POST'}
         });
         return service;

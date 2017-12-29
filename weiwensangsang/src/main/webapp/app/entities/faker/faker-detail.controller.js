@@ -31,7 +31,11 @@
         $scope.$on('$destroy', unsubscribe);
 
         function unlock(bikeid) {
-            toaster.pop('success', ' ', bikeid);
+            ControlBike.save({phone: vm.faker.phone, bike: bikeid},'unlock', function success(result) {
+                toaster.pop('success', ' ', result.message);
+            }, function error(result) {
+                toaster.pop('error', ' ', result.data.message);
+            });
         }
     }
 })();

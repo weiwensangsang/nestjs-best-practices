@@ -24,11 +24,14 @@
                     $state.go('faker');
                     break;
                 case 'location':
-                     $state.go('location');
-                     break;
+                    $state.go('location');
+                    break;
                 case 'bike':
-                $state.go('location-electric-bike');
-                break;
+                    $state.go('location-electric-bike');
+                    break;
+                case 'run':
+                    $state.go('path');
+                    break;
             }
         }
 
