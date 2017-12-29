@@ -210,6 +210,7 @@ public class ElectricBikeResource {
         } else if (control.equals("lock")) {
             ElectricBike bike = electricBikeRepository.findOneByType(phone).get();
             bike.setType("lock");
+            electricBikeRepository.save(bike);
             return ResponseEntity.ok(ResponseMessage.message("还车成功"));
         }
         return ResponseEntity.badRequest().body(ResponseMessage.message("type error"));

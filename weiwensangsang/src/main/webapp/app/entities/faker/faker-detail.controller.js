@@ -16,6 +16,7 @@
         vm.previousState = previousState.name;
         vm.locationElectricBikes = [];
         vm.unlock = unlock;
+        vm.lock = lock;
         loadAll();
 
         function loadAll() {
@@ -34,9 +35,20 @@
             ControlBike.save({phone: vm.faker.phone, bike: bikeid},'unlock', function success(result) {
                 toaster.pop('success', ' ', result.message);
                 // 这里跳转到新页面
+                $state.go('faker');
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
         }
+
+        function lock(bikeid) {
+                    ControlBike.save({phone: vm.faker.phone, bike: bikeid},'lock', function success(result) {
+                        toaster.pop('success', ' ', result.message);
+                        // 这里跳转到新页面
+                        $state.go('faker');
+                    }, function error(result) {
+                        toaster.pop('error', ' ', result.data.message);
+                    });
+                }
     }
 })();
