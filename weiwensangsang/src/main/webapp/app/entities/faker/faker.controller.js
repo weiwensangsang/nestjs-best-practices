@@ -12,7 +12,7 @@
         var vm = this;
 
         vm.fakers = [];
-        vm.phone = 18311045471;
+        vm.phone = 18311045470;
         vm.fakerCreate = fakerCreate;
         vm.fakerLocate = fakerLocate;
         loadAll();

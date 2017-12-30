@@ -393,5 +393,242 @@ text.id {
     font-weight: bold;
 }
 
+/*  managemant */
+.data-management {
+    width: 100%;
+    top: 50px;
+    bottom: 0;
+    z-index: 100;
+}
+
+.data-management-wrapper {
+    width: 100%;
+    left: 180px;
+}
+
+.data-management-container {
+    max-width: 1335px;
+    padding: 0 15px;
+}
+
+.data-management-content {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 600px;
+    background: #f9f9f9;
+    color: #6b6b6d;
+    position: relative;
+    float: right;
+}
+
+.data-management .data-management-info {
+    min-width: 1040px;
+    margin-top: 20px;
+}
+
+.data-management .data-management-overview {
+    width: 53.3%;
+    max-width: 640px;
+    min-width: 560px;
+    float: left;
+}
+
+.data-management .data-mgmt-overview-content {
+    height: 200px;
+    background-color: #fff;
+}
+
+.data-management .data-mgmt-overview-subtitle {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.data-management .data-mgmt-overview-block-group {
+
+}
+
+.data-management .data-mgmt-overview-block {
+    height: 159px;
+    float: left;
+    width: 160px;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    text-align: center;
+}
+
+.data-management .data-mgmt-overview-last-block {
+    height: 159px;
+    float: left;
+    width: calc(100% - 320px);
+    text-align: center;
+}
+
+.data-management .data-mgmt-overview-block > div:first-child {
+    font-size: 48px;
+    margin: 22px 0 3px;
+}
+
+.data-management .data-mgmt-overview-small-block {
+    height: 80px;
+    width: 100%;
+}
+
+.data-management .data-mgmt-overview-small-block:first-child {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.data-management .data-mgmt-overview-small-block > div {
+    float: left;
+    line-height: 80px;
+}
+
+.data-management .data-mgmt-overview-small-block > div:first-child {
+    margin: 0 55px 0 90px;
+}
+
+.data-management .data-management-dynamics {
+    width: 45%;
+    max-width: 540px;
+    float: right;
+}
+
+.data-management .data-mgmt-dynamics-content {
+    height: 200px;
+    background-color: #fff;
+}
+
+.data-management .data-mgmt-dynamics-subtitle {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.data-management .data-mgmt-dynamics-block {
+    line-height: 40px;
+    padding: 22px 20px;
+}
+
+.data-management .data-management-tournament {
+    min-width: 1040px;
+}
+
+.data-management .data-mgmt-tournament-title {
+    line-height: 46px;
+    margin-top: 14px;
+    display: inline-block;
+}
+
+.data-management .data-mgmt-tournament-content {
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.data-management .data-mgmt-subtitle {
+    line-height: 60px;
+    padding-left: 20px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.data-management .data-mgmt-btns {
+    float: right;
+    padding: 10px 0;
+}
+
+.data-management .data-mgmt-btns > button {
+    width: 110px;
+    height: 40px;
+    line-height: 1;
+    margin-right: 20px;
+    float: right;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.data-management .data-mgmt-btns > button:hover{
+    color: #fff;
+    background-color: #188ed6;
+}
+
+.data-management .data-mgmt-tournament-block-group {
+
+}
+
+.data-management .data-mgmt-tournament-block {
+    width: 20%;
+    max-width: 240px;
+    height: 185px;
+    padding: 27px 40px;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    float: left;
+}
+
+.data-management .data-mgmt-block-title {
+
+}
+
+.data-management .data-mgmt-block-add-number {
+    width: 45px;
+    height: 20px;
+    margin-top: 17px;
+    text-align: center;
+    float: right;
+    border-radius: 2px;
+}
+
+.data-management .data-mgmt-block-number {
+    margin-top: 51px;
+    text-align: center;
+}
+
+
+.data-management .data-mgmt-tournament-last-block {
+    padding: 50px;
+    float: left;
+}
+
+.data-management .data-mgmt-tournament-last-block > p {
+    margin-bottom: 20px;
+}
+
+.data-management .data-management-station {
+    min-width: 1040px;
+}
+
+.data-management .data-mgmt-station-title {
+    line-height: 46px;
+    margin-top: 14px;
+    display: inline-block;
+}
+
+.data-management .data-mgmt-station-content {
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.data-management .data-mgmt-station-block-group {
+
+}
+
+.data-management .data-mgmt-station-block {
+    width: 20%;
+    max-width: 240px;
+    height: 185px;
+    padding: 27px 40px;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    float: left;
+}
+
+.data-management .data-mgmt-station-block:last-child {
+    border: none;
+}
 
 /* jhipster-needle-css-add-main JHipster will add new css style */

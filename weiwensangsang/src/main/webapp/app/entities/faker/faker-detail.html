@@ -45,6 +45,219 @@
             </tbody>
         </table>
     </div>
+    <div class="data-management clearfix" ng-if = "vm.currentBike !== null">
+        <div class="data-management-wrapper">
+            <div class="data-management-container">
+                <div style="">
+                    <div class="data-management-content">
+                        <div class="data-management-info clearfix">
+                            <div class="data-management-overview">
+                                <div class="data-mgmt-overview-content edge-lt-gray">
+                                    <div class="data-mgmt-overview-subtitle edge-lt-gray sm-font">
+                                        数据概览
+                                    </div>
+                                    <div class="data-mgmt-overview-block-group">
+                                        <div class="data-mgmt-overview-block edge-lt-gray">
+                                            <div class="" style="color:#27a6e8">
+                                                1
+                                            </div>
+                                            <div class="light-gray md-font">
+                                                我的小站
+                                            </div>
+                                        </div>
+                                        <div class="data-mgmt-overview-block edge-lt-gray">
+                                            <div class="" style="color:#fd7967">
+                                                {{ vm.tournamentSumNum }}
+                                            </div>
+                                            <div class="light-gray md-font">
+                                                我的赛事
+                                            </div>
+                                        </div>
+                                        <div class="data-mgmt-overview-last-block">
+                                            <div class="data-mgmt-overview-small-block edge-lt-gray">
+                                                <div class="light-gray md-font">
+                                                    进行中
+                                                </div>
+                                                <div class="title-black xl-font">
+                                                    {{ vm.tournamentSumNum - vm.tournamentHistoryNum }}
+                                                </div>
+                                            </div>
+                                            <div class="data-mgmt-overview-small-block">
+                                                <div class="light-gray md-font">
+                                                    已结束
+                                                </div>
+                                                <div class="title-black xl-font">
+                                                    {{ vm.tournamentHistoryNum }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-management-dynamics">
+                                <div class="data-mgmt-dynamics-content edge-lt-gray">
+                                    <div class="data-mgmt-dynamics-subtitle edge-lt-gray sm-font">
+                                        动态
+                                    </div>
+                                    <div class="data-mgmt-dynamics-block md-font">
+                                        <div class="" ng-repeat="message in vm.dynamicMessage">
+                                            <span class="light-gray">{{message.creationDate}}</span>
+                                            <span class="middle-gray">{{message.content.split(';')[1]}} {{message.content.split(';')[2]}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-management-tournament">
+                            <div class="data-mgmt-tournament-title light-gray md-font">
+                                进行中的赛事
+                            </div>
+                            <div class="data-mgmt-tournament-title light-light-gray sm-font pull-right" ng-click="vm.goToTournamentList()">
+                                查看全部&gt;&gt;
+                            </div>
+                            <div class="data-mgmt-tournament-content edge-lt-gray" ng-repeat="tournament in vm.tournament">
+                                <div class="data-mgmt-subtitle title-black xm-font edge-lt-gray">
+                                    {{ tournament.name }}
+                                    <div class="data-mgmt-btns sm-font title-blue clearfix">
+                                        <button class="edge-theme-blue btn-animate"
+                                                ng-click="vm.goTournamentBracket(tournament);$event.stopPropagation();">对阵管理
+                                        </button>
+                                        <button class="edge-theme-blue btn-animate" ng-click="vm.goTournamentLot(tournament);$event.stopPropagation();">
+                                            抽签管理
+                                        </button>
+                                        <button class="edge-theme-blue btn-animate"
+                                                ng-click="vm.goTournamentEnroll(tournament);$event.stopPropagation();">报名管理
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="data-mgmt-tournament-block-group clearfix">
+                                    <div class="data-mgmt-tournament-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            总浏览次数
+                                        </div>
+                                        <div class="data-mgmt-block-add-number theme-blue sm-font title-white" ng-if="tournament.viewModel.dayPageView">
+                                            +{{ tournament.viewModel.dayPageView }}
+                                        </div>
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{ tournament.viewModel.pageView || 0}}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-tournament-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            报名人数
+                                        </div>
+                                        <div class="data-mgmt-block-add-number theme-blue sm-font title-white"
+                                             ng-if="tournament.viewModel.dayParticipantNumber">
+                                            +{{ tournament.viewModel.dayParticipantNumber }}
+                                        </div>
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{ tournament.viewModel.participantNumber || 0 }}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-tournament-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            赛事评论数
+                                        </div>
+                                        <div class="data-mgmt-block-add-number theme-blue sm-font title-white"
+                                             ng-if="tournament.viewModel.dayThreadNumber">
+                                            +{{ tournament.viewModel.dayThreadNumber }}
+                                        </div>
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{ tournament.viewModel.threadNumber || 0 }}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-tournament-last-block">
+                                        <p class="md-font middle-gray">比赛时间为： {{tournament.participantEndDate}}</p>
+                                        <p class="md-font middle-gray">在抽签管理中抽签</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-management-station" ng-if="vm.stationsLen > 0">
+                            <div class="data-mgmt-station-title light-gray md-font">
+                                管理的小站
+                            </div>
+                            <div class="data-mgmt-station-title light-light-gray sm-font pull-right" ng-if="vm.stationsLen > 1"
+                                 ng-click="vm.goToStationList()">
+                                查看全部&gt;&gt;
+                            </div>
+                            <div class="data-mgmt-station-content edge-lt-gray" ng-repeat="station in vm.stations">
+                                <div class="data-mgmt-subtitle title-black xm-font edge-lt-gray">
+                                    {{station.station.name}}
+                                    <div class="data-mgmt-btns sm-font title-blue clearfix">
+                                        <button class="edge-theme-blue btn-animate" ng-click="vm.goToStationMain(station)">管理小站</button>
+                                    </div>
+                                </div>
+                                <div class="data-mgmt-station-block-group clearfix">
+                                    <div class="data-mgmt-station-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            关注人数
+                                        </div>
+                                        <div class="data-mgmt-block-add-number theme-blue sm-font title-white"
+                                             ng-if="station.station.viewModel.dayFollowerNumber">
+                                            +{{station.station.viewModel.dayFollowerNumber}}
+                                        </div>
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{station.station.followerNumber}}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-station-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            赛事总数
+                                        </div>
+                                        <!--<div class="data-mgmt-block-add-number theme-blue sm-font title-white">-->
+
+                                        <!--</div>-->
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{station.station.tournamentNumber}}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-station-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            帖子总数
+                                        </div>
+                                        <div class="data-mgmt-block-add-number theme-blue sm-font title-white"
+                                             ng-if="station.station.viewModel.dayThreadNumber">
+                                            +{{station.station.viewModel.dayThreadNumber}}
+                                        </div>
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{station.station.viewModel.threadNumber}}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-station-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            月签到数
+                                        </div>
+                                        <div class="data-mgmt-block-add-number theme-blue sm-font title-white"
+                                             ng-if="station.station.viewModel.daySignNumber">
+                                            +{{station.station.viewModel.daySignNumber}}
+                                        </div>
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{station.station.signNumber}}
+                                        </div>
+                                    </div>
+                                    <div class="data-mgmt-station-block edge-lt-gray">
+                                        <div class="data-mgmt-block-title light-gray md-font">
+                                            小站排名
+                                        </div>
+                                        <!--<div class="data-mgmt-block-add-number theme-blue sm-font title-white">-->
+                                        <!--+32-->
+                                        <!--</div>-->
+                                        <div class="data-mgmt-block-number title-black xl-font">
+                                            {{station.station.rank || '暂无排名'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
 
     <button type="submit"
             ui-sref="{{ vm.previousState }}"
