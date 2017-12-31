@@ -19,7 +19,7 @@
         vm.weather = null;
         vm.unlock = unlock;
         vm.lock = lock;
-        vm.bikeIntegrity = '换车';
+        vm.bikeIntegrity = '损坏';
         loadAll();
 
         function loadAll() {
