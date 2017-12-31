@@ -10,6 +10,7 @@
                 <th><span>电动单车序列号</span></th>
                 <th><span>完好度</span></th>
                 <th><span>当前位置</span></th>
+                <th><span>所在城市</span></th>
                 <th><span>解锁人</span></th>
                 <th></th>
             </tr>
@@ -23,6 +24,7 @@
                 <td>
                     <a ui-sref="location-detail({id:locationElectricBike.location.id})">站点{{locationElectricBike.location.positionX}}</a>
                 </td>
+                <td>{{locationElectricBike.location.city}}</td>
                 <td>{{locationElectricBike.electricBike.type}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
@@ -54,60 +56,57 @@
                             <div class="data-management-overview">
                                 <div class="data-mgmt-overview-content edge-lt-gray">
                                     <div class="data-mgmt-overview-subtitle edge-lt-gray sm-font">
-                                        数据概览
+                                        {{vm.weather.result.city}}
                                     </div>
                                     <div class="data-mgmt-overview-block-group">
                                         <div class="data-mgmt-overview-block edge-lt-gray">
                                             <div class="" style="color:#27a6e8">
-                                                1
+                                                {{vm.weather.result.templow}}&#8451;
                                             </div>
                                             <div class="light-gray md-font">
-                                                我的小站
+                                                最低温度
                                             </div>
                                         </div>
                                         <div class="data-mgmt-overview-block edge-lt-gray">
                                             <div class="" style="color:#fd7967">
-                                                {{ vm.tournamentSumNum }}
+                                                {{vm.weather.result.temphigh}}&#8451;
                                             </div>
                                             <div class="light-gray md-font">
-                                                我的赛事
+                                                最高温度
                                             </div>
                                         </div>
                                         <div class="data-mgmt-overview-last-block">
                                             <div class="data-mgmt-overview-small-block edge-lt-gray">
-                                                <div class="light-gray md-font">
-                                                    进行中
-                                                </div>
                                                 <div class="title-black xl-font">
-                                                    {{ vm.tournamentSumNum - vm.tournamentHistoryNum }}
+                                                    {{vm.weather.result.weather}}
                                                 </div>
                                             </div>
                                             <div class="data-mgmt-overview-small-block">
-                                                <div class="light-gray md-font">
-                                                    已结束
-                                                </div>
+
                                                 <div class="title-black xl-font">
-                                                    {{ vm.tournamentHistoryNum }}
+                                                   {{ vm.weather.result.windpower }}风
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="data-management-dynamics">
                                 <div class="data-mgmt-dynamics-content edge-lt-gray">
                                     <div class="data-mgmt-dynamics-subtitle edge-lt-gray sm-font">
-                                        动态
+                                        穿衣指数
                                     </div>
                                     <div class="data-mgmt-dynamics-block md-font">
-                                        <div class="" ng-repeat="message in vm.dynamicMessage">
-                                            <span class="light-gray">{{message.creationDate}}</span>
-                                            <span class="middle-gray">{{message.content.split(';')[1]}} {{message.content.split(';')[2]}}</span>
+                                        <div class="">
+                                            <span class="middle-gray">{{vm.weather.result.index[6].detail}}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
                         <div class="data-management-tournament">
                             <div class="data-mgmt-tournament-title light-gray md-font">
                                 进行中的赛事

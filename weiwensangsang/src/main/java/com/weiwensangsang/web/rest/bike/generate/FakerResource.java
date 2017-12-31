@@ -5,6 +5,7 @@ import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Faker;
 import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.SmsCode;
+import com.weiwensangsang.repository.ElectricBikeRepository;
 import com.weiwensangsang.repository.FakerRepository;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.SmsCodeRepository;
@@ -51,6 +52,9 @@ public class FakerResource {
 
     @Autowired
     public LocationRepository locationRepository;
+
+    @Autowired
+    private ElectricBikeRepository bikeRepository;
 
     /**
      * POST  /fakers : Create a new faker.
@@ -178,15 +182,19 @@ public class FakerResource {
     @PostMapping("/fakers/locate")
     @Timed
     public ResponseEntity<?> locateFaker() throws URISyntaxException {
+
+
         List<Location> locations = locationRepository.findAll();
         if (locations.size() <= 2) {
             return ResponseEntity.badRequest().body(ResponseMessage.message("请先生成拓扑"));
         }
         fakerRepository.findAllByActivated(true)
                 .forEach(faker -> {
-                    faker.setState(locations.get(RandomUtil.getLocate(locations.size() - 1)).getPositionX().toString());
-                    fakerRepository.save(faker);
+                    if (!bikeRepository.findOneByType(faker.getPhone()).isPresent()) {
+                        faker.setState(locations.get(RandomUtil.getLocate(locations.size())).getPositionX().toString());
+                        fakerRepository.save(faker);
+                    }
                 });
-        return ResponseEntity.ok(ResponseMessage.message("随机放置成功"));
+        return ResponseEntity.ok(ResponseMessage.message("随机放置成功, 已解锁车的用户不能瞎跑"));
     }
 }

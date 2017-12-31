@@ -408,14 +408,14 @@ text.id {
 
 .data-management-container {
     max-width: 1335px;
-    padding: 0 15px;
+    padding: 0 0px;
 }
 
 .data-management-content {
     width: 100%;
     max-width: 1200px;
     min-height: 600px;
-    background: #f9f9f9;
+    background: #f5f5f5;
     color: #6b6b6d;
     position: relative;
     float: right;
@@ -697,17 +697,17 @@ h1, h2, h3, h4, h5, h6 {
 
 /*中灰*/
 .middle-gray {
-    color: #656565;
+    color: #000;
 }
 
 /*浅灰*/
 .light-gray {
-    color: #999999;
+    color: #000;
 }
 
 /*浅浅灰*/
 .light-light-gray {
-    color: #cccccc;
+    color: #000;
 }
 
 /*块级颜色*/
