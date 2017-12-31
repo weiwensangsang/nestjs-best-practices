@@ -41,7 +41,7 @@
             ControlBike.save({phone: vm.faker.phone, bike: bikeid},'unlock', function success(result) {
                 toaster.pop('success', ' ', result.message);
                 // 这里跳转到新页面
-                $state.go('faker');
+               loadAll();
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });
@@ -51,7 +51,7 @@
                     ControlBike.save({phone: vm.faker.phone, bike: bikeid},'lock', function success(result) {
                         toaster.pop('success', ' ', result.message);
                         // 这里跳转到新页面
-                        $state.go('faker');
+                        loadAll();
                     }, function error(result) {
                         toaster.pop('error', ' ', result.data.message);
                     });
