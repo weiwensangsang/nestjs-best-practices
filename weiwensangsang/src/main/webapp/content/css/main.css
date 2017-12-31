@@ -631,4 +631,91 @@ text.id {
     border: none;
 }
 
+/*描边颜色*/
+.edge-lt-gray {
+    border: 1px solid #eaeaea;
+}
+
+.edge-md-gray {
+    border: 1px solid #dde2e8;
+}
+
+.edge-theme-blue {
+    border: 1px solid #0083d3;
+}
+
+/*字号*/
+.sm-font {
+    font-size: 14px;
+}
+
+.md-font {
+    font-size: 16px;
+}
+
+.xm-font {
+    font-size: 18px;
+}
+
+.lg-font {
+    font-size: 24px;
+}
+
+.xl-font {
+    font-size: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+/*2017/11/6 rhd 默认样式*/
+/*主题蓝*/
+.theme-blue {
+    background-color: #0083d3;
+}
+
+/*字的颜色*/
+/*主题蓝*/
+.title-blue {
+    color: #0083d3;
+}
+
+.title-blue-hover:hover {
+    color: #0083d3;
+}
+
+/*标题黑*/
+.title-black {
+    color: #2a2a2a;
+}
+
+/*白字*/
+.title-white {
+    color: #fff;
+}
+
+/*中灰*/
+.middle-gray {
+    color: #656565;
+}
+
+/*浅灰*/
+.light-gray {
+    color: #999999;
+}
+
+/*浅浅灰*/
+.light-light-gray {
+    color: #cccccc;
+}
+
+/*块级颜色*/
+.block-lt-gray {
+    background-color: #f6f5f7;
+}
+
+.block-md-gray {
+    background-color: #f3f2f4;
+}
 /* jhipster-needle-css-add-main JHipster will add new css style */
