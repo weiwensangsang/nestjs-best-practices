@@ -12,7 +12,9 @@
         directive = {
             restrict : 'EA',
             templateUrl : 'app/faker-topo/faker-topo.html',
-            scope : {},
+            scope : {
+                data: "="
+            },
             controller : 'FakerTopoController',
             controllerAs : 'vm',
             bindToController : true

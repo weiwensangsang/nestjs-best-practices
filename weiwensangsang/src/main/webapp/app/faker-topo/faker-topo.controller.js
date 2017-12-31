@@ -8,9 +8,10 @@
     FakerTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope'];
 
     function FakerTopoController($state, Location, $q, $timeout, $rootScope) {
+
         var vm = this;
         vm.result = {};
-
+        console.log(vm);
         var deferA = $q.defer();
         setTimeout(function () {
             Location.query(function (result) {
@@ -401,9 +402,10 @@
 
 // app starts here
             //  function dataIsReady() {
-            svg.on('mousedown', mousedown)
-                .on('mousemove', mousemove)
-                .on('mouseup', mouseup);
+            // 暂时关闭鼠标事件
+//            svg.on('mousedown', mousedown)
+//                .on('mousemove', mousemove)
+//                .on('mouseup', mouseup);
             restart();
             //  }
         });
