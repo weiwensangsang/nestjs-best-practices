@@ -52,8 +52,8 @@
                 .nodes(nodes)
                 .links(links)
                 .size([width, height])
-                .linkDistance(150)
-                .charge(-166 * (lastNodeId + 2))
+                .linkDistance(100)
+                .charge(-166 * 2 * (lastNodeId + 2))
                 //加一个配置表
                 .on('tick', tick);
                 //console.log(-166 * (lastNodeId + 2));
