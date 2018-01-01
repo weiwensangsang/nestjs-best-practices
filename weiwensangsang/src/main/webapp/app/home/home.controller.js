@@ -30,7 +30,7 @@
         function getAccount () {
             PersonInfo.get(function success (result) {
                     vm.account = result;
-                    console.log(result);
+                    //console.log(result);
                     if (result.id === 2) {
                         $state.go('home.not-logged');
                     } else {

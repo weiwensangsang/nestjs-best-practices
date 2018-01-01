@@ -11,7 +11,14 @@
 
         var vm = this;
         vm.result = {};
-        console.log(vm);
+        vm.dstFilter = dstFilter;
+        vm.currentLocation = vm.data.locationElectricBikes[0].location.positionX;
+        vm.dst = null;
+
+        console.log(vm.currentLocation);
+        function dstFilter(e) {
+            return e.positionX !== vm.currentLocation;
+        }
         var deferA = $q.defer();
         setTimeout(function () {
             Location.query(function (result) {
@@ -174,7 +181,9 @@
 
                 g.append('svg:circle')
                     .attr('class', 'node')
-                    .attr('r', 12)
+                    .attr('r',  function (d) {
+                        return (d.id === vm.currentLocation) ? 20 : 12;
+                    })
                     .style('fill', function (d) {
                         return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
                     })
@@ -266,8 +275,11 @@
                     .attr('x', 0)
                     .attr('y', 4)
                     .attr('class', 'id')
+                    .attr('fill', function (d) {
+                        return (d.id === vm.currentLocation) ? 'white': 'black'
+                    })
                     .text(function (d) {
-                        return d.id;
+                        return (d.id === vm.currentLocation) ? 'Src' : d.id;
                     });
 
                 // remove old nodes
