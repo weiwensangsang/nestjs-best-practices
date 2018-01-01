@@ -88,8 +88,8 @@
                 .nodes(nodes)
                 .links(links)
                 .size([width, height])
-                .linkDistance(100)
-                .charge(-166 * (lastNodeId + 2))
+                .linkDistance(60)
+                .charge(-50 * (lastNodeId + 2))
                 //加一个配置表
                 .on('tick', tick);
                 //console.log(-166 * (lastNodeId + 2));
@@ -174,10 +174,10 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                    .attr('x', 63 - 12)
+                    .attr('x', 30)
                     .attr('y', 0)
                     .attr('class', 'id')
-                    .style('font-size', '24px')
+                    .style('font-size', '15px')
                     .append('textPath').attr('xlink:href', function (d, i) {
                     return '#path' + i;
                 })

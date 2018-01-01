@@ -10,11 +10,13 @@
     function CoolTopoController($state, Location, $q, $timeout, $rootScope) {
         var vm = this;
         vm.result = {};
+        vm.tense = null;
 
         var deferA = $q.defer();
         setTimeout(function () {
             Location.query(function (result) {
                 vm.result = result;
+                vm.tense = -70 * vm.result.locationList.length;
                 deferA.resolve()
             });
         }, 0);
@@ -52,11 +54,11 @@
                 .nodes(nodes)
                 .links(links)
                 .size([width, height])
-                .linkDistance(100)
-                .charge(-166 * 2 * (lastNodeId + 2))
+                .linkDistance(60)
+                .charge(vm.tense)
                 //加一个配置表
                 .on('tick', tick);
-                //console.log(-166 * (lastNodeId + 2));
+
 
 
 // line displayed when dragging new nodes
@@ -138,10 +140,10 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                    .attr('x', 63 - 12)
+                    .attr('x', 30)
                     .attr('y', 0)
                     .attr('class', 'id')
-                    .style('font-size', '24px')
+                    .style('font-size', '15px')
                     .append('textPath').attr('xlink:href', function (d, i) {
                     return '#path' + i;
                 })
