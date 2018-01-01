@@ -9,7 +9,7 @@
 
     function CountPath($resource) {
         var service = $resource('api/paths/algo-recommend/src/:src/dst/:dst', {}, {
-            'query': {method: 'POST', isArray: true}
+            'query': {method: 'POST'}
         });
         return service;
     }
