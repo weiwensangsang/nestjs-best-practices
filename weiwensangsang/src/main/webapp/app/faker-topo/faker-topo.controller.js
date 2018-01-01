@@ -12,13 +12,38 @@
         var vm = this;
         vm.result = {};
         vm.dstFilter = dstFilter;
-        vm.currentLocation = vm.data.locationElectricBikes[0].location.positionX;
+        vm.src = vm.data.locationElectricBikes[0].location.positionX;
         vm.dst = null;
+        vm.action= action;
 
-        console.log(vm.currentLocation);
         function dstFilter(e) {
-            return e.positionX !== vm.currentLocation;
+            return e.positionX !== vm.src;
         }
+
+        function action(data) {
+
+                switch (data) {
+                case 'recommend':
+                    var dto = {};
+                    dto.dst = vm.dst.positionX;
+                    dto.src = vm.src;
+                    console.log(dto);
+                    break;
+                case 'drive':
+                    $state.go('location');
+                    break;
+                case 'bike':
+                    $state.go('location-electric-bike');
+                    break;
+            }
+
+        }
+
+
+
+
+
+        // d3
         var deferA = $q.defer();
         setTimeout(function () {
             Location.query(function (result) {
@@ -182,7 +207,7 @@
                 g.append('svg:circle')
                     .attr('class', 'node')
                     .attr('r',  function (d) {
-                        return (d.id === vm.currentLocation) ? 20 : 12;
+                        return (d.id === vm.src) ? 20 : 12;
                     })
                     .style('fill', function (d) {
                         return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
@@ -276,10 +301,10 @@
                     .attr('y', 4)
                     .attr('class', 'id')
                     .attr('fill', function (d) {
-                        return (d.id === vm.currentLocation) ? 'white': 'black'
+                        return (d.id === vm.src) ? 'white': 'black'
                     })
                     .text(function (d) {
-                        return (d.id === vm.currentLocation) ? 'Src' : d.id;
+                        return (d.id === vm.src) ? 'Src' : d.id;
                     });
 
                 // remove old nodes
