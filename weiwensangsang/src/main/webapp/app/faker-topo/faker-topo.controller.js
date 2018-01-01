@@ -5,9 +5,9 @@
         .module('weiwensangsangApp')
         .controller('FakerTopoController', FakerTopoController);
 
-    FakerTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope'];
+    FakerTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope', 'CountPath', 'toaster'];
 
-    function FakerTopoController($state, Location, $q, $timeout, $rootScope) {
+    function FakerTopoController($state, Location, $q, $timeout, $rootScope, CountPath, toaster) {
 
         var vm = this;
         vm.result = {};
@@ -15,19 +15,22 @@
         vm.src = vm.data.locationElectricBikes[0].location.positionX;
         vm.dst = null;
         vm.action= action;
+        vm.primary = [];
+        vm.second = [];
 
         function dstFilter(e) {
             return e.positionX !== vm.src;
         }
 
         function action(data) {
-
-                switch (data) {
+            switch (data) {
                 case 'recommend':
-                    var dto = {};
-                    dto.dst = vm.dst.positionX;
-                    dto.src = vm.src;
-                    console.log(dto);
+                    CountPath.save({src: vm.src, dst:vm.dst.positionX}, {}, function success(result) {
+                        vm.primary = result.primary;
+                        toaster.pop('success', ' ', vm.primary);
+                    }, function error(result) {
+                        toaster.pop('error', ' ', result.data.message);
+                    });
                     break;
                 case 'drive':
                     $state.go('location');
