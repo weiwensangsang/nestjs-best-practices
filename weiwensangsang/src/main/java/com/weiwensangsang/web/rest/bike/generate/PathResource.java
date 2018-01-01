@@ -1,13 +1,18 @@
 package com.weiwensangsang.web.rest.bike.generate;
 
 import com.codahale.metrics.annotation.Timed;
+import com.weiwensangsang.domain.ResponseMessage;
+import com.weiwensangsang.domain.bike.Dijkstras;
+import com.weiwensangsang.domain.bike.ElectricBike;
 import com.weiwensangsang.domain.bike.Path;
 
+import com.weiwensangsang.repository.ElectricBikeRepository;
 import com.weiwensangsang.repository.PathRepository;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +38,12 @@ public class PathResource {
     public PathResource(PathRepository pathRepository) {
         this.pathRepository = pathRepository;
     }
+
+    @Autowired
+    private Dijkstras algo;
+
+    @Autowired
+    private ElectricBikeRepository bikeRepository;
 
     /**
      * POST  /paths : Create a new path.
@@ -114,5 +125,11 @@ public class PathResource {
         log.debug("REST request to delete Path : {}", id);
         pathRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PostMapping("/paths/algo-recommend/src/{src}/dst/{dst}")
+    @Timed
+    public ResponseEntity<?> countPath(@PathVariable Long src, @PathVariable Long dst) {
+        return  ResponseEntity.ok(algo.countFirst(src, dst));
     }
 }
