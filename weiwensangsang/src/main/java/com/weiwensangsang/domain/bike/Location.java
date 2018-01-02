@@ -139,6 +139,8 @@ public class Location implements Serializable {
     private Location() {
         eBikeNumber = RandomUtil.getBike();
         city = RandomUtil.getCity();
+        type = "吉";
+        state = "大吉大利, 今天吃鸡";
     }
 
     public static Location create(Long x, Long y) {

@@ -30,6 +30,11 @@ public class GodAnswer {
             '}';
     }
 
+    public GodAnswer() {
+        grade = "吉";
+        analysis = "大吉大利, 今天吃鸡";
+    }
+
     public static GodAnswer create(String jsonStr) {
         JSONObject obj = JSONObject.fromObject(jsonStr);
         GodAnswer answer = (GodAnswer) JSONObject.toBean(obj, GodAnswer.class);

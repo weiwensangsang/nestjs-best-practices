@@ -9,7 +9,9 @@ import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.PathRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.AlgoService;
+import com.weiwensangsang.service.util.AskGodUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
+import com.weiwensangsang.web.rest.vm.GodAnswer;
 import com.weiwensangsang.web.rest.vm.TopoVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -68,8 +70,8 @@ public class LocationResource {
         }
         Location result = locationRepository.save(location);
         return ResponseEntity.created(new URI("/api/locations/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -90,8 +92,8 @@ public class LocationResource {
         }
         Location result = locationRepository.save(location);
         return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, location.getId().toString()))
-                .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, location.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -156,15 +158,21 @@ public class LocationResource {
 
         data.getNodes().forEach(node -> {
             locationRepository.findOneByPositionX(node.getId())
-                    .map(location -> location)
-                    .orElseGet(() -> locationRepository.save(Location.create(node.getId())));
+                .map(location -> location)
+                .orElseGet(() -> {
+                    Location result = locationRepository.save(Location.create(node.getId()));
+                    GodAnswer answer = AskGodUtil.check(result.getId());
+                    result.setType(answer.getGrade());
+                    result.setState(answer.getAnalysis());
+                    return locationRepository.save(result);
+                });
         });
         data.getLinks().forEach(path -> {
             Location from = locationRepository.findOneByPositionX(path.getSource().getId()).get();
             Location to = locationRepository.findOneByPositionX(path.getTarget().getId()).get();
             pathRepository.findOneByFromWhereAndToWhere(from, to)
-                    .map(path1 -> path1)
-                    .orElseGet(() -> pathRepository.save(Path.create(from, to)));
+                .map(path1 -> path1)
+                .orElseGet(() -> pathRepository.save(Path.create(from, to)));
         });
 
         return ResponseEntity.ok(ResponseMessage.message("创建成功"));
