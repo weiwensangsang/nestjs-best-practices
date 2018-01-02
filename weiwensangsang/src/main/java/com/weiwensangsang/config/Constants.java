@@ -11,6 +11,8 @@ public final class Constants {
     public static final String SYSTEM_ACCOUNT = "system";
     public static final String ANONYMOUS_USER = "anonymoususer";
 
+    public static final String APICODE = "93005e6bcf754ec1aa057be4883a8ff5";
+
     private Constants() {
     }
 }
