@@ -28,7 +28,7 @@
                 vm.locationElectricBikes = result.locationElectricBikes;
                 vm.currentBike = result.bike;
                 vm.weather = angular.fromJson(result.weather);
-
+                console.log(vm.locationElectricBikes.length);
                 vm.searchQuery = null;
                 if (vm.currentBike !== null && vm.currentBike.integrity >= 50) {
                     vm.bikeIntegrity = '可骑'

@@ -4,9 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import com.weiwensangsang.domain.ResponseMessage;
 import com.weiwensangsang.domain.bike.Dijkstras;
 import com.weiwensangsang.domain.bike.ElectricBike;
+import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.Path;
 
 import com.weiwensangsang.repository.ElectricBikeRepository;
+import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.PathRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
@@ -24,6 +26,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Path.
@@ -47,6 +50,9 @@ public class PathResource {
 
     @Autowired
     private ElectricBikeRepository bikeRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
 
     /**
      * POST  /paths : Create a new path.
@@ -134,6 +140,12 @@ public class PathResource {
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> countPath(@PathVariable Long src, @PathVariable Long dst) {
-        return  ResponseEntity.ok(PathVM.create(algo.countFirst(src, dst)));
+        List<Long> primaryIds = algo.countFirst(src, dst);
+        List<Location> primaryLocation = primaryIds
+                .stream()
+                .map(primaryId->locationRepository.findOneByPositionX(primaryId).get())
+                .collect(Collectors.toList());
+
+        return  ResponseEntity.ok(PathVM.createPrimary(primaryIds, primaryLocation));
     }
 }

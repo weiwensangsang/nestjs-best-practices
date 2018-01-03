@@ -15,8 +15,9 @@
         vm.src = vm.data.locationElectricBikes[0].location.positionX;
         vm.dst = null;
         vm.action= action;
-        vm.primary = [];
+        vm.primary = null;
         vm.second = [];
+        //console.log(vm.primary);
 
         function dstFilter(e) {
             return e.positionX !== vm.src;
@@ -26,8 +27,12 @@
             switch (data) {
                 case 'recommend':
                     CountPath.save({src: vm.src, dst:vm.dst.positionX}, {}, function success(result) {
-                        vm.primary = result.primary;
-                        toaster.pop('success', ' ', vm.primary);
+                        vm.primary = {};
+                        vm.primary.ids = result.primary;
+                        vm.primary.links = result.primaryLinks;
+                        vm.primary.location = result.primaryLocations;
+                        console.log(vm.primary.links);
+                        //toaster.pop('success', ' ', '已生成');
                     }, function error(result) {
                         toaster.pop('error', ' ', result.data.message);
                     });

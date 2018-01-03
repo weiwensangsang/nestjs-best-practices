@@ -28,6 +28,11 @@ public class Link {
     public Link() {
     }
 
+    public Link(Long source, Long target) {
+        this.setSource(new Node(source));
+        this.setTarget(new Node(target));
+    }
+
     @Override
     public String toString() {
         return "Link{" +

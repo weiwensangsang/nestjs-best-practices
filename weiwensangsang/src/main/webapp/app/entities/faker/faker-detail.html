@@ -1,5 +1,5 @@
 <div>
-    <div ng-if="vm.locationElectricBikes !== []">
+    <div ng-if="vm.locationElectricBikes.length !== 0">
         <h4><span>本站运势</span>-{{vm.locationElectricBikes[0].location.type}}</h4>
         <h4><span>人生箴言</span>-{{vm.locationElectricBikes[0].location.state}}</h4>
         <h5><span>我是</span> {{vm.faker.phone}}</h5>

@@ -3,25 +3,33 @@
         <div class="col-xs-2 no-padding-left">
             <div style="margin:10px">
                 <label>选择目的地:</label>
-                 <select
-                    ng-model = "vm.dst"
-                    class="form-control"
-                    ng-options = "'站点'+city.positionX for city in vm.result.locationList  | filter: vm.dstFilter" >
-                </select >
+                <select
+                        ng-model="vm.dst"
+                        class="form-control"
+                        ng-options="'站点'+city.positionX for city in vm.result.locationList  | filter: vm.dstFilter">
+                </select>
             </div>
+
+        </div>
+        <div class="col-xs-10">
             <div style="margin:10px">
                 <div class="btn btn-primary" ng-click="vm.action('recommend')"><span
-                    class="nav-icon icon-5"></span><span class="nav-btn-text">生成推荐路径</span>
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">生成推荐路径</span>
                 </div>
+            </div>
+            <div style="margin:10px" ng-if="vm.primary!== null" class="alert alert-success">
+                <span class="nav-btn-text">最短路径:</span>
+                <span ng-repeat="l in vm.primary.location">
+                    <span class="nav-btn-text">站点{{l.positionX}}({{l.type}})  </span>
+                </span>
+
             </div>
             <div style="margin:10px">
                 <div class="btn btn-primary" ng-click="vm.action('drive')"><span
-                    class="nav-icon icon-5"></span><span class="nav-btn-text">开车</span>
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">开车</span>
                 </div>
             </div>
         </div>
-        <div class="col-xs-10">
-            <svg></svg>
-        </div>
+        <svg></svg>
     </div>
 </div>
