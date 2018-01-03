@@ -24,13 +24,13 @@
 
         function loadAll() {
             LocationBikeAll.query({position: vm.faker.state, faker: vm.faker.phone}, {}, function (result) {
-                //console.log(result);
+                console.log(result);
                 vm.locationElectricBikes = result.locationElectricBikes;
                 vm.currentBike = result.bike;
                 vm.weather = angular.fromJson(result.weather);
 
                 vm.searchQuery = null;
-                if (vm.currentBike.integrity >= 50) {
+                if (vm.currentBike !== null && vm.currentBike.integrity >= 50) {
                     vm.bikeIntegrity = '可骑'
                 }
             });

@@ -1,7 +1,10 @@
 <div>
-    <h4><span>我是</span> {{vm.faker.phone}}</h4>
-    <h4><span>我在</span>站点{{vm.faker.state}}, 我看到了:</h4>
-
+    <div ng-if="vm.locationElectricBikes !== []">
+        <h4><span>本站运势</span>-{{vm.locationElectricBikes[0].location.type}}</h4>
+        <h4><span>人生箴言</span>-{{vm.locationElectricBikes[0].location.state}}</h4>
+        <h5><span>我是</span> {{vm.faker.phone}}</h5>
+        <h5><span>我在</span>站点{{vm.faker.state}}, 我看到了:</h5>
+    </div>
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
