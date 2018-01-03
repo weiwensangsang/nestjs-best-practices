@@ -11,7 +11,9 @@ import com.weiwensangsang.repository.ElectricBikeRepository;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.PathRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
+import com.weiwensangsang.service.AlgoService;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
+import com.weiwensangsang.web.rest.vm.Link;
 import com.weiwensangsang.web.rest.vm.PathVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,6 +56,9 @@ public class PathResource {
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private AlgoService algoService;
 
     /**
      * POST  /paths : Create a new path.
@@ -136,16 +142,13 @@ public class PathResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @PostMapping("/paths/algo-recommend/src/{src}/dst/{dst}")
+    @PostMapping("/paths/algo-recommend/src/{src}/dst/{dst}/type/{type}")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<?> countPath(@PathVariable Long src, @PathVariable Long dst) {
-        List<Long> primaryIds = algo.countFirst(src, dst);
-        List<Location> primaryLocation = primaryIds
-                .stream()
-                .map(primaryId->locationRepository.findOneByPositionX(primaryId).get())
-                .collect(Collectors.toList());
+    public ResponseEntity<?> countPath(@PathVariable Long src, @PathVariable Long dst, @PathVariable String type) {
+       // if (type.equals("shortest")) {
+            return algoService.countPrimaryPath(src, dst);
+      //  }
 
-        return  ResponseEntity.ok(PathVM.createPrimary(primaryIds, primaryLocation));
     }
 }

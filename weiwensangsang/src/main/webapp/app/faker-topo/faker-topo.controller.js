@@ -17,6 +17,7 @@
         vm.action= action;
         vm.primary = null;
         vm.second = [];
+        vm.showPath = showPath;
         //console.log(vm.primary);
 
         function dstFilter(e) {
@@ -26,12 +27,13 @@
         function action(data) {
             switch (data) {
                 case 'recommend':
-                    CountPath.save({src: vm.src, dst:vm.dst.positionX}, {}, function success(result) {
+                    CountPath.save({src: vm.src, dst:vm.dst.positionX, type: 'shortest'}, {}, function success(result) {
                         vm.primary = {};
                         vm.primary.ids = result.primary;
                         vm.primary.links = result.primaryLinks;
                         vm.primary.location = result.primaryLocations;
-                        console.log(vm.primary.links);
+                        vm.primary.sum = result.sum;
+                        console.log(vm.primary.sum);
                         //toaster.pop('success', ' ', '已生成');
                     }, function error(result) {
                         toaster.pop('error', ' ', result.data.message);
@@ -47,7 +49,13 @@
 
         }
 
-
+        function showPath() {
+           //console.log(d3.selectAll('.node').size());
+           d3.selectAll('path').style('stroke', function(d){
+            if (d.source.id === 1 || d.target.id === 1) return 'red';
+            else return '#000';
+           });
+        }
 
 
 
@@ -56,6 +64,7 @@
         setTimeout(function () {
             Location.query(function (result) {
                 vm.result = result;
+                vm.dst = vm.result.locationList.filter(dstFilter)[0];
                 deferA.resolve()
             });
         }, 0);
@@ -101,9 +110,6 @@
 
 
 // line displayed when dragging new nodes
-            var drag_line = svg.append('svg:path')
-                .attr('class', 'link dragline hidden')
-                .attr('d', 'M0,0L0,0');
 
 // handles to link and node element groups
             var length = svg.append('svg:g').selectAll('text');
@@ -246,20 +252,10 @@
                         selected_link = null;
 
                         // reposition drag line
-                        drag_line
-                            .style('marker-end', 'url(#end-arrow)')
-                            .classed('hidden', false)
-                            .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);
-
                         restart();
                     })
                     .on('mouseup', function (d) {
                         if (!mousedown_node) return;
-
-                        // needed by FF
-                        drag_line
-                            .classed('hidden', true)
-                            .style('marker-end', '');
 
                         // check for drag-to-self
                         mouseup_node = d;
@@ -444,15 +440,9 @@
                     svg.classed('ctrl', false);
                 }
             }
-
-// app starts here
-            //  function dataIsReady() {
-            // 暂时关闭鼠标事件
-//            svg.on('mousedown', mousedown)
-//                .on('mousemove', mousemove)
-//                .on('mouseup', mouseup);
             restart();
-            //  }
+
         });
+
     }
 })();

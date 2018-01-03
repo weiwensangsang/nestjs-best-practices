@@ -12,6 +12,16 @@ public class PathVM {
 
     private List<Link> primaryLinks;
 
+    private Long sum;
+
+    public Long getSum() {
+        return sum;
+    }
+
+    public void setSum(Long sum) {
+        this.sum = sum;
+    }
+
     public List<Location> getPrimaryLocations() {
         return primaryLocations;
     }
@@ -46,16 +56,6 @@ public class PathVM {
         this.second = second;
     }
 
-    @Override
-    public String toString() {
-        return "PathVM{" +
-                "primary=" + primary +
-                ", primaryLocations=" + primaryLocations +
-                ", primaryLinks=" + primaryLinks +
-                ", second=" + second +
-                '}';
-    }
-
     public static PathVM create(List<Long> primary, List<Long> second){
         PathVM data = new PathVM();
         data.second = second;
@@ -63,17 +63,23 @@ public class PathVM {
         return data;
     }
 
-    public static PathVM createPrimary(List<Long> primary, List<Location> primaryLocation){
+    @Override
+    public String toString() {
+        return "PathVM{" +
+            "primary=" + primary +
+            ", primaryLocations=" + primaryLocations +
+            ", primaryLinks=" + primaryLinks +
+            ", sum=" + sum +
+            ", second=" + second +
+            '}';
+    }
+
+    public static PathVM create(List<Long> primary, List<Location> primaryLocation , List<Link> links, Long sum){
         PathVM data = new PathVM();
         data.primary = primary;
         data.setPrimaryLocations(primaryLocation);
-        List<Link> links = new ArrayList<Link>();
-        if (primary.size() >= 2) {
-            for (int i = 0; i<= primary.size() - 2; i++) {
-                links.add(new Link(primary.get(i), primary.get(i+1)));
-            }
-        }
-        data.setPrimaryLinks(links);
+        data.primaryLinks = links;
+        data.sum = sum;
         return data;
     }
 }
