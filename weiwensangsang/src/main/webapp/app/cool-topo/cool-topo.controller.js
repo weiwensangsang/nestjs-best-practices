@@ -11,6 +11,22 @@
         var vm = this;
         vm.result = {};
         vm.tense = null;
+        if (typeof($rootScope.model)=="undefined" ) {
+            $rootScope.model = 'tense';
+        }
+        vm.model = $rootScope.model;
+         vm.changeModel = changeModel;
+
+                function changeModel() {
+                    if (vm.model === 'light') {
+                        $rootScope.model = 'tense';
+                        vm.model = 'tense';
+                    } else if (vm.model === 'tense') {
+                        vm.model = 'light';
+                        $rootScope.model = 'light';
+                    }
+                    $state.go('location', null, { reload: true });
+                }
 
         var deferA = $q.defer();
         setTimeout(function () {
@@ -50,14 +66,16 @@
 
             var lastNodeId = vm.result.locationList.length - 2;
 // init D3 force layout
-            var force = d3.layout.force()
-                .nodes(nodes)
-                .links(links)
-                .size([width, height])
-                .linkDistance(60)
-                .charge(vm.tense)
-                //加一个配置表
-                .on('tick', tick);
+           var modelDistance = vm.model === 'tense'? 25:60;
+                       var modelCharge = vm.model === 'tense'? -25 * (lastNodeId + 2):-70 * vm.result.locationList.length;
+                       var force = d3.layout.force()
+                           .nodes(nodes)
+                           .links(links)
+                           .size([width, height])
+                           .linkDistance(modelDistance)
+                           .charge(modelCharge)
+                           //加一个配置表
+                           .on('tick', tick);
 
 
 
@@ -140,7 +158,7 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                    .attr('x', 30)
+                     .attr('x', vm.model ==='tense'?20:45)
                     .attr('y', 0)
                     .attr('class', 'id')
                     .style('font-size', '15px')

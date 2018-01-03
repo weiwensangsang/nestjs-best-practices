@@ -11,6 +11,10 @@
 
         var vm = this;
         vm.result = {};
+        if (typeof($rootScope.model)=="undefined" ) {
+            $rootScope.model = 'tense';
+        }
+        vm.model = $rootScope.model;
         vm.dstFilter = dstFilter;
         vm.src = vm.data.locationElectricBikes[0].location.positionX;
         vm.dst = null;
@@ -18,7 +22,9 @@
         vm.primary = null;
         vm.second = [];
         vm.showPath = showPath;
-        //console.log(vm.primary);
+        vm.resetPath = resetPath;
+        vm.changeModel = changeModel;
+        console.log(vm.model);
 
         function dstFilter(e) {
             return e.positionX !== vm.src;
@@ -49,12 +55,49 @@
 
         }
 
+        function changeModel() {
+
+            if (vm.model === 'light') {
+                $rootScope.model = 'tense';
+                vm.model = 'tense';
+            } else if (vm.model === 'tense') {
+                vm.model = 'light';
+                $rootScope.model = 'light';
+            }
+            $state.go('faker-detail', null, { reload: true });
+        }
+
         function showPath() {
-           //console.log(d3.selectAll('.node').size());
-           d3.selectAll('path').style('stroke', function(d){
-            if (d.source.id === 1 || d.target.id === 1) return 'red';
-            else return '#000';
-           });
+           d3.selectAll('path')
+           .transition()
+           .ease("linear")
+           .style('stroke-width', function(d){
+               if (isInResultPath(d))
+                   return '10px';
+               else
+                   return '4px';
+           })
+           .style('stroke', function(d){
+            if (isInResultPath(d))
+                return 'red';
+            else
+                return '#000';
+           })
+
+        }
+        function isInResultPath(d) {
+            var flag = false;
+            vm.primary.links.forEach( function(link, i){//v==value　为arr项，i==index　为arr索
+                if ((d.source.id === link.source.id && d.target.id === link.target.id)
+                 || (d.target.id === link.source.id && d.source.id === link.target.id)) {
+                    flag = true;
+                }
+            });
+            return flag;
+        }
+
+        function resetPath() {
+           d3.selectAll('path').transition().ease("linear").style('stroke', '#000').style('stroke-width', '4px');
         }
 
 
@@ -98,12 +141,14 @@
 
             var lastNodeId = vm.result.locationList.length - 2;
 // init D3 force layout
+            var modelDistance = vm.model === 'tense'? 25:60;
+            var modelCharge = vm.model === 'tense'? -25 * (lastNodeId + 2):-70 * vm.result.locationList.length;
             var force = d3.layout.force()
                 .nodes(nodes)
                 .links(links)
                 .size([width, height])
-                .linkDistance(60)
-                .charge(-50 * (lastNodeId + 2))
+                .linkDistance(modelDistance)
+                .charge(modelCharge)
                 //加一个配置表
                 .on('tick', tick);
                 //console.log(-166 * (lastNodeId + 2));
@@ -185,7 +230,7 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                    .attr('x', 30)
+                    .attr('x', vm.model ==='tense'?20:45)
                     .attr('y', 0)
                     .attr('class', 'id')
                     .style('font-size', '15px')
