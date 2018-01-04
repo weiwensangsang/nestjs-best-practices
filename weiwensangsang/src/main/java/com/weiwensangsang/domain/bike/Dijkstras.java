@@ -46,7 +46,7 @@ public class Dijkstras {
 
     public List<Long> countLucky(Long src, Long dst) {
         Graph g = new Graph();
-        locationRepository.queryAllLuckyLocation().forEach(location -> {
+        locationRepository.findAll().forEach(location -> {
             Character id = (char) location.getPositionX().intValue();
             List<Vertex> vertexFrom = pathRepository.queryByLocation(location)
                     .stream()
