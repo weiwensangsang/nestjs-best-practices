@@ -44,6 +44,34 @@ public class Dijkstras {
          return ids;
     }
 
+    public List<Long> countLucky(Long src, Long dst) {
+        Graph g = new Graph();
+        locationRepository.queryAllLuckyLocation().forEach(location -> {
+            Character id = (char) location.getPositionX().intValue();
+            List<Vertex> vertexFrom = pathRepository.queryByLocation(location)
+                    .stream()
+                    .map(path -> {
+                        if (!path.getToWhere().getId().equals(location.getId())) {
+                            Character to = (char) path.getToWhere().getPositionX().intValue();
+                            return new Vertex(to, path.getLength().intValue());
+                        } else {
+                            Character from = (char) path.getFromWhere().getPositionX().intValue();
+                            return new Vertex(from, path.getLength().intValue());
+                        }
+                    }).collect(Collectors.toList());
+            g.addVertex(id, vertexFrom);
+        });
+
+        List<Long> ids = g.getShortestPath((char) src.intValue(), (char) dst.intValue())
+                .stream()
+                .map(character -> Integer.toUnsignedLong((int) character))
+                .collect(Collectors.toList());
+        ids.add(src);
+        Collections.reverse(ids);
+        return ids;
+    }
+
+
 }
 
 class Vertex implements Comparable<Vertex> {

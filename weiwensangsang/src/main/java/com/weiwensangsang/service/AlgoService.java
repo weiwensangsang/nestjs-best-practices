@@ -92,4 +92,29 @@ public class AlgoService {
         return ResponseEntity.ok(PathVM.create(longs, locations, links, sum));
     }
 
+    public ResponseEntity<?> countLuckyPath(Long src, Long dst) {
+        List<Long> longs = new ArrayList<Long>();
+        Long sum = 0L;
+        List<Link> links = new ArrayList<Link>();
+        List<Location> locations = new ArrayList<Location>();
+        longs = algo.countLucky(src, dst);
+        locations = longs
+                .stream()
+                .map(primaryId -> locationRepository.findOneByPositionX(primaryId).get())
+                .collect(Collectors.toList());
+
+        if (longs.size() >= 2) {
+            for (int i = 0; i <= longs.size() - 2; i++) {
+                links.add(new Link(longs.get(i), longs.get(i + 1)));
+                try {
+                    sum += pathRepository.findOneByFromWhereAndToWhere(locations.get(i), locations.get(i + 1)).get().getLength();
+
+                } catch (Exception e) {
+                    sum += pathRepository.findOneByFromWhereAndToWhere(locations.get(i + 1), locations.get(i)).get().getLength();
+                }
+            }
+        }
+        return ResponseEntity.ok(PathVM.create(longs, locations, links, sum));
+    }
+
 }

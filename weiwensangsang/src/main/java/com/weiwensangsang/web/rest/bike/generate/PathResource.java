@@ -146,9 +146,13 @@ public class PathResource {
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> countPath(@PathVariable Long src, @PathVariable Long dst, @PathVariable String type) {
-       // if (type.equals("shortest")) {
+        if (type.equals("路径最短")) {
             return algoService.countPrimaryPath(src, dst);
-      //  }
+        } else if (type.equals("出行最吉")) {
+            return algoService.countLuckyPath(src, dst);
+        } else {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("不支持的类型"));
+        }
 
     }
 }

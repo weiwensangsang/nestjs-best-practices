@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,4 +16,8 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
     Optional<Location> findOneByPositionX(Long positionX);
+
+    @Query("select location from Location location where location.type <> '凶'")
+    List<Location> queryAllLuckyLocation();
+
 }

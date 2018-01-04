@@ -18,12 +18,14 @@
         vm.dstFilter = dstFilter;
         vm.src = vm.data.locationElectricBikes[0].location.positionX;
         vm.dst = null;
+        vm.choiceType = '路径最短';
         vm.action= action;
         vm.primary = null;
         vm.second = [];
         vm.showPath = showPath;
         vm.resetPath = resetPath;
         vm.changeModel = changeModel;
+        vm.typeList = ['路径最短','出行最吉'];
         console.log(vm.model);
 
         function dstFilter(e) {
@@ -33,7 +35,7 @@
         function action(data) {
             switch (data) {
                 case 'recommend':
-                    CountPath.save({src: vm.src, dst:vm.dst.positionX, type: 'shortest'}, {}, function success(result) {
+                    CountPath.save({src: vm.src, dst:vm.dst.positionX, type: vm.choiceType}, {}, function success(result) {
                         vm.primary = {};
                         vm.primary.ids = result.primary;
                         vm.primary.links = result.primaryLinks;
