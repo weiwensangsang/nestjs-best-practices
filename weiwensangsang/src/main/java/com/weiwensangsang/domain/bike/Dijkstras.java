@@ -22,33 +22,6 @@ public class Dijkstras {
         locationRepository.findAll().forEach(location -> {
             Character id = (char) location.getPositionX().intValue();
             List<Vertex> vertexFrom = pathRepository.queryByLocation(location)
-                .stream()
-                .map(path -> {
-                    if (!path.getToWhere().getId().equals(location.getId())) {
-                        Character to = (char) path.getToWhere().getPositionX().intValue();
-                        return new Vertex(to, path.getLength().intValue());
-                    } else {
-                        Character from = (char) path.getFromWhere().getPositionX().intValue();
-                        return new Vertex(from, path.getLength().intValue());
-                    }
-                }).collect(Collectors.toList());
-            g.addVertex(id, vertexFrom);
-        });
-
-         List<Long> ids = g.getShortestPath((char) src.intValue(), (char) dst.intValue())
-            .stream()
-            .map(character -> Integer.toUnsignedLong((int) character))
-            .collect(Collectors.toList());
-         ids.add(src);
-         Collections.reverse(ids);
-         return ids;
-    }
-
-    public List<Long> countLucky(Long src, Long dst) {
-        Graph g = new Graph();
-        locationRepository.findAll().forEach(location -> {
-            Character id = (char) location.getPositionX().intValue();
-            List<Vertex> vertexFrom = pathRepository.queryByLocation(location)
                     .stream()
                     .map(path -> {
                         if (!path.getToWhere().getId().equals(location.getId())) {
@@ -59,6 +32,37 @@ public class Dijkstras {
                             return new Vertex(from, path.getLength().intValue());
                         }
                     }).collect(Collectors.toList());
+            g.addVertex(id, vertexFrom);
+        });
+
+        List<Long> ids = g.getShortestPath((char) src.intValue(), (char) dst.intValue())
+                .stream()
+                .map(character -> Integer.toUnsignedLong((int) character))
+                .collect(Collectors.toList());
+        ids.add(src);
+        Collections.reverse(ids);
+        return ids;
+    }
+
+    public List<Long> countLucky(Long src, Long dst) {
+        Graph g = new Graph();
+        locationRepository.queryAllLuckyLocation().forEach(location -> {
+            Character id = (char) location.getPositionX().intValue();
+            List<Vertex> vertexFrom = new ArrayList<Vertex>();
+            pathRepository.queryByLocation(location)
+                    .forEach(path -> {
+                        if (!path.getToWhere().getId().equals(location.getId())) {
+                            if (!path.getToWhere().getType().equals("凶")) {
+                                Character to = (char) path.getToWhere().getPositionX().intValue();
+                                vertexFrom.add(new Vertex(to, path.getLength().intValue()));
+                            }
+                        } else {
+                            if (!path.getFromWhere().getType().equals("凶")) {
+                                Character from = (char) path.getFromWhere().getPositionX().intValue();
+                                vertexFrom.add(new Vertex(from, path.getLength().intValue()));
+                            }
+                        }
+                    });
             g.addVertex(id, vertexFrom);
         });
 
@@ -106,7 +110,7 @@ class Vertex implements Comparable<Vertex> {
         final int prime = 31;
         int result = 1;
         result = prime * result
-            + ((distance == null) ? 0 : distance.hashCode());
+                + ((distance == null) ? 0 : distance.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
@@ -152,7 +156,7 @@ class Vertex implements Comparable<Vertex> {
 
 class Graph {
 
-    private  Map<Character, List<Vertex>> vertices;
+    private Map<Character, List<Vertex>> vertices;
 
     public Graph() {
         this.vertices = new HashMap<Character, List<Vertex>>();

@@ -93,11 +93,14 @@ public class AlgoService {
     }
 
     public ResponseEntity<?> countLuckyPath(Long src, Long dst) {
+        fix(src, dst);
         List<Long> longs = new ArrayList<Long>();
         Long sum = 0L;
         List<Link> links = new ArrayList<Link>();
         List<Location> locations = new ArrayList<Location>();
+
         longs = algo.countLucky(src, dst);
+        reset(src, dst);
         locations = longs
                 .stream()
                 .map(primaryId -> locationRepository.findOneByPositionX(primaryId).get())
@@ -115,6 +118,24 @@ public class AlgoService {
             }
         }
         return ResponseEntity.ok(PathVM.create(longs, locations, links, sum));
+    }
+
+    public void fix(Long src, Long dst) {
+        Location l1 = locationRepository.findOneByPositionX(src).get();
+        l1.fixType();
+        locationRepository.save(l1);
+        Location l2 = locationRepository.findOneByPositionX(dst).get();
+        l2.fixType();
+        locationRepository.save(l2);
+    }
+
+    public void reset(Long src, Long dst) {
+        Location l1 = locationRepository.findOneByPositionX(src).get();
+        l1.resetType();
+        locationRepository.save(l1);
+        Location l2 = locationRepository.findOneByPositionX(dst).get();
+        l2.resetType();
+        locationRepository.save(l2);
     }
 
 }

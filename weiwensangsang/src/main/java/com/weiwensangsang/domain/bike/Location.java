@@ -167,4 +167,12 @@ public class Location implements Serializable {
         return locations;
     }
 
+    public void fixType() {
+        type += "-Fix";
+    }
+
+    public void resetType() {
+        type = type.split("-")[0];
+    }
+
 }

@@ -149,7 +149,11 @@ public class PathResource {
         if (type.equals("路径最短")) {
             return algoService.countPrimaryPath(src, dst);
         } else if (type.equals("出行最吉")) {
-            return algoService.countLuckyPath(src, dst);
+            try {
+                return algoService.countLuckyPath(src, dst);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(ResponseMessage.message("无法找到一条大吉大利的路"));
+            }
         } else {
             return ResponseEntity.badRequest().body(ResponseMessage.message("不支持的类型"));
         }
