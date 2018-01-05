@@ -4,5 +4,12 @@
         <span ng-if = "vm.model === 'tense'"> 放大 </span>
         <span ng-if = "vm.model === 'light'"> 缩小 </span>
     </button>
+    <input type="text" class="form-control"
+           ng-model="vm.textLength"
+    />
+    <button type="submit" ng-click = "vm.changeLength()"
+            class="btn btn-danger">
+        <span > 调整 </span>
+    </button>
 </div>
 <svg></svg>

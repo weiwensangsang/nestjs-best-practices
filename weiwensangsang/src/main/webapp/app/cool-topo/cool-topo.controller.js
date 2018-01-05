@@ -5,28 +5,44 @@
         .module('weiwensangsangApp')
         .controller('CoolTopoController', CoolTopoController);
 
-    CoolTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope'];
+    CoolTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope', 'TopoConfig'];
 
-    function CoolTopoController($state, Location, $q, $timeout, $rootScope) {
+    function CoolTopoController($state, Location, $q, $timeout, $rootScope, TopoConfig) {
         var vm = this;
         vm.result = {};
         vm.tense = null;
-        if (typeof($rootScope.model)=="undefined" ) {
-            $rootScope.model = 'tense';
-        }
-        vm.model = $rootScope.model;
-         vm.changeModel = changeModel;
+        vm.model = 'tense';
+        vm.config = {};
+        vm.changeModel = changeModel;
+        vm.changeLength = changeLength;
+        vm.textLength = 0;
 
-                function changeModel() {
-                    if (vm.model === 'light') {
-                        $rootScope.model = 'tense';
-                        vm.model = 'tense';
-                    } else if (vm.model === 'tense') {
-                        vm.model = 'light';
-                        $rootScope.model = 'light';
-                    }
-                    $state.go('location', null, { reload: true });
-                }
+
+        function changeModel() {
+            var data = vm.config;
+            if (vm.model === 'light') {
+                data.type = 'tense';
+            } else if (vm.model === 'tense') {
+                data.type =  'light';
+            }
+            TopoConfig.save({}, data, function success(result) {
+                //toaster.pop('success', ' ', '已生成');
+            }, function error(result) {
+                //toaster.pop('error', ' ', result.data.message);
+            });
+            $state.go('location', null, {reload: true});
+        }
+
+        function changeLength() {
+            var data = vm.config;
+            data.tense = vm.textLength;
+            TopoConfig.save({}, data, function success(result) {
+                //toaster.pop('success', ' ', '已生成');
+            }, function error(result) {
+                //toaster.pop('error', ' ', result.data.message);
+            });
+            $state.go('location', null, {reload: true});
+        }
 
         var deferA = $q.defer();
         setTimeout(function () {
@@ -36,9 +52,19 @@
                 deferA.resolve()
             });
         }, 0);
+        var deferB = $q.defer();
+        setTimeout(function () {
+            TopoConfig.query(function (result) {
+                console.log(result);
+                vm.config = result;
+                vm.model = result.type;
+                vm.textLength = result.tense;
+                deferB.resolve()
+            });
+        }, 0);
 
         var p = $q.all({
-            dataA: deferA.promise,
+            dataA: deferA.promise, dataB: deferB.promise,
         })
         p.then(function () {
 
@@ -66,17 +92,16 @@
 
             var lastNodeId = vm.result.locationList.length - 2;
 // init D3 force layout
-           var modelDistance = vm.model === 'tense'? 25:60;
-                       var modelCharge = vm.model === 'tense'? -25 * (lastNodeId + 2):-70 * vm.result.locationList.length;
-                       var force = d3.layout.force()
-                           .nodes(nodes)
-                           .links(links)
-                           .size([width, height])
-                           .linkDistance(modelDistance)
-                           .charge(modelCharge)
-                           //加一个配置表
-                           .on('tick', tick);
-
+            var modelDistance = vm.model === 'tense' ? 25 : 60;
+            var modelCharge = vm.model === 'tense' ? -25 * (lastNodeId + 2) : -70 * vm.result.locationList.length;
+            var force = d3.layout.force()
+                .nodes(nodes)
+                .links(links)
+                .size([width, height])
+                .linkDistance(modelDistance)
+                .charge(modelCharge)
+                //加一个配置表
+                .on('tick', tick);
 
 
 // line displayed when dragging new nodes
@@ -158,7 +183,7 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                     .attr('x', vm.model ==='tense'?20:45)
+                    .attr('x', vm.model === 'tense'? vm.textLength / 2 : vm.textLength)
                     .attr('y', 0)
                     .attr('class', 'id')
                     .style('font-size', '15px')

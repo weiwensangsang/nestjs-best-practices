@@ -5,28 +5,26 @@
         .module('weiwensangsangApp')
         .controller('FakerTopoController', FakerTopoController);
 
-    FakerTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope', 'CountPath', 'toaster'];
+    FakerTopoController.$inject = ['$state', 'Location', '$q', '$timeout', '$rootScope', 'CountPath', 'toaster', 'TopoConfig'];
 
-    function FakerTopoController($state, Location, $q, $timeout, $rootScope, CountPath, toaster) {
+    function FakerTopoController($state, Location, $q, $timeout, $rootScope, CountPath, toaster, TopoConfig) {
 
         var vm = this;
         vm.result = {};
-        if (typeof($rootScope.model)=="undefined" ) {
-            $rootScope.model = 'tense';
-        }
-        vm.model = $rootScope.model;
+        vm.model = 'tense';
+        vm.config = {};
         vm.dstFilter = dstFilter;
         vm.src = vm.data.locationElectricBikes[0].location.positionX;
         vm.dst = null;
         vm.choiceType = '路径最短';
-        vm.action= action;
+        vm.action = action;
         vm.primary = null;
         vm.second = [];
+        vm.textLength = 0;
         vm.showPath = showPath;
         vm.resetPath = resetPath;
         vm.changeModel = changeModel;
-        vm.typeList = ['路径最短','出行最吉'];
-        console.log(vm.model);
+        vm.typeList = ['路径最短', '出行最吉'];
 
         function dstFilter(e) {
             return e.positionX !== vm.src;
@@ -35,7 +33,11 @@
         function action(data) {
             switch (data) {
                 case 'recommend':
-                    CountPath.save({src: vm.src, dst:vm.dst.positionX, type: vm.choiceType}, {}, function success(result) {
+                    CountPath.save({
+                        src: vm.src,
+                        dst: vm.dst.positionX,
+                        type: vm.choiceType
+                    }, {}, function success(result) {
                         vm.primary = {};
                         vm.primary.ids = result.primary;
                         vm.primary.links = result.primaryLinks;
@@ -58,40 +60,44 @@
         }
 
         function changeModel() {
-
+            var data = vm.config;
             if (vm.model === 'light') {
-                $rootScope.model = 'tense';
-                vm.model = 'tense';
+                data.type = 'tense';
             } else if (vm.model === 'tense') {
-                vm.model = 'light';
-                $rootScope.model = 'light';
+                data.type =  'light';
             }
-            $state.go('faker-detail', null, { reload: true });
+            TopoConfig.save({}, data, function success(result) {
+                //toaster.pop('success', ' ', '已生成');
+            }, function error(result) {
+                //toaster.pop('error', ' ', result.data.message);
+            });
+            $state.go('faker-detail', null, {reload: true});
         }
 
         function showPath() {
-           d3.selectAll('path')
-           .transition()
-           .ease("linear")
-           .style('stroke-width', function(d){
-               if (isInResultPath(d))
-                   return '10px';
-               else
-                   return '4px';
-           })
-           .style('stroke', function(d){
-            if (isInResultPath(d))
-                return 'red';
-            else
-                return '#000';
-           })
+            d3.selectAll('path')
+                .transition()
+                .ease("linear")
+                .style('stroke-width', function (d) {
+                    if (isInResultPath(d))
+                        return '10px';
+                    else
+                        return '4px';
+                })
+                .style('stroke', function (d) {
+                    if (isInResultPath(d))
+                        return 'red';
+                    else
+                        return '#000';
+                })
 
         }
+
         function isInResultPath(d) {
             var flag = false;
-            vm.primary.links.forEach( function(link, i){//v==value　为arr项，i==index　为arr索
+            vm.primary.links.forEach(function (link, i) {//v==value　为arr项，i==index　为arr索
                 if ((d.source.id === link.source.id && d.target.id === link.target.id)
-                 || (d.target.id === link.source.id && d.source.id === link.target.id)) {
+                    || (d.target.id === link.source.id && d.source.id === link.target.id)) {
                     flag = true;
                 }
             });
@@ -99,9 +105,8 @@
         }
 
         function resetPath() {
-           d3.selectAll('path').transition().ease("linear").style('stroke', '#000').style('stroke-width', '4px');
+            d3.selectAll('path').transition().ease("linear").style('stroke', '#000').style('stroke-width', '4px');
         }
-
 
 
         // d3
@@ -113,9 +118,19 @@
                 deferA.resolve()
             });
         }, 0);
+        var deferB = $q.defer();
+        setTimeout(function () {
+            TopoConfig.query(function (result) {
+                console.log(result);
+                vm.config = result;
+                vm.model = result.type;
+                vm.textLength = result.tense;
+                deferB.resolve()
+            });
+        }, 0);
 
         var p = $q.all({
-            dataA: deferA.promise,
+            dataA: deferA.promise, dataB: deferB.promise,
         })
         p.then(function () {
 
@@ -143,8 +158,8 @@
 
             var lastNodeId = vm.result.locationList.length - 2;
 // init D3 force layout
-            var modelDistance = vm.model === 'tense'? 25:60;
-            var modelCharge = vm.model === 'tense'? -25 * (lastNodeId + 2):-70 * vm.result.locationList.length;
+            var modelDistance = vm.model === 'tense' ? 25 : 60;
+            var modelCharge = vm.model === 'tense' ? -25 * (lastNodeId + 2) : -70 * vm.result.locationList.length;
             var force = d3.layout.force()
                 .nodes(nodes)
                 .links(links)
@@ -153,7 +168,7 @@
                 .charge(modelCharge)
                 //加一个配置表
                 .on('tick', tick);
-                //console.log(-166 * (lastNodeId + 2));
+            //console.log(-166 * (lastNodeId + 2));
 
 
 // line displayed when dragging new nodes
@@ -202,6 +217,7 @@
 
 // update graph (called when needed)
             function restart() {
+                console.log(vm.textLength);
                 $rootScope.nodes = nodes;
                 $rootScope.links = links;
                 // path (link) group
@@ -233,22 +249,7 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                    .attr('x',function(d) {
-                                   //const sr = d.radius;
-                                   console.log(d.source);
-                                   const sx = d.source.x;
-                                   const sy = d.source.y;
-                                   const tx = d.target.x;
-                                   const ty = d.target.y;
-                                   const distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
-                                   // console.log(tx);
-                                  // const textLength = d.alllabel.length;
-                                  // const deviation = 58; // 调整误差
-                                 //  const dx = (distance - sr - 1 * 1) / 2 + deviation;
-
-                                   return 20;
-                               }
-                    )
+                    .attr('x', vm.model === 'tense'? vm.textLength / 2 : vm.textLength)
                     .attr('y', 20)
                     .attr('class', 'id')
                     .style('font-size', '15px')
@@ -283,7 +284,7 @@
 
                 g.append('svg:circle')
                     .attr('class', 'node')
-                    .attr('r',  function (d) {
+                    .attr('r', function (d) {
                         return (d.id === vm.src) ? 20 : 12;
                     })
                     .style('fill', function (d) {
@@ -368,7 +369,7 @@
                     .attr('y', 4)
                     .attr('class', 'id')
                     .attr('fill', function (d) {
-                        return (d.id === vm.src) ? 'white': 'black'
+                        return (d.id === vm.src) ? 'white' : 'black'
                     })
                     .text(function (d) {
                         return (d.id === vm.src) ? 'Src' : d.id;
@@ -503,6 +504,7 @@
                     svg.classed('ctrl', false);
                 }
             }
+
             restart();
 
         });
