@@ -43,7 +43,7 @@
         p.then(function () {
 
             var width = 800,
-                height = 500,
+                height = 800,
                 colors = d3.scale.category10();
 
             var svg = d3.select('svg')

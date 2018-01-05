@@ -51,6 +51,7 @@ public class CacheConfiguration {
             cm.createCache(SmsCode.class.getName(), jcacheConfiguration);
             cm.createCache(LogHistory.class.getName(), jcacheConfiguration);
             cm.createCache(LocationElectricBike.class.getName(), jcacheConfiguration);
+            cm.createCache(TopoConfig.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

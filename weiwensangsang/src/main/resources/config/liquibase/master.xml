@@ -19,4 +19,6 @@
     <include file="config/liquibase/changelog/20171219165910_added_entity_constraints_LogHistory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171219165905_added_entity_constraints_LocationElectricBike.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="config/liquibase/changelog/20180106001001_added_entity_TopConfig.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

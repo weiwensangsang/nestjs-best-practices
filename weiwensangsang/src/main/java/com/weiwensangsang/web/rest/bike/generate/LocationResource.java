@@ -161,10 +161,14 @@ public class LocationResource {
                 .map(location -> location)
                 .orElseGet(() -> {
                     Location result = locationRepository.save(Location.create(node.getId()));
-                    GodAnswer answer = AskGodUtil.check(result.getId());
-                    result.setType(answer.getGrade());
-                    result.setState(answer.getAnalysis());
-                    return locationRepository.save(result);
+                    if (result.getId() % 2 == 0) {
+                        GodAnswer answer = AskGodUtil.check(result.getId());
+                        result.setType(answer.getGrade());
+                        result.setState(answer.getAnalysis());
+                        return locationRepository.save(result);
+                    } else {
+                        return result;
+                    }
                 });
         });
         data.getLinks().forEach(path -> {

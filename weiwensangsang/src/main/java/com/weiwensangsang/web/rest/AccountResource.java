@@ -3,6 +3,8 @@ package com.weiwensangsang.web.rest;
 import com.codahale.metrics.annotation.Timed;
 
 import com.weiwensangsang.domain.User;
+import com.weiwensangsang.domain.bike.TopoConfig;
+import com.weiwensangsang.repository.TopoConfigRepository;
 import com.weiwensangsang.repository.UserRepository;
 import com.weiwensangsang.security.SecurityUtils;
 import com.weiwensangsang.service.MailService;
@@ -15,6 +17,7 @@ import com.weiwensangsang.web.rest.util.HeaderUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,6 +52,9 @@ public class AccountResource {
         this.userService = userService;
         this.mailService = mailService;
     }
+
+    @Autowired
+    private TopoConfigRepository topoConfigRepository;
 
     /**
      * POST  /register : register the user.
@@ -205,4 +211,17 @@ public class AccountResource {
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
             password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
     }
+
+    @GetMapping("/topo-infos")
+    @Timed
+    public ResponseEntity<?> getTopoInfo() {
+        return ResponseEntity.ok(topoConfigRepository.findOne(1L));
+    }
+
+    @PostMapping("/topo-infos")
+    @Timed
+    public ResponseEntity<?> updateTopoInfo(@Valid @RequestBody TopoConfig config) {
+        return ResponseEntity.ok(topoConfigRepository.save(config));
+    }
+
 }

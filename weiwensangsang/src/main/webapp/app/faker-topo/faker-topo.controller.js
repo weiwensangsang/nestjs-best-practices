@@ -120,7 +120,7 @@
         p.then(function () {
 
             var width = 800,
-                height = 500,
+                height = 800,
                 colors = d3.scale.category10();
 
             var svg = d3.select('svg')
@@ -191,6 +191,7 @@
                         sourceY = d.source.y + (sourcePadding * normY),
                         targetX = d.target.x - (targetPadding * normX),
                         targetY = d.target.y - (targetPadding * normY);
+
                     return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
                 });
 
@@ -232,8 +233,23 @@
                         restart();
                     });
                 length.enter().append('svg:text')
-                    .attr('x', vm.model ==='tense'?20:45)
-                    .attr('y', 0)
+                    .attr('x',function(d) {
+                                   //const sr = d.radius;
+                                   console.log(d.source);
+                                   const sx = d.source.x;
+                                   const sy = d.source.y;
+                                   const tx = d.target.x;
+                                   const ty = d.target.y;
+                                   const distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
+                                   // console.log(tx);
+                                  // const textLength = d.alllabel.length;
+                                  // const deviation = 58; // 调整误差
+                                 //  const dx = (distance - sr - 1 * 1) / 2 + deviation;
+
+                                   return 20;
+                               }
+                    )
+                    .attr('y', 20)
                     .attr('class', 'id')
                     .style('font-size', '15px')
                     .append('textPath').attr('xlink:href', function (d, i) {
