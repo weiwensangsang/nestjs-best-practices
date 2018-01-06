@@ -65,7 +65,7 @@
             if (vm.model === 'light') {
                 data.type = 'tense';
             } else if (vm.model === 'tense') {
-                data.type =  'light';
+                data.type = 'light';
             }
             TopoConfig.save({}, data, function success(result) {
                 //toaster.pop('success', ' ', '已生成');
@@ -251,9 +251,9 @@
                         restart();
                     });
                 length
-                .enter()
-                .append('svg:text')
-                    .attr('x', vm.model === 'tense'? vm.textLength / 2 : vm.textLength)
+                    .enter()
+                    .append('svg:text')
+                    .attr('x', vm.model === 'tense' ? vm.textLength / 2 : vm.textLength)
                     .attr('y', 20)
                     .attr('class', 'id')
                     .style('font-size', '15px')
@@ -292,16 +292,16 @@
                         return (d.id === vm.src) ? 20 : 12;
                     })
                     .style('fill', function (d) {
-                                            if (vm.showLucky !== 'normal') {
-                                                if (d.lucky !== '凶') {
-                                                    return 'red';
-                                                } else {
-                                                    return 'black';
-                                                }
-                                            } else {
-                                                return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
-                                            }
-                                        })
+                        if (vm.showLucky !== 'normal') {
+                            if (d.lucky !== '凶') {
+                                return 'red';
+                            } else {
+                                return 'black';
+                            }
+                        } else {
+                            return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
+                        }
+                    })
                     .style('stroke', function (d) {
                         if (vm.showLucky !== 'normal') {
                             if (d.lucky !== '凶') {
@@ -315,15 +315,15 @@
 
                     })
                     .style('stroke-width', function (d) {
-                    if (vm.showLucky !== 'normal') {
-                        if (d.lucky !== '凶') {
-                              return '4px';
+                        if (vm.showLucky !== 'normal') {
+                            if (d.lucky !== '凶') {
+                                return '4px';
+                            } else {
+                                return '1px';
+                            }
                         } else {
-                              return '1px';
-                         }
-                        } else {
-                           return '1px';
-                      }
+                            return '1px';
+                        }
                     })
                     .classed('reflexive', function (d) {
                         return d.reflexive;
@@ -400,13 +400,13 @@
                     .attr('x', 0)
                     .attr('y', 4)
                     .attr('class', 'id')
-                    .attr('fill', function(){
-                                            if (vm.showLucky !== 'normal') {
-                                                return 'white';
-                                            } else {
-                                                return 'black';
-                                            }
-                                        })
+                    .attr('fill', function () {
+                        if (vm.showLucky !== 'normal') {
+                            return 'white';
+                        } else {
+                            return 'black';
+                        }
+                    })
                     .text(function (d) {
                         return (d.id === vm.src) ? 'Src' : d.id;
                     });
