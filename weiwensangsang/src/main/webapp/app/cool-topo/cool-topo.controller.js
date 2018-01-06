@@ -14,9 +14,10 @@
         vm.model = 'tense';
         vm.config = {};
         vm.changeModel = changeModel;
+        vm.changeState = changeState;
         vm.changeLength = changeLength;
         vm.textLength = 0;
-
+        vm.showLucky = 'normal';
 
         function changeModel() {
             var data = vm.config;
@@ -44,6 +45,21 @@
             $state.go('location', null, {reload: true});
         }
 
+                function changeState() {
+                    var data = vm.config;
+                    if (vm.showLucky === 'normal') {
+                                    data.state = 'show';
+                    } else if (vm.showLucky === 'show') {
+                                    data.state =  'normal';
+                    }
+                    TopoConfig.save({}, data, function success(result) {
+                        //toaster.pop('success', ' ', '已生成');
+                    }, function error(result) {
+                        //toaster.pop('error', ' ', result.data.message);
+                    });
+                    $state.go('location', null, {reload: true});
+                }
+
         var deferA = $q.defer();
         setTimeout(function () {
             Location.query(function (result) {
@@ -58,6 +74,7 @@
                 console.log(result);
                 vm.config = result;
                 vm.model = result.type;
+                vm.showLucky = result.state;
                 vm.textLength = result.tense;
                 deferB.resolve()
             });
@@ -80,6 +97,7 @@
             for (var i = 0; i <= vm.result.locationList.length - 1; i++) {
                 var node = {};
                 node.id = vm.result.locationList[i].positionX;
+                node.lucky = vm.result.locationList[i].type;
                 nodes.push(node);
             }
             for (var i = 0; i <= vm.result.paths.length - 1; i++) {
@@ -220,11 +238,39 @@
                     .attr('class', 'node')
                     .attr('r', 12)
                     .style('fill', function (d) {
-                        return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
+                        if (vm.showLucky !== 'normal') {
+                            if (d.lucky !== '凶') {
+                                return 'red';
+                            } else {
+                                return 'black';
+                            }
+                        } else {
+                            return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
+                        }
                     })
-                    .style('stroke', function (d) {
-                        return d3.rgb(colors(d.id)).darker().toString();
-                    })
+                                        .style('stroke', function (d) {
+                                            if (vm.showLucky !== 'normal') {
+                                                if (d.lucky !== '凶') {
+                                                    return 'red';
+                                                } else {
+                                                    return 'black';
+                                                }
+                                            } else {
+                                                return 'black';
+                                            }
+
+                                        })
+                                        .style('stroke-width', function (d) {
+                                        if (vm.showLucky !== 'normal') {
+                                            if (d.lucky !== '凶') {
+                                                  return '4px';
+                                            } else {
+                                                  return '1px';
+                                             }
+                                         } else {
+                                               return '1px';
+                                          }
+                                        })
                     .classed('reflexive', function (d) {
                         return d.reflexive;
                     })
@@ -307,6 +353,13 @@
 
                 // show node IDs
                 g.append('svg:text')
+                    .attr('fill', function(){
+                        if (vm.showLucky !== 'normal') {
+                            return 'white';
+                        } else {
+                            return 'black';
+                        }
+                    })
                     .attr('x', 0)
                     .attr('y', 4)
                     .attr('class', 'id')

@@ -25,6 +25,7 @@
         vm.resetPath = resetPath;
         vm.changeModel = changeModel;
         vm.typeList = ['路径最短', '出行最吉'];
+        vm.showLucky = 'normal';
 
         function dstFilter(e) {
             return e.positionX !== vm.src;
@@ -43,7 +44,7 @@
                         vm.primary.links = result.primaryLinks;
                         vm.primary.location = result.primaryLocations;
                         vm.primary.sum = result.sum;
-                        console.log(vm.primary.sum);
+                        console.log(vm.choiceType);
                         //toaster.pop('success', ' ', '已生成');
                     }, function error(result) {
                         toaster.pop('error', ' ', result.data.message);
@@ -124,6 +125,7 @@
                 console.log(result);
                 vm.config = result;
                 vm.model = result.type;
+                vm.showLucky = result.state;
                 vm.textLength = result.tense;
                 deferB.resolve()
             });
@@ -146,6 +148,7 @@
             for (var i = 0; i <= vm.result.locationList.length - 1; i++) {
                 var node = {};
                 node.id = vm.result.locationList[i].positionX;
+                node.lucky = vm.result.locationList[i].type;
                 nodes.push(node);
             }
             for (var i = 0; i <= vm.result.paths.length - 1; i++) {
@@ -217,7 +220,6 @@
 
 // update graph (called when needed)
             function restart() {
-                console.log(vm.textLength);
                 $rootScope.nodes = nodes;
                 $rootScope.links = links;
                 // path (link) group
@@ -248,7 +250,9 @@
                         selected_node = null;
                         restart();
                     });
-                length.enter().append('svg:text')
+                length
+                .enter()
+                .append('svg:text')
                     .attr('x', vm.model === 'tense'? vm.textLength / 2 : vm.textLength)
                     .attr('y', 20)
                     .attr('class', 'id')
@@ -288,10 +292,38 @@
                         return (d.id === vm.src) ? 20 : 12;
                     })
                     .style('fill', function (d) {
-                        return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
-                    })
+                                            if (vm.showLucky !== 'normal') {
+                                                if (d.lucky !== '凶') {
+                                                    return 'red';
+                                                } else {
+                                                    return 'black';
+                                                }
+                                            } else {
+                                                return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
+                                            }
+                                        })
                     .style('stroke', function (d) {
-                        return d3.rgb(colors(d.id)).darker().toString();
+                        if (vm.showLucky !== 'normal') {
+                            if (d.lucky !== '凶') {
+                                return 'red';
+                            } else {
+                                return 'black';
+                            }
+                        } else {
+                            return 'black';
+                        }
+
+                    })
+                    .style('stroke-width', function (d) {
+                    if (vm.showLucky !== 'normal') {
+                        if (d.lucky !== '凶') {
+                              return '4px';
+                        } else {
+                              return '1px';
+                         }
+                        } else {
+                           return '1px';
+                      }
                     })
                     .classed('reflexive', function (d) {
                         return d.reflexive;
@@ -368,9 +400,13 @@
                     .attr('x', 0)
                     .attr('y', 4)
                     .attr('class', 'id')
-                    .attr('fill', function (d) {
-                        return (d.id === vm.src) ? 'white' : 'black'
-                    })
+                    .attr('fill', function(){
+                                            if (vm.showLucky !== 'normal') {
+                                                return 'white';
+                                            } else {
+                                                return 'black';
+                                            }
+                                        })
                     .text(function (d) {
                         return (d.id === vm.src) ? 'Src' : d.id;
                     });

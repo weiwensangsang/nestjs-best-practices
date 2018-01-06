@@ -22,12 +22,11 @@
         <div class="col-xs-10">
             <div style="margin:10px">
                 <div class="btn btn-primary" ng-click="vm.action('recommend')"><span
-                        class="nav-icon icon-5"></span><span class="nav-btn-text">生成推荐路径</span>
+                        class="nav-icon icon-5"></span><span class="nav-btn-text">推荐路径</span>
                 </div>
             </div>
             <div style="margin:10px" ng-mouseover="vm.showPath()" ng-mouseleave="vm.resetPath()"
                  ng-if="vm.primary!== null" class="alert alert-success">
-                <span class="nav-btn-text">最短路径:</span>
                 <span ng-repeat="l in vm.primary.location">
                     <span class="nav-btn-text">站点{{l.positionX}} </span>
                     <span class="nav-btn-text" style="color:red">({{l.type}})  </span>
@@ -42,13 +41,6 @@
             <div style="margin:10px">
                 <div class="btn btn-primary" ng-click="vm.showPath()"><span
                         class="nav-icon icon-5"></span><span class="nav-btn-text">开车</span>
-                </div>
-                <div style="margin:10px">
-                    <button type="submit" ng-click="vm.changeModel()"
-                            class="btn btn-danger">
-                        <span ng-if="vm.model === 'tense'"> 放大 </span>
-                        <span ng-if="vm.model === 'light'"> 缩小 </span>
-                    </button>
                 </div>
             </div>
         </div>

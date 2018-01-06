@@ -1,15 +1,30 @@
 <div style="margin:10px">
-    <button type="submit" ng-click = "vm.changeModel()"
-            class="btn btn-danger">
-        <span ng-if = "vm.model === 'tense'"> 放大 </span>
-        <span ng-if = "vm.model === 'light'"> 缩小 </span>
+    <button type="submit" ng-click="vm.changeModel()"
+            class="btn btn-default">
+        <span ng-if="vm.model === 'tense'"> 放大 </span>
+        <span ng-if="vm.model === 'light'"> 缩小 </span>
     </button>
-    <input type="text" class="form-control"
-           ng-model="vm.textLength"
-    />
-    <button type="submit" ng-click = "vm.changeLength()"
-            class="btn btn-danger">
-        <span > 调整 </span>
+</div>
+
+<div style="margin:10px">
+    <button type="submit" ng-click="vm.changeState()"
+            class="btn btn-default">
+        <span ng-if="vm.showLucky === 'normal'"> 占卜模式 </span>
+        <span ng-if="vm.showLucky !== 'normal'"> 普通模式 </span>
     </button>
+</div>
+
+<div style="margin:10px">
+    <div class="form-group">
+        <label class="control-label">调整位置</label>
+        <input type="text" class="form-control"
+               ng-model="vm.textLength"/>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" ng-click="vm.changeLength()"
+                class="btn btn-default">
+            <span> 调整 </span>
+        </button>
+    </div>
 </div>
 <svg></svg>
