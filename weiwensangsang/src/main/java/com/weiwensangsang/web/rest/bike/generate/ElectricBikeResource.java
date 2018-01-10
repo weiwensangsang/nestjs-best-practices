@@ -8,6 +8,7 @@ import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
 import com.weiwensangsang.repository.*;
 import com.weiwensangsang.security.AuthoritiesConstants;
+import com.weiwensangsang.service.AlgoService;
 import com.weiwensangsang.service.util.weather.WeatherUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
 import com.weiwensangsang.web.rest.vm.Link;
@@ -52,6 +53,9 @@ public class ElectricBikeResource {
 
     @Autowired
     private PathRepository pathRepository;
+
+    @Autowired
+    private AlgoService algoService;
 
     public ElectricBikeResource(ElectricBikeRepository electricBikeRepository) {
         this.electricBikeRepository = electricBikeRepository;
@@ -141,13 +145,13 @@ public class ElectricBikeResource {
 
     @PostMapping("/electric-bikes/control")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> controlElectricBike(@Valid @RequestBody String control) {
 
 
         if (control.equals("reset")) {
             relationRepository.deleteAll();
             electricBikeRepository.deleteAll();
+            algoService.log("单车回收");
             return ResponseEntity.ok(ResponseMessage.message("删除所有电单车"));
         } else {
             if (electricBikeRepository.findAll().size() != 0) {
@@ -159,6 +163,7 @@ public class ElectricBikeResource {
                     relationRepository.save(LocationElectricBike.create(result, location));
                 }
             });
+            algoService.log("单车投放");
             return ResponseEntity.ok(ResponseMessage.message("生成电单车成功"));
         }
     }
@@ -196,9 +201,8 @@ public class ElectricBikeResource {
 
     @PostMapping("/electric-bikes/lock-control/phone/{phone}/bike/{bikeid}")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> controlElectricBike(@PathVariable String phone, @PathVariable Long bikeid, @Valid @RequestBody String control) {
-
+        Faker faker = fakerRepository.findOneByPhone(phone).get();
         if (control.equals("unlock")) {
             if (electricBikeRepository.findOneByType(phone).isPresent()) {
                 return ResponseEntity.badRequest().body(ResponseMessage.message("您有未解锁的车"));
@@ -206,12 +210,14 @@ public class ElectricBikeResource {
                 ElectricBike bike = electricBikeRepository.findOne(bikeid);
                 bike.setType(phone);
                 electricBikeRepository.save(bike);
+                algoService.log("解锁车"+bikeid.toString(), faker);
                 return ResponseEntity.ok(ResponseMessage.message("解锁成功"));
             }
         } else if (control.equals("lock")) {
             ElectricBike bike = electricBikeRepository.findOneByType(phone).get();
             bike.setType("lock");
             electricBikeRepository.save(bike);
+            algoService.log("还车"+bikeid.toString(), faker);
             return ResponseEntity.ok(ResponseMessage.message("还车成功"));
         }
         return ResponseEntity.badRequest().body(ResponseMessage.message("type error"));
@@ -258,6 +264,7 @@ public class ElectricBikeResource {
             locationRepository.save(current);
             locationRepository.save(distance);
             fakerRepository.save(faker);
+            algoService.log("行车路径:"+list.stream().map(location -> location.getPositionX().toString()).collect(Collectors.toList()).toString(), faker);
             return ResponseEntity.ok(ResponseMessage.message("行车路程执行!"));
         }
     }

@@ -177,7 +177,7 @@ public class LocationResource {
                 .map(path1 -> path1)
                 .orElseGet(() -> pathRepository.save(Path.create(from, to)));
         });
-
+        algoService.log("生成拓扑");
         return ResponseEntity.ok(ResponseMessage.message("创建成功"));
     }
 }

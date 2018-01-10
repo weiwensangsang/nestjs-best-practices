@@ -4,11 +4,10 @@ import com.weiwensangsang.config.Constants;
 import com.weiwensangsang.domain.Authority;
 import com.weiwensangsang.domain.User;
 import com.weiwensangsang.domain.bike.Dijkstras;
+import com.weiwensangsang.domain.bike.Faker;
 import com.weiwensangsang.domain.bike.Location;
-import com.weiwensangsang.repository.AuthorityRepository;
-import com.weiwensangsang.repository.LocationRepository;
-import com.weiwensangsang.repository.PathRepository;
-import com.weiwensangsang.repository.UserRepository;
+import com.weiwensangsang.domain.bike.LogHistory;
+import com.weiwensangsang.repository.*;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.security.SecurityUtils;
 import com.weiwensangsang.service.dto.UserDTO;
@@ -50,6 +49,9 @@ public class AlgoService {
 
     @Autowired
     private PathRepository pathRepository;
+
+    @Autowired
+    private LogHistoryRepository logHistoryRepository;
 
     public void generateTopo(Long height, Long weight) {
         List<Location> locations = new ArrayList<Location>();
@@ -136,6 +138,14 @@ public class AlgoService {
         Location l2 = locationRepository.findOneByPositionX(dst).get();
         l2.resetType();
         locationRepository.save(l2);
+    }
+
+    public void log(String content) {
+        logHistoryRepository.save(LogHistory.create(content));
+    }
+
+    public void log(String content, Faker faker) {
+        logHistoryRepository.save(LogHistory.create(content, faker));
     }
 
 }

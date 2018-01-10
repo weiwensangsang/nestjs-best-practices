@@ -5,7 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -38,7 +39,16 @@ public class LogHistory implements Serializable {
     private Instant createDate;
 
     public Instant getCreateDate() {
+
         return createDate;
+    }
+
+    public LocalDateTime getTime() {
+        ZoneId zoneId  = ZoneId.systemDefault();
+        return createDate.atZone(zoneId).toLocalDateTime();
+    }
+
+    public void setTime(LocalDateTime LocalDateTime) {
     }
 
     public void setCreateDate(Instant createDate) {
@@ -115,5 +125,24 @@ public class LogHistory implements Serializable {
             ", state='" + getState() + "'" +
             ", content='" + getContent() + "'" +
             "}";
+    }
+
+    private LogHistory() {
+        createDate = Instant.now();
+    }
+
+    public static LogHistory create(String content) {
+        LogHistory log = new LogHistory();
+        log.type = "网络";
+        log.content = content;
+        return log;
+    }
+
+    public static LogHistory create(String content, Faker faker) {
+        LogHistory log = new LogHistory();
+        log.type = "用户";
+        log.creator = faker;
+        log.content = content;
+        return log;
     }
 }

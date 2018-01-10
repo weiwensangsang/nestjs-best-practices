@@ -10,6 +10,7 @@ import com.weiwensangsang.repository.FakerRepository;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.SmsCodeRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
+import com.weiwensangsang.service.AlgoService;
 import com.weiwensangsang.service.util.RandomUtil;
 import com.weiwensangsang.service.util.sdk.demo.mail.SendSMS;
 import com.weiwensangsang.service.util.sdk.exception.SmsException;
@@ -55,6 +56,9 @@ public class FakerResource {
 
     @Autowired
     private ElectricBikeRepository bikeRepository;
+
+    @Autowired
+    private AlgoService algoService;
 
     /**
      * POST  /fakers : Create a new faker.
@@ -141,7 +145,6 @@ public class FakerResource {
 
     @PostMapping("/fakers/create")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createFaker(@Valid @RequestBody String phone) throws URISyntaxException, SmsException, ClientProtocolException, IOException {
         Long number = Long.parseLong(phone);
         if (fakerRepository.findOneByPhone(phone).isPresent()) {
@@ -154,7 +157,7 @@ public class FakerResource {
         try {
             SendSMS.sendActivated(phone, code.getCode());
             smsCodeRepository.save(code);
-            fakerRepository.save(Faker.create(phone));
+            algoService.log("注册", fakerRepository.save(Faker.create(phone)));
             return ResponseEntity.ok(ResponseMessage.message("已经发送验证码"));
         } catch (SmsException e) {
             return ResponseEntity.badRequest().body(ResponseMessage.message("短信异常"));
@@ -176,6 +179,7 @@ public class FakerResource {
             user.setState(locations.get(RandomUtil.getLocate(locations.size() - 1)).getPositionX().toString());
         }
         fakerRepository.save(user);
+        algoService.log("激活", user);
         return ResponseEntity.ok(ResponseMessage.message("激活成功"));
     }
 
@@ -195,6 +199,7 @@ public class FakerResource {
                         fakerRepository.save(faker);
                     }
                 });
+        algoService.log("用户定位初始化");
         return ResponseEntity.ok(ResponseMessage.message("随机放置成功, 已解锁车的用户不能瞎跑"));
     }
 
@@ -204,6 +209,7 @@ public class FakerResource {
         Faker faker = fakerRepository.findOneByPhone(phone).get();
         faker.setBalance(faker.getBalance() + 388L);
         fakerRepository.save(faker);
+        algoService.log("充值388元", faker);
         return ResponseEntity.ok(ResponseMessage.message("已充值388元"));
     }
 }

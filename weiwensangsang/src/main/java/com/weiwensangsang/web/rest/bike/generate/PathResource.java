@@ -147,9 +147,11 @@ public class PathResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> countPath(@PathVariable Long src, @PathVariable Long dst, @PathVariable String type) {
         if (type.equals("路径最短")) {
+            algoService.log("计算最短路径");
             return algoService.countPrimaryPath(src, dst);
         } else if (type.equals("出行最吉")) {
             try {
+                algoService.log("计算最吉路径");
                 return algoService.countLuckyPath(src, dst);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body(ResponseMessage.message("无法找到一条大吉大利的路"));

@@ -38,6 +38,7 @@
                 vm.queryCount = vm.totalItems;
                 vm.logHistories = data;
                 vm.page = pagingParams.page;
+                console.log(vm.logHistories);
             }
             function onError(error) {
                 AlertService.error(error.data.message);
