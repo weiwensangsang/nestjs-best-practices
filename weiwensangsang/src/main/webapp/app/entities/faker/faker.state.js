@@ -12,6 +12,7 @@
         .state('faker', {
             parent: 'entity',
             url: '/faker',
+            cache:false,
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'Fakers'

@@ -48,6 +48,7 @@
             FakerLocate.save(function success(result) {
                 toaster.pop('success', ' ', result.message);
                 $state.go('faker', null, {reload: true});
+                window.location.reload();
             }, function error(result) {
                 toaster.pop('error', ' ', result.data.message);
             });

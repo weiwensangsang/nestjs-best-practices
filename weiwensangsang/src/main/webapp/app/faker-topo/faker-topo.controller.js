@@ -53,13 +53,10 @@
                 case 'drive':
                     DriveBike.save({bikeid:vm.data.currentBike.id, distanceid:vm.dst.id}, vm.primary.location, function success(result) {
                         toaster.pop('success', ' ', result.message);
-
+                        window.location.reload();
                     }, function error(result) {
                         toaster.pop('error', ' ', result.data.message);
                     });
-                    $state.go('faker', null, {reload: true});
-
-
                     break;
                 case 'bike':
                     $state.go('location-electric-bike');

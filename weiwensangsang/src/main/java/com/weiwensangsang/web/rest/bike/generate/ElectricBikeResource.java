@@ -258,6 +258,7 @@ public class ElectricBikeResource {
             distance.plus();
             relative.setLocation(distance);
             bike.setOil(bike.getOil() - sum);
+            bike.setDistance(bike.getDistance() + sum);
             bike.setIntegrity(bike.getIntegrity() - 5 - unluck * 3);
             electricBikeRepository.save(bike);
             relationRepository.save(relative);
