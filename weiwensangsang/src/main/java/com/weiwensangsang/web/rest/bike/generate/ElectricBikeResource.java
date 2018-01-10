@@ -6,13 +6,11 @@ import com.weiwensangsang.domain.bike.ElectricBike;
 import com.weiwensangsang.domain.bike.Faker;
 import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
-import com.weiwensangsang.repository.ElectricBikeRepository;
-import com.weiwensangsang.repository.FakerRepository;
-import com.weiwensangsang.repository.LocationElectricBikeRepository;
-import com.weiwensangsang.repository.LocationRepository;
+import com.weiwensangsang.repository.*;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.util.weather.WeatherUtil;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
+import com.weiwensangsang.web.rest.vm.Link;
 import com.weiwensangsang.web.rest.vm.RelationVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -51,6 +49,9 @@ public class ElectricBikeResource {
 
     @Autowired
     private FakerRepository fakerRepository;
+
+    @Autowired
+    private PathRepository pathRepository;
 
     public ElectricBikeResource(ElectricBikeRepository electricBikeRepository) {
         this.electricBikeRepository = electricBikeRepository;
@@ -216,5 +217,44 @@ public class ElectricBikeResource {
         return ResponseEntity.badRequest().body(ResponseMessage.message("type error"));
     }
 
+    @PostMapping("/electric-bikes/drive/bike/{bikeid}/distance/{distanceid}")
+    @Timed
+    public ResponseEntity<?> driveBike(@PathVariable Long distanceid, @PathVariable Long bikeid, @Valid @RequestBody List<Location> list) {
+        ElectricBike bike = electricBikeRepository.findOne(bikeid);
+        Faker faker = fakerRepository.findOneByPhone(bike.getType()).get();
+        if (bike.getIntegrity() < 50 ) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("此车已损坏，请换车"));
+        }
+        LocationElectricBike relative = relationRepository.findOneByElectricBike(bike);
+        Location current = relative.getLocation();
+        Location distance = locationRepository.findOne(distanceid);
+        Long unluck = list.stream().filter(location -> location.getType().equals("凶")).count();
+        Long sum = 0L;
+        for (int i = 0; i <= list.size() - 2; i++) {
+            try {
+                sum += pathRepository.findOneByFromWhereAndToWhere(list.get(i), list.get(i + 1)).get().getLength();
+            } catch (Exception e) {
+                sum += pathRepository.findOneByFromWhereAndToWhere(list.get(i + 1), list.get(i)).get().getLength();
+            }
+        }
+
+        if (bike.getOil() < sum ) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("此车已损坏，请换车"));
+        } else {
+            //log
+            faker.setState(distance.getPositionX().toString());
+            current.minus();
+            distance.plus();
+            relative.setLocation(distance);
+            bike.setOil(bike.getOil() - sum);
+            bike.setIntegrity(bike.getIntegrity() - 5 - unluck * 3);
+            electricBikeRepository.save(bike);
+            relationRepository.save(relative);
+            locationRepository.save(current);
+            locationRepository.save(distance);
+            fakerRepository.save(faker);
+            return ResponseEntity.ok(ResponseMessage.message("行车路程执行!"));
+        }
+    }
 
 }

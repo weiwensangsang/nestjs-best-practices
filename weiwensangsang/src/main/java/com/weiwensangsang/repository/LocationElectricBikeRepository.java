@@ -1,5 +1,6 @@
 package com.weiwensangsang.repository;
 
+import com.weiwensangsang.domain.bike.ElectricBike;
 import com.weiwensangsang.domain.bike.Location;
 import com.weiwensangsang.domain.bike.LocationElectricBike;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ import java.util.List;
 @Repository
 public interface LocationElectricBikeRepository extends JpaRepository<LocationElectricBike, Long> {
     List<LocationElectricBike> findAllByLocation(Location location);
+    LocationElectricBike findOneByElectricBike(ElectricBike electricBike);
+
 }

@@ -167,6 +167,14 @@ public class Location implements Serializable {
         return locations;
     }
 
+    public void minus() {
+        eBikeNumber--;
+    }
+
+    public void plus() {
+        eBikeNumber++;
+    }
+
     public void fixType() {
         type += "-Fix";
     }
