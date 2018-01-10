@@ -24,7 +24,8 @@
                 }
             },
             resolve: {
-            }
+            },
+            reload:true
         })
         .state('faker-detail', {
             parent: 'faker',

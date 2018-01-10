@@ -40,6 +40,9 @@ public class Faker implements Serializable {
     @Column(name = "activated")
     private Boolean activated;
 
+    @Column(name = "balance")
+    private Long balance;
+
     @Column(name = "created_date")
     private Instant createDate;
 
@@ -101,6 +104,29 @@ public class Faker implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
+
+    public Long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Long balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public String toString() {
+        return "Faker{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", state='" + state + '\'' +
+                ", activated=" + activated +
+                ", balance=" + balance +
+                ", createDate=" + createDate +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -121,22 +147,15 @@ public class Faker implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "Faker{" +
-            "id=" + getId() +
-            ", phone='" + getPhone() + "'" +
-            ", name='" + getName() + "'" +
-            ", type='" + getType() + "'" +
-            ", state='" + getState() + "'" +
-            ", activated='" + isActivated() + "'" +
-            "}";
-    }
-
     private Faker() {
         createDate = Instant.now();
         activated = false;
         state = "未定";
+        balance = 0L;
+    }
+
+    public void pay(Long pay) {
+        balance -= pay;
     }
 
     public static Faker create(String phone) {

@@ -197,4 +197,13 @@ public class FakerResource {
                 });
         return ResponseEntity.ok(ResponseMessage.message("随机放置成功, 已解锁车的用户不能瞎跑"));
     }
+
+    @PostMapping("/fakers/deposit/{phone}")
+    @Timed
+    public ResponseEntity<?> depositFaker(@PathVariable String phone) {
+        Faker faker = fakerRepository.findOneByPhone(phone).get();
+        faker.setBalance(faker.getBalance() + 388L);
+        fakerRepository.save(faker);
+        return ResponseEntity.ok(ResponseMessage.message("已充值388元"));
+    }
 }

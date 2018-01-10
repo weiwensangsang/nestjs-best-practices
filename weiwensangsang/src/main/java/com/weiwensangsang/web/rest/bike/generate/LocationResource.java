@@ -152,7 +152,6 @@ public class LocationResource {
 
     @PostMapping("/locations/generate")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> generate(@Valid @RequestBody TopoVM data) {
         log.debug(data.toString());
 

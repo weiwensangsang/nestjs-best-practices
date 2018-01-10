@@ -57,7 +57,7 @@
                     }, function error(result) {
                         toaster.pop('error', ' ', result.data.message);
                     });
-                    $state.go('faker', {}, { reload: true });
+                    $state.go('faker', null, {reload: true});
 
 
                     break;

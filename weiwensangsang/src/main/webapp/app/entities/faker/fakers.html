@@ -30,7 +30,7 @@
             <thead>
                 <tr>
                     <th><span>Phone</span></th>
-                    <!--<th><span>Type</span></th>-->
+                    <th><span>余额</span></th>
                     <th><span>当前位置</span></th>
                     <th><span>是否激活</span></th>
                     <th></th>
@@ -39,7 +39,7 @@
             <tbody>
                 <tr ng-repeat="faker in vm.fakers track by faker.id">
                     <td>{{faker.phone}}</td>
-                    <!--<td>{{faker.type}}</td>-->
+                    <td>{{faker.balance}}元</td>
                     <td>站点{{faker.state}}</td>
                     <td>{{faker.activated}}</td>
                     <td class="text-right">
@@ -55,6 +55,12 @@
                                     class="btn btn-primary btn-sm">
                                 <span>激活</span>
                                 <span class="hidden-sm-down"></span>
+                            </button>
+
+                            <button type="submit"
+                                    ng-click="vm.action(faker.phone)"
+                                    class="btn btn-primary btn-sm">
+                                <span>充值</span>
                             </button>
                             <button type="submit"
                                     ui-sref="faker.delete({id:faker.id})"

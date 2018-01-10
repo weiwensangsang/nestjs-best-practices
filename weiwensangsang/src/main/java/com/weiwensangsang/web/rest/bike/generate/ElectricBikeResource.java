@@ -238,11 +238,16 @@ public class ElectricBikeResource {
             }
         }
 
+        if (faker.getBalance() < sum * 3 ) {
+            return ResponseEntity.badRequest().body(ResponseMessage.message("余额不足，请充值"));
+        }
+
         if (bike.getOil() < sum ) {
             return ResponseEntity.badRequest().body(ResponseMessage.message("此车已损坏，请换车"));
         } else {
             //log
             faker.setState(distance.getPositionX().toString());
+            faker.pay(sum * 3);
             current.minus();
             distance.plus();
             relative.setLocation(distance);
