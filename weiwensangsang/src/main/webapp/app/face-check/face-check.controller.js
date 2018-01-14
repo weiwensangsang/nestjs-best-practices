@@ -38,15 +38,17 @@
             canvas.getContext('2d').drawImage(video, 0, 0, 400, 300);
 
             //把canvas图像转为img图片
-            img.src = canvas.toDataURL("image/png");
-            console.log(img.src)
-            FaceCheck.save({control: 'create'}, img.src, function success(result) {
-                var o = angular.fromJson(result.message)
-                console.log(o)
-                toaster.pop('success', ' ', result.message);
-            }, function error(result) {
-                toaster.pop('error', ' ', result.data.message);
-            });
+            var data = canvas.toDataURL("image/png");
+            data.replace('data:image/png;base64,', '');
+            FaceCheck.save({control: 'create-url'},
+                data.replace('data:image/png;base64,', ''),
+                function success(result) {
+                    var o = angular.fromJson(result.message);
+                    console.log(o);
+                    toaster.pop('success', ' ', result.message);
+                }, function error(result) {
+                    toaster.pop('error', ' ', result.data.message);
+                });
         })
     }
 })();
