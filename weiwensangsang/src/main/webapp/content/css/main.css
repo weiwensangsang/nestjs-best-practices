@@ -719,3 +719,10 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #f3f2f4;
 }
 /* jhipster-needle-css-add-main JHipster will add new css style */
+.booth {
+    width:400px;
+
+    background:#ccc;
+    border: 10px solid #ddd;
+    margin: 0 auto;
+}
