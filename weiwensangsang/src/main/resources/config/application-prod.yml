@@ -77,7 +77,6 @@ server:
         key-store: /root/keystore.p12
         key-store-password: xzlyf159357
         keyStoreType: PKCS12
-        keyAlias: weiwensangsang
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
