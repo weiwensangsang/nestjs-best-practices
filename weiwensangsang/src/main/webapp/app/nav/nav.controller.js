@@ -32,6 +32,9 @@
                 case 'log':
                     $state.go('log-history');
                     break;
+                case 'face':
+                    $state.go('path');
+                    break;
             }
         }
 
