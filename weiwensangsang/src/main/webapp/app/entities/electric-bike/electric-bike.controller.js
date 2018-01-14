@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -16,7 +16,7 @@
         loadAll();
 
         function loadAll() {
-            ElectricBike.query(function(result) {
+            ElectricBike.query(function (result) {
                 vm.electricBikes = result;
                 vm.searchQuery = null;
             });

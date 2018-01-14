@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -13,9 +13,10 @@
         vm.electricBike = entity;
         vm.previousState = previousState.name;
 
-        var unsubscribe = $rootScope.$on('weiwensangsangApp:electricBikeUpdate', function(event, result) {
-            vm.electricBike = result;
-        });
+        var unsubscribe =
+            $rootScope.$on('weiwensangsangApp:electricBikeUpdate', function (event, result) {
+                vm.electricBike = result;
+            });
         $scope.$on('$destroy', unsubscribe);
     }
 })();
