@@ -12,6 +12,7 @@ import com.weiwensangsang.repository.SmsCodeRepository;
 import com.weiwensangsang.security.AuthoritiesConstants;
 import com.weiwensangsang.service.AlgoService;
 import com.weiwensangsang.service.util.RandomUtil;
+import com.weiwensangsang.service.util.face.FaceUtil;
 import com.weiwensangsang.service.util.sdk.demo.mail.SendSMS;
 import com.weiwensangsang.service.util.sdk.exception.SmsException;
 import com.weiwensangsang.web.rest.util.HeaderUtil;
@@ -211,5 +212,12 @@ public class FakerResource {
         fakerRepository.save(faker);
         algoService.log("充值388元", faker);
         return ResponseEntity.ok(ResponseMessage.message("已充值388元"));
+    }
+
+    @PostMapping("/fakers/face")
+    @Timed
+    public ResponseEntity<?> face(@Valid @RequestBody String base64) {
+        log.error(base64);
+        return ResponseEntity.ok(ResponseMessage.message(FaceUtil.find(base64)));
     }
 }
