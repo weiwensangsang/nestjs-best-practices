@@ -72,11 +72,10 @@ liquibase:
 #        keyAlias: weiwensangsang
 # ===================================================================
 server:
-    port: 80
-    compression:
-        enabled: true
-        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
-        min-response-size: 1024
+    port: 8080
+    tomcat:
+        remote_ip_header: x-forwarded-for
+        protocol_header: x-forwarded-proto
 
 # ===================================================================
 # JHipster specific properties
