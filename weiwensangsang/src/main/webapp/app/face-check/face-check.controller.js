@@ -10,7 +10,26 @@
     function FaceCheckController($state, Location, $q, $scope, toaster, FaceCheck) {
         var vm = this;
         vm.face = 'face';
+        vm.name = null;
+        vm.submitName = submitName;
         $scope.visible = false;
+
+        function submitName() {
+            FaceCheck.save({control: vm.face.faces[0].face_token},
+                vm.name,
+                function success(result) {
+                    var o = angular.fromJson(result.message);
+                    if (typeof(o.error_message) === "undefined") {
+                        toaster.pop('success', ' ', '成功');
+                    } else {
+                        toaster.pop('error', ' ', 'FACE++的免费API就是要多点点');
+                    }
+
+                }, function error(result) {
+                    toaster.pop('error', ' ', 'FACE++的免费API就是要多点点');
+                });
+        }
+
         var video = document.getElementById('video'),
             canvas = document.getElementById('canvas'),
             snap = document.getElementById('tack'),

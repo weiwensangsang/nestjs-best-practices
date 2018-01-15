@@ -6,8 +6,10 @@ import com.weiwensangsang.repository.ElectricBikeRepository;
 import com.weiwensangsang.repository.LocationRepository;
 import com.weiwensangsang.repository.SmsCodeRepository;
 import com.weiwensangsang.service.util.face.CommonOperate;
+import com.weiwensangsang.service.util.face.FaceOperate;
 import com.weiwensangsang.service.util.face.FaceSetOperate;
 import com.weiwensangsang.service.util.face.Response;
+import com.weiwensangsang.web.rest.vm.FaceVM;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,63 +44,60 @@ public class FaceResource {
     private ElectricBikeRepository bikeRepository;
 
 
-    @PostMapping("/fakers/face/faceset-operation/{control}")
+    @PostMapping("/fakers/face/faceset-operation")
     @Timed
-    public ResponseEntity<?> faceSet(@PathVariable String control) throws Exception {
+    public ResponseEntity<?> faceSet(@Valid @RequestBody FaceVM data) throws Exception {
         FaceSetOperate set = new FaceSetOperate(false);
-        if (control.equals("create")) {
-            Response r = set.createFaceSet("faker", "faker_2", null, null, null, 0);
-            return ResponseEntity.ok(r);
-        } else if (control.equals("get-all")) {
-            Response r = set.getFaceSets(null);
-            return ResponseEntity.ok(r);
-        } else if (control.equals("get-v")) {
-            Response r = set.getFaceSets(null);
-            return ResponseEntity.ok(r);
-        } else {
-            Response r = set.getDetailByOuterId(control);
-            return ResponseEntity.ok(r);
+        String control = data.getControl();
+        switch (control) {
+            case "create": {
+                Response r = set.createFaceSet(data.getName(), data.getOuterId(), null, null, null, 0);
+                return ResponseEntity.ok(r);
+            }
+            case "get-all": {
+                Response r = set.getFaceSets(null);
+                return ResponseEntity.ok(r);
+            }
+            case "get-detail": {
+                Response r = set.getDetailByOuterId(data.getOuterId());
+                return ResponseEntity.ok(r);
+            }
+            default: {
+                Response r = set.getDetailByOuterId(control);
+                return ResponseEntity.ok(r);
+            }
         }
 
     }
 
-    @PostMapping("/fakers/face/face-operation/{control}")
+    @PostMapping("/fakers/face/face-operation")
     @Timed
-    public ResponseEntity<?> face(@PathVariable String control, @Valid @RequestBody String content) throws Exception {
+    public ResponseEntity<?> face(@Valid @RequestBody FaceVM data) throws Exception {
         CommonOperate common = new CommonOperate(false);
         FaceSetOperate set = new FaceSetOperate(false);
-        if (control.equals("create")) {
-            Response r = common.detectBase64(content, 0, FACESTATUS);
-            return ResponseEntity.ok(r);
-        } else {
-            Response r = set.addFaceByFaceToken(control, "d0ec8159f8aed9f6c47b462a81d51c5d");
-            return ResponseEntity.ok(r);
-        }
-    }
-
-
-    public static boolean generateImage(String imgStr, String path) {
-        if(imgStr == null){
-            return false;
-        }
-        BASE64Decoder decoder = new BASE64Decoder();
-        try{
-            //解密
-            byte[] b = decoder.decodeBuffer(imgStr);
-            //处理数据
-            for (int i = 0;i<b.length;++i){
-                if(b[i]<0){
-                    b[i]+=256;
-                }
+        FaceOperate face = new FaceOperate(false);
+        String control = data.getControl();
+        switch (control) {
+            case "create": {
+                common.searchByFaceSetToken(content, null, null, "d0ec8159f8aed9f6c47b462a81d51c5d", 1);
+                Response r = common.detectBase64(content, 0, FACESTATUS);
+                return ResponseEntity.ok(r);
             }
-            OutputStream out = new FileOutputStream(path);
-            out.write(b);
-            out.flush();
-            out.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            case "get-detail": {
+                Response r = face.faceGetDetail(data.getContent());
+                return ResponseEntity.ok(r);
+            }
+            case "search": {
+                Response r = face.faceGetDetail(content);
+                return ResponseEntity.ok(r);
+            }
+            default: {
+                String token = control;
+                String name = content;
+                Response r = set.addFaceByFaceToken(token, "d0ec8159f8aed9f6c47b462a81d51c5d");
+                face.faceSetUserId(token, name);
+                return ResponseEntity.ok(r);
+            }
         }
     }
 }

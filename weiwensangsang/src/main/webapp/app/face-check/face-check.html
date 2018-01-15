@@ -36,6 +36,19 @@
             <div> 开心指数:{{vm.face.faces[0].attributes.emotion.happiness}}</div>
         </div>
     </div>
+    <div style="margin:10px">
+        <div class="form-group">
+            <label class="control-label">不知道你是谁，你的名字是</label>
+            <input type="text" class="form-control"
+                   ng-model="vm.name"/>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" ng-click="vm.submitName()"
+                    class="btn btn-default">
+                <span> 提交 </span>
+            </button>
+        </div>
+    </div>
 </div>
 <div class="booth">
     <video id="video" width="400" height="300"></video>
