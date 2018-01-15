@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static com.weiwensangsang.config.Constants.FACESTATUS;
+
 /**
  * REST controller for managing Faker.
  */
@@ -66,19 +68,12 @@ public class FaceResource {
         CommonOperate common = new CommonOperate(false);
         FaceSetOperate set = new FaceSetOperate(false);
         if (control.equals("create")) {
-            Response r = common.detectByte(Base64.decodeBase64(content), 1, null);
-
-            return ResponseEntity.ok(r);
-        } else if (control.equals("create-url")) {
-            log.debug(content.length()+"");
-            log.debug(content.lastIndexOf('\n')+"");
-            Response r = common.detectBase64(content.replaceAll("\r\n", ""), 1, "gender,age,smiling,glass,headpose,facequality,blur");
+            Response r = common.detectBase64(content, 0, FACESTATUS);
             return ResponseEntity.ok(r);
         } else {
             Response r = set.addFaceByFaceToken(control, "d0ec8159f8aed9f6c47b462a81d51c5d");
             return ResponseEntity.ok(r);
         }
-
     }
 
 

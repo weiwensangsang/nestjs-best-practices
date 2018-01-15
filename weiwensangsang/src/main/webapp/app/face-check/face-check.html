@@ -1,35 +1,45 @@
-<div style="margin:10px">
-    <button type="submit" ng-click="vm.changeModel()"
-            class="btn btn-default">
-        <span ng-if="vm.model === 'tense'"> 放大 </span>
-        <span ng-if="vm.model === 'light'"> 缩小 </span>
-    </button>
-</div>
-
-<div style="margin:10px">
-    <button type="submit" ng-click="vm.changeState()"
-            class="btn btn-default">
-        <span ng-if="vm.showLucky === 'normal'"> 占卜模式 </span>
-        <span ng-if="vm.showLucky !== 'normal'"> 普通模式 </span>
-    </button>
-</div>
-
-<div style="margin:10px">
-    <div class="form-group">
-        <label class="control-label">调整位置</label>
-        <input type="text" class="form-control"
-               ng-model="vm.textLength"/>
+<div ng-show = "visible">
+    <div style="margin:10px">
+        <span> 您的年龄:{{vm.face.faces[0].attributes.age.value}} </span>
     </div>
-    <div class="modal-footer">
-        <button type="submit" ng-click="vm.changeLength()"
-                class="btn btn-default">
-            <span> 调整 </span>
-        </button>
+    <div style="margin:10px">
+        <span> 您的性别:{{vm.face.faces[0].attributes.gender.value}} </span>
+    </div>
+    <div style="margin:10px">
+        <span> 您的脸: </span>
+        <div style="margin:10px">
+            <div> 黑眼圈:{{vm.face.faces[0].attributes.skinstatus.dark_circle}}</div>
+            <div> 色斑:{{vm.face.faces[0].attributes.skinstatus.stain}}</div>
+            <div> 粉刺:{{vm.face.faces[0].attributes.skinstatus.acne}}</div>
+            <div> 健康程度:{{vm.face.faces[0].attributes.skinstatus.health}}</div>
+        </div>
+    </div>
+    <div style="margin:10px">
+        <span> 您的种族:{{vm.face.faces[0].attributes.ethnicity.value}} </span>
+    </div>
+    <div style="margin:10px">
+        <span> 您的颜值: </span>
+        <div style="margin:10px">
+            <div> 在女性中得分:{{vm.face.faces[0].attributes.beauty.female_score}}</div>
+            <div> 在男性中得分:{{vm.face.faces[0].attributes.beauty.male_score}}</div>
+        </div>
+    </div>
+    <div style="margin:10px">
+        <span> 您的心情: </span>
+        <div style="margin:10px">
+            <div> 悲伤指数:{{vm.face.faces[0].attributes.emotion.sadness}}</div>
+            <div> 平静指数:{{vm.face.faces[0].attributes.emotion.neutral}}</div>
+            <div> 沮丧指数:{{vm.face.faces[0].attributes.emotion.disgust}}</div>
+            <div> 愤怒指数:{{vm.face.faces[0].attributes.emotion.anger}}</div>
+            <div> 惊讶指数:{{vm.face.faces[0].attributes.emotion.surprise}}</div>
+            <div> 恐惧指数:{{vm.face.faces[0].attributes.emotion.fear}}</div>
+            <div> 开心指数:{{vm.face.faces[0].attributes.emotion.happiness}}</div>
+        </div>
     </div>
 </div>
 <div class="booth">
     <video id="video" width="400" height="300"></video>
-    <button id='tack'> snap shot</button>
+    <button id='tack'>来一发</button>
     <canvas id='canvas' width='400' height='300'></canvas>
     <img id='img' src=''>
 </div>

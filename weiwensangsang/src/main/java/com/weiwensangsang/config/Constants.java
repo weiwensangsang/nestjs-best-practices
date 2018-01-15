@@ -17,6 +17,8 @@ public final class Constants {
 
     public static final String FACEPPAPISECRET = "vzHDT07FuoDybKNhw_0L8UdsZP38CXKK";
 
+    public static final String FACESTATUS = "gender,age,emotion,ethnicity,beauty,skinstatus";
+
     private Constants() {
     }
 }

@@ -5,11 +5,12 @@
         .module('weiwensangsangApp')
         .controller('FaceCheckController', FaceCheckController);
 
-    FaceCheckController.$inject = ['$state', 'Location', '$q', '$timeout', 'toaster', 'FaceCheck'];
+    FaceCheckController.$inject = ['$state', 'Location', '$q', '$scope', 'toaster', 'FaceCheck'];
 
-    function FaceCheckController($state, Location, $q, $timeout, toaster, FaceCheck) {
+    function FaceCheckController($state, Location, $q, $scope, toaster, FaceCheck) {
         var vm = this;
-
+        vm.face = 'face';
+        $scope.visible = false;
         var video = document.getElementById('video'),
             canvas = document.getElementById('canvas'),
             snap = document.getElementById('tack'),
@@ -25,7 +26,6 @@
             video: true, //使用摄像头对象
             audio: false  //不适用音频
         }, function (strem) {
-            console.log(strem);
             video.src = vendorUrl.createObjectURL(strem);
             video.play();
         }, function (error) {
@@ -40,14 +40,22 @@
             //把canvas图像转为img图片
             var data = canvas.toDataURL("image/png");
             data.replace('data:image/png;base64,', '');
-            FaceCheck.save({control: 'create-url'},
+            FaceCheck.save({control: 'create'},
                 data.replace('data:image/png;base64,', ''),
                 function success(result) {
+
                     var o = angular.fromJson(result.message);
-                    console.log(o);
-                    toaster.pop('success', ' ', result.message);
+
+                    if (typeof(o.error_message) === "undefined") {
+                        vm.face = o;
+                        console.log(vm.face.faces[0].face_token);
+                        $scope.visible = typeof (vm.face) == "object";
+                        toaster.pop('success', ' ', '成功');
+                    } else {
+                        toaster.pop('error', ' ', 'FACE++的免费API就是要多点点');
+                    }
                 }, function error(result) {
-                    toaster.pop('error', ' ', result.data.message);
+                    toaster.pop('error', ' ', 'FACE++的免费API就是要多点点');
                 });
         })
     }
