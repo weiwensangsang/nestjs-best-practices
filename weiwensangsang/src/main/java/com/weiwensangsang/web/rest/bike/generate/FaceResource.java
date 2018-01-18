@@ -79,8 +79,7 @@ public class FaceResource {
         String control = data.getControl();
         switch (control) {
             case "create": {
-                common.searchByFaceSetToken(content, null, null, "d0ec8159f8aed9f6c47b462a81d51c5d", 1);
-                Response r = common.detectBase64(content, 0, FACESTATUS);
+                Response r = common.detectBase64(data.getContent(), 0, FACESTATUS);
                 return ResponseEntity.ok(r);
             }
             case "get-detail": {
@@ -88,7 +87,7 @@ public class FaceResource {
                 return ResponseEntity.ok(r);
             }
             case "search": {
-                Response r = face.faceGetDetail(content);
+                Response r = set.
                 return ResponseEntity.ok(r);
             }
             default: {
