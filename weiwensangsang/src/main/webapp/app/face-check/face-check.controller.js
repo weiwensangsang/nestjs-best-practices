@@ -5,9 +5,9 @@
         .module('weiwensangsangApp')
         .controller('FaceCheckController', FaceCheckController);
 
-    FaceCheckController.$inject = ['$state', 'Location', '$q', '$scope', 'toaster', 'FaceCheck'];
+    FaceCheckController.$inject = ['$state', 'Location', '$q', '$scope', 'toaster', 'FaceCheck', 'ControlBike'];
 
-    function FaceCheckController($state, Location, $q, $scope, toaster, FaceCheck) {
+    function FaceCheckController($state, Location, $q, $scope, toaster, FaceCheck, ControlBike) {
         var vm = this;
         vm.face = 'face';
         vm.name = null;
@@ -15,8 +15,14 @@
         vm.faceCheckName = null;
         vm.submitName = submitName;
         vm.checkIfName = checkIfName;
+        vm.unlock = unlock;
+        console.log(vm.data);
         $scope.visible = false;
         $scope.isNameExist = 'not-find';
+        if (vm.data === null) {
+            toaster.pop('error', ' ', '错误页面');
+            $state.go('home');
+        }
         function checkIfName() {
             var dto = {};
             dto.control = 'search';
@@ -66,6 +72,17 @@
                 }, function error(result) {
                     toaster.pop('error', ' ', 'FACE++的免费API就是要多点点');
                 });
+        }
+
+        function unlock() {
+            ControlBike.save(vm.data, 'unlock', function success(result) {
+                toaster.pop('success', ' ', result.message);
+                // 这里跳转到新页面
+                $state.go('faker', null, {reload: true});
+
+            }, function error(result) {
+                toaster.pop('error', ' ', result.data.message);
+            });
         }
 
         var video = document.getElementById('video'),

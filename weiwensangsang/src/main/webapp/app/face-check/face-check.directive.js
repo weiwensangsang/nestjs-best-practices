@@ -12,7 +12,9 @@
         directive = {
             restrict : 'EA',
             templateUrl : 'app/face-check/face-check.html',
-            scope : {},
+            scope : {
+                data: "="
+            },
             controller : 'FaceCheckController',
             controllerAs : 'vm',
             bindToController : true

@@ -5,12 +5,12 @@
         .module('weiwensangsangApp')
         .controller('PathController', PathController);
 
-    PathController.$inject = ['Path'];
+    PathController.$inject = ['Path', '$stateParams'];
 
-    function PathController(Path) {
+    function PathController(Path, $stateParams) {
 
-        var vm = this;
-
+        var vm = this;console.log($stateParams.dto);
+        vm.dto = $stateParams.dto;
         vm.paths = [];
 
         loadAll();

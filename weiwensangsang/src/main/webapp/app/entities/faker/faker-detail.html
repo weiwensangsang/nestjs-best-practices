@@ -28,18 +28,32 @@
                 <td>{{locationElectricBike.electricBike.type}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit" ng-if="locationElectricBike.electricBike.type === 'lock'"
-                                ng-click="vm.unlock(locationElectricBike.id)"
-                                class="btn btn-primary btn-sm">
-                            <span>开锁</span>
-                            <span class="hidden-sm-down"></span>
-                        </button>
-                        <button type="submit" ng-if="locationElectricBike.electricBike.type !== 'lock'"
-                                ng-click="vm.lock(locationElectricBike.id)"
-                                class="btn btn-danger btn-sm">
-                            <span>还车</span>
-                            <span class="hidden-sm-down"></span>
-                        </button>
+                        <div style="margin:10px">
+
+                            <button type="submit" ng-if="locationElectricBike.electricBike.type === 'lock'"
+                                    ng-click="vm.unlockByFace(locationElectricBike.id)"
+                                    class="btn btn-primary btn-sm">
+                                <span>人脸开锁</span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                        </div>
+                        <div style="margin:10px">
+
+                            <button type="submit" ng-if="locationElectricBike.electricBike.type === 'lock'"
+                                    ng-click="vm.unlock(locationElectricBike.id)"
+                                    class="btn btn-primary btn-sm">
+                                <span>传统开锁</span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                        </div>
+                        <div style="margin:10px">
+                            <button type="submit" ng-if="locationElectricBike.electricBike.type !== 'lock'"
+                                    ng-click="vm.lock(locationElectricBike.id)"
+                                    class="btn btn-danger btn-sm">
+                                <span>还车</span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                        </div>
                     </div>
                 </td>
 

@@ -40,35 +40,40 @@
         <div class="form-group">
             <button type="submit" ng-click="vm.checkIfName()"
                     class="btn btn-default">
-                <span> 查查我是谁 </span>
+                <span> 我想骑车 </span>
             </button>
         </div>
     </div>
     <div style="margin:10px" ng-show ="isNameExist === 'check-not-found'">
         <div class="form-group">
-            <label class="control-label">不知道你是谁，你的名字是</label>
+            <label class="control-label">不知道你是谁，你的名字是(英文)</label>
             <input type="text" class="form-control"
-                   ng-model="vm.name"/>
+                   ng-model="vm.name" onkeyup="value=value.replace(/[/W]/g,'') "
+                   onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^/d]/g,''))"
+                   ID="Text1" NAME="Text1" />
         </div>
         <div class="modal-footer">
             <button type="submit" ng-click="vm.submitName()"
-                    class="btn btn-default">
+                    class="btn btn-default" >
                 <span> 提交 </span>
             </button>
         </div>
     </div>
     <div style="margin:10px" ng-show ="isNameExist === 'have-found'">
         <div class="form-group">
-            <div> 我已经查到你的信息了，但是免费的API延迟很高，所以你录入的名字可能要过一会才能显示 </div>
+            <div> 我已经查到你的信息了，你可以解锁! 但是免费的API延迟很高，所以你录入的名字可能要过一会才能显示(只显示英文) </div>
             <div> 你是 {{vm.faceCheckName}} </div>
-            <div> GoGoGo </div>
+            <button type="submit" ng-click="vm.unlock()"
+                    class="btn btn-default" >
+                <span> 解锁 </span>
+            </button>
         </div>
     </div>
 
 </div>
 <div class="booth">
     <video id="video" width="400" height="300"></video>
-    <button id='tack'>来一发</button>
+    <button id='tack'>拍照</button>
     <canvas id='canvas' width='400' height='300'></canvas>
     <img id='img' src=''>
 </div>
