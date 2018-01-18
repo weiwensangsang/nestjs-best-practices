@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static com.weiwensangsang.config.Constants.FACESETNORMAL;
 import static com.weiwensangsang.config.Constants.FACESTATUS;
 
 /**
@@ -62,9 +63,12 @@ public class FaceResource {
                 Response r = set.getDetailByOuterId(data.getOuterId());
                 return ResponseEntity.ok(r);
             }
-            default: {
-                Response r = set.getDetailByOuterId(control);
+            case "clear": {
+                Response r = set.removeFaceFromFaceSetByFaceSetToken(FACESETNORMAL, "RemoveAllFaceTokens");
                 return ResponseEntity.ok(r);
+            }
+            default: {
+                return ResponseEntity.badRequest().body(ResponseMessage.message("错误"));
             }
         }
 
@@ -82,20 +86,17 @@ public class FaceResource {
                 Response r = common.detectBase64(data.getContent(), 0, FACESTATUS);
                 return ResponseEntity.ok(r);
             }
-            case "get-detail": {
-                Response r = face.faceGetDetail(data.getContent());
+            case "add": {
+                face.faceSetUserId(data.getToken(), data.getName());
+                Response r = set.addFaceByFaceToken(data.getToken(), FACESETNORMAL);
                 return ResponseEntity.ok(r);
             }
             case "search": {
-                Response r = set.
+                Response r = common.searchByFaceSetToken(data.getToken(), null, null, FACESETNORMAL, 1);
                 return ResponseEntity.ok(r);
             }
             default: {
-                String token = control;
-                String name = content;
-                Response r = set.addFaceByFaceToken(token, "d0ec8159f8aed9f6c47b462a81d51c5d");
-                face.faceSetUserId(token, name);
-                return ResponseEntity.ok(r);
+                return ResponseEntity.badRequest().body(ResponseMessage.message("错误"));
             }
         }
     }

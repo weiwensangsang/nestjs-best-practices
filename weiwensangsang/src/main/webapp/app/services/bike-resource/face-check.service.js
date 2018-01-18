@@ -8,7 +8,7 @@
     FaceCheck.$inject = ['$resource'];
 
     function FaceCheck($resource) {
-        var service = $resource('api/fakers/face/face-operation/:control', {}, {
+        var service = $resource('api/fakers/face/face-operation', {}, {
             'save' : {method : 'POST'}
         });
         return service;
