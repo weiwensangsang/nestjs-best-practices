@@ -1,4 +1,4 @@
-# NodeJS Best Practices
+# NestJS Best Practices
 
 JavaScript
 
