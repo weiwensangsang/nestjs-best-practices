@@ -5,30 +5,7 @@ This project describes the architectural principles and best practices of NestJS
 ### NodeJS
 
 
-
-
--  Event Loop, Timers, and process.nextTick()
-
-   -  For Node.js, why does Google use the V8 engine?
-   -  What is a reactor pattern in Node.js?
-   -  什么是事件循环 (Event Loop)？它是如何工作的？
-   -  What does event-driven programming mean?
-   -  What is an Event Loop in Node.js?
-   -  Differentiate between process.nextTick() and setImmediate()?
-   -  What is an EventEmitter in Node.js?
-   -  What do you understand by Event-driven programming?
-   -  What is an Event loop in Node.js and how does it work?
-   -  List down the tasks which should be done asynchronously using the event loop?
-   -  What is the difference between setImmediate() and setTimeout()?
-   -  Differentiate between process.nextTick() and setImmediate()?
-   -  What do you understand by an Event Emitter in Node.js?
-   -  Node.js 中的事件发射器是什么 ？ 
-   -  What are the asynchronous tasks that should occur in an event loop?
-   -  What is the primary reason to use the event-based model in Node.js?
-   -  What is the difference between setImmediate() and setTimeout()?
-   -  List down the various timing features of Node.js.
-
-
+-  [Event Loop, Timers, and process.nextTick()](problems/event-loop.md) 
 
 
 -  Callback 
