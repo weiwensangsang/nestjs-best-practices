@@ -197,6 +197,288 @@ setTimeout(function() {
 })
 ```
 
+
+
+整体script作为第一个宏任务进入主线程，遇到console.log(1)输出1。
+
+遇到setTimeout，其回调函数被分发到 macro Task 任务 Event Queue中。我们暂且记为setTimeout1。
+
+遇到process.nextTick()，其回调函数被分发到micro Task 任务Event Queue中。我们记为process1。
+
+遇到Promise，new Promise直接执行，输出7。
+
+then被分发到 micro TaskEvent Queue中。我们记为then1。
+
+又遇到了setTimeout，其回调函数被分发到宏任务Event Queue中，我们记为setTimeout2。
+
+
+
+这个时候同步代码已经执行完毕了，marco Task List: setTimeout1, setTimeout2
+
+micro Task List: process1, Promise.then
+
+这一轮的结果是输出1，7。
+
+
+
+现在开始执行micro Task, 因为在marco Task 和micro Task 列表同时存在时，优先执行micro Task。
+
+我们发现了process1和then1两个微任务，执行process1,输出6。执行then1，输出8。 第一轮事件循
+
+环正式结束，这一轮的结果是输出1，7，6，8。
+
+marco Task List: setTimeout1, setTimeout2
+
+micro Task List: 
+
+
+
+那么第二轮事件循环从setTimeout1宏任务开始：
+
+首先输出2。接下来遇到了又一个process.nextTick()，将其分发到微任务Event Queue中，记为process2。
+
+new Promise立即执行输出4，then也分发到微任务Event Queue中，记为then2。
+
+marco Task List: setTimeout2
+
+micro Task List:  process2, then2
+
+
+
+这一轮的结果是输出1，7，6，8,  2 , 4
+
+
+
+现在开始执行微任务，我们发现有process2和then2两个微任务可以执行输出3，5。 
+
+
+
+这一轮的结果是输出1，7，6，8,  2 , 4，3，5。
+
+
+
+
+
+第三轮事件循环从setTimeout2宏任务开始：
+
+这是类似的，会打印 9，11，10，12。
+
+
+
+完整的输出为1，7，6，8，2，4，3，5，9，11，10，12。 (请注意，node环境下的事件监听依赖libuv与前端环境不完全相同，输出顺序可能会有误差)
+
+
+
+
+
+Try this:
+
+```javascript
+new Promise(function (resolve) { 
+    console.log('1')// Promise1
+    resolve()
+}).then(function () {
+    console.log('3') // Promise1.then
+})
+setTimeout(function () { // setTimeout1
+    console.log('4')
+    setTimeout(function () { // setTimeout2
+        console.log('7')
+        new Promise(function (resolve) { //Promise2
+            console.log('8')
+            resolve()
+        }).then(function () { //Promise2.then
+            console.log('10')
+            setTimeout(function () {  // setTimeout3
+                console.log('12')
+            })
+        })
+        console.log('9')
+    })
+})
+setTimeout(function () { // setTimeout4
+    console.log('5')
+})
+setTimeout(function () {  // setTimeout5
+    console.log('6')
+    setTimeout(function () { // setTimeout6
+        console.log('11')
+    })
+})
+console.log('2') 
+```
+
+
+
+1.  将完整代码作为一个macon任务去执行，分发 macro Task,  分发 micro Task,  
+
+   1. 打印1，2
+   2. macro : setTimeout1, setTimeout4, setTimeout5
+   3. micro : Promise1.then
+
+2. 选择下一个任务去执行。micro 的 Promise1.then
+
+   1. 打印3
+   2. macro : setTimeout1, setTimeout4, setTimeout5
+   3. micro : 
+
+3. 选择下一个任务去执行。macro 的 setTimeout1
+
+   1. 打印4
+   2. macro :  setTimeout4, setTimeout5, setTimeout2
+   3. micro : 
+
+4. 选择下一个任务去执行。macro 的 setTimeout4
+
+   1. 打印5
+   2. macro :   setTimeout5, setTimeout2
+   3. micro : 
+
+5. 选择下一个任务去执行。macro 的 setTimeout5
+
+   1. 打印6
+   2. macro :   setTimeout2, setTimeout6
+   3. micro : 
+
+6. 选择下一个任务去执行。macro 的 setTimeout2
+
+   1. 打印7, 8, 9
+   2. macro :   setTimeout6
+   3. micro : Promise2.then
+
+7. 选择下一个任务去执行。micro 的Promise2.then
+
+   1. 打印10
+   2. macro :   setTimeout6，  setTimeout3
+   3. micro : 
+
+8. 选择下一个任务去执行。macro 的setTimeout6
+
+   1. 打印11
+   2. macro :   setTimeout3
+   3. micro : 
+
+9. 选择下一个任务去执行。macro 的setTimeout3
+
+   1. 打印12
+   2. macro :   
+   3. micro : 
+
+   
+
+   
+
+   ### async/await用来干什么？
+
+   
+
+   
+
+   https://juejin.cn/post/6844903988584775693
+
+上面的案例只是用setTimeout和Promise模拟了一些场景来帮助理解，并没有用到async/await下面我们从什么是async/await开始讲起。
+
+我们创建了 promise 但不能同步等待它执行完成。我们只能通过 then 传一个回调函数这样很容易再次陷入 promise 的回调地狱。
+
+实际上，async/await 在底层转换成了 promise 和 then 回调函数。也就是说，这是 promise 的语法糖。
+
+每次我们使用 await, 解释器都创建一个 promise 对象，然后把剩下的 async 函数中的操作放到 then 回调函数中。async/await 的实现，离不开 Promise。
+
+从字面意思来理解，async 是“异步”的简写，而 await 是 async wait 的简写可以认为是等待异步方法执行完成。
+
+### 
+
+用来优化 promise 的回调问题，被称作是异步的终极解决方案。
+
+
+
+单一的 Promise 链并不能发现 async/await 的优势，但是如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。
+
+1. async定义的是一个Promise函数和普通函数一样只要不调用就不会进入事件队列。
+2. async内部如果没有主动return Promise，那么async会把函数的返回值用Promise包装。
+3. await关键字必须出现在async函数中，await后面不是必须要跟一个异步操作，也可以是一个普通表达式。
+4. 遇到await关键字，await右边的语句会被立即执行然后await下面的代码进入等待状态，等待await得到结果。 await后面如果不是 promise 对象, await会阻塞后面的代码，先执行async外面的同步代码，同步代码执行完，再回到async内部，把这个非promise的东西，作为 await表达式的结果。 await后面如果是 promise 对象，await 也会暂停async后面的代码，先执行async外面的同步代码，等着 Promise 对象 fulfilled，然后把 resolve 的参数作为 await 表达式的运算结果。
+
+
+
+
+
+```javascript
+const firstPromise = new Promise((resolve, reject) => {
+  // 异步操作
+  setTimeout(() => {
+    console.log('第一个 Promise 执行完成');
+    resolve('成功');
+  }, 1000);
+});
+
+const secondPromise = new Promise((resolve, reject) => {
+  // 异步操作
+  setTimeout(() => {
+    console.log('第二个 Promise 执行完成');
+    reject('失败');
+  }, 2000);
+});
+
+firstPromise.then((result) => {
+  console.log(result);
+  return secondPromise;
+}).then((result) => {
+  console.log(result);
+  console.log('所有 Promise 都已经执行完成');
+}).catch((error) => {
+  console.error(error);
+});
+```
+
+
+
+```
+const firstPromise = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('第一个 Promise 执行完成');
+      resolve('成功');
+    }, 1000);
+  });
+};
+
+const secondPromise = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('第二个 Promise 执行完成');
+      reject('失败');
+    }, 2000);
+  });
+};
+
+const executePromises = async () => {
+  try {
+    const result1 = await firstPromise();
+    console.log(result1);
+    const result2 = await secondPromise();
+    console.log(result2);
+    console.log('所有 Promise 都已经执行完成');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+executePromises();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 https://juejin.cn/post/6844903740667854861
 
 一个事件轮询Event Loop需要三个组件：
