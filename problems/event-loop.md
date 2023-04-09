@@ -2,11 +2,17 @@
 
 
 
+
+
 ### JS为什么是单线程的?
 
 最初设计JS是用来在浏览器验证表单操控DOM元素的是一门脚本语言，如果js是多线程的那么两个线程同时对一个DOM元素进行了相互冲突的操作，那么浏览器的解析器是无法执行的。
 
 ### JS为什么需要异步?
+
+event loop 的作用是去監控堆疊（call stack）和工作佇列（task queue），當堆疊當中沒有執行項目的時候，便把佇列中的內容拉到堆疊中去執行。
+
+JS可以在前端使用，也可以在后端使用。在前端使用时，异步函数是很合适的。因为长时间的等待会导致用户直接刷新页面。但是在后端，异步函数使用的场景不多，因为后端任务中采集获取大量第三方数据，再根据汇总数据计算结果是一个非常正常的情况。
 
 如果JS中不存在异步，只能自上而下执行，如果上一行解析时间很长，那么下面的代码就会被阻塞。对于用户而言，阻塞就意味着"卡死"，这样就导致了很差的用户体验。比如在进行ajax请求的时候如果没有返回数据后面的代码就没办法执行。
 
@@ -368,12 +374,58 @@ console.log('2')
 
    
 
+   在 Promise 构造函数中，如果执行器函数（executor function）立即调用了 `resolve()` 方法解决 Promise 对象，那么 `then()` 方法中传入的回调函数将会被执行，并且在 Promise 对象的状态变为已解决（resolved）后立即执行。如果没有执行 `resolve()` 方法，`then()` 方法中的回调函数就不会被执行。
+
+   下面是一个简单的例子：
+
+   ```
+   javascriptCopy codeconst promise = new Promise((resolve, reject) => {
+     console.log('Promise constructor');
+     resolve('resolved value');
+   });
+   
+   promise.then((value) => {
+     console.log(`Resolved with value: ${value}`);
+   });
+   
+   console.log('End of script');
+   ```
+   
+   在上面的代码中，当 Promise 构造函数被调用时，立即执行了 `resolve()` 方法，因此 `then()` 方法中的回调函数将会被执行，并且输出结果为：
+   
+   ```
+   javascriptCopy codePromise constructor
+   Resolved with value: resolved value
+   End of script
+   ```
+   
+   如果在 Promise 构造函数中不调用 `resolve()` 方法，则 `then()` 方法中的回调函数将不会被执行，输出结果为：
+   
+   ```
+   javascriptCopy codePromise constructor
+   End of script
+   ```
+   
+   总之，当 Promise 对象的状态变为已解决（resolved）时，与其相关联的 `then()` 方法中的回调函数将会被执行。如果 Promise 构造函数中没有调用 `resolve()` 方法，那么 `then()` 方法中的回调函数将不会被执行。
+   
+   
+   
+   
+   
    ### async/await用来干什么？
-
    
-
    
-
+   
+   
+   
+   每次我们使用 await, 解释器都创建一个 promise 对象，然后把剩下的 async 函数中的操作放到 then 回调函数中
+   
+   
+   
+   
+   
+   
+   
    https://juejin.cn/post/6844903988584775693
 
 上面的案例只是用setTimeout和Promise模拟了一些场景来帮助理解，并没有用到async/await下面我们从什么是async/await开始讲起。
@@ -401,7 +453,9 @@ console.log('2')
 
 
 
+在执行 `async1()` 函数时，遇到 `await async2()` 语句，JavaScript 引擎会将 `async1()` 函数的执行上下文推入调用栈（Call Stack）中，并创建一个空的 Promise 对象。然后，它会暂停 `async1()` 函数的执行，并返回该 Promise 对象，作为 `await async2()` 的值。
 
+当 `async2()` 函数返回的 Promise 对象 resolve 时，JavaScript 引擎会将该 Promise 对象的 then 回调函数推入 microtask 队列中等待执行。
 
 ```javascript
 const firstPromise = new Promise((resolve, reject) => {
@@ -471,6 +525,96 @@ executePromises();
 
 
 
+check this code with await.
+
+```javascript
+async function async1() {
+  console.log('1')
+  await new Promise((resolve) => {
+    console.log('2')
+    resolve()
+  }).then(() => {
+    console.log('3')
+  })
+  console.log('4')
+}
+async1()
+```
+
+
+
+1. 将完整代码作为一个macon任务去执行，
+   1. 打印1, 2
+   2. macro : 
+   3. micro : Promise1.then
+   4. Call Stack: function context and await 自动生成的 空Promise (Wait for Promise resolve)
+2.  Promise 完成resolve， Call Stack 推入 micro Task,  
+   1. 打印
+   2. macro : 
+   3. micro : Promise1.then， await  context Promise 
+   4. Call Stack: ,
+3. 完成
+   1. 打印3, 4
+   2. macro : 
+   3. micro : 
+   4. Call Stack: ,
+
+
+
+```javascript
+async function async1() {
+  console.log('2')
+  const data = await async2() // await1
+  console.log(data)
+  console.log('8')
+}
+
+async function async2() {
+  return new Promise(function (resolve) {
+    console.log('3')
+    resolve('await的结果')
+  }).then(function (data) { // Promise1
+    console.log('6')
+    return data
+  })
+}
+console.log('1')
+
+setTimeout(function () {
+  console.log('9')
+}, 0)
+
+async1()
+
+new Promise(function (resolve) { // Promise2
+  console.log('4')
+  resolve()
+}).then(function () {
+  console.log('7')
+})
+console.log('5')
+```
+
+
+
+1. 将完整代码作为一个macon任务去执行，分发 macro Task,  分发 micro Task,  
+   1. 打印1, 2, 3, 4, 5
+   2. macro :  setTimeout
+   3. micro : Promise1.then ,  Promise2.then
+   4. Call Stack: ,await1 context Promise
+
+2. Promise 完成resolve， Call Stack 推入 micro Task,
+
+   1. 打印
+   2. macro :  setTimeout
+   3. micro : Promise1.then ,  Promise2.then，await1 context Promise
+   4. Call Stack: 
+
+3.  Finish all Micro Task,
+
+     
+
+   
 
 
 
@@ -478,6 +622,29 @@ executePromises();
 
 
 
+```javascript
+async function async1() {
+  console.log('2')
+  const data = await async2() // await1
+  console.log(data)
+}
+async function async2() {
+  return new Promise(function (resolve) {
+    console.log('3')
+    resolve('8')
+  }).then(function (data) { // Promise1
+    console.log('6')
+    return data
+  })
+}
+async1()
+new Promise(function (resolve) { // Promise2
+  console.log('4')
+  resolve()
+}).then(function () {
+  console.log('7')
+})
+```
 
 https://juejin.cn/post/6844903740667854861
 
@@ -564,23 +731,23 @@ Environment* CreateEnvironment(Isolate* isolate, uv_loop_t* loop, Handle<Context
 
 
 
-
+Questions
 
 10. For Node.js, why does Google use the V8 engine?
 11. What is a reactor pattern in Node.js?
 12. 什么是事件循环 (Event Loop)？它是如何工作的？
 13. What does event-driven programming mean?
-14. What is an Event Loop in Node.js?
+14. 
 15. Differentiate between process.nextTick() and setImmediate()?
 16. What is an EventEmitter in Node.js?
 17. What do you understand by Event-driven programming?
-18. What is an Event loop in Node.js and how does it work?
+18. 
 19. List down the tasks which should be done asynchronously using the event loop?
 20. What is the difference between setImmediate() and setTimeout()?
-21. Differentiate between process.nextTick() and setImmediate()?
-22. What do you understand by an Event Emitter in Node.js?
+21. 
+22. 
 23. Node.js 中的事件发射器是什么 ？ 
-24. What are the asynchronous tasks that should occur in an event loop?
+24. 
 25. What is the primary reason to use the event-based model in Node.js?
-26. What is the difference between setImmediate() and setTimeout()?
+26. 
 27. List down the various timing features of Node.js.
