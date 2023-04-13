@@ -1,141 +1,19 @@
-- 
-- asynchronous function
-
-
-  - How many types of API functions are there in Node.js?
-
-  - What is the difference between Asynchronous and Non-blocking?
-
-  - 我们如何在node.js中使用async await ？
-
-  - How does the DNS lookup function work in Node.js?
-
-  - 如何测量异步操作的持续时间 ？
-
-  - 如何衡量异步操作的性能 ？ 
-
-  - What are the input arguments for an asynchronous queue?
-
-  - 
-
-  - What are the two types of API functions in Node.js?
-
-  - Explain asynchronous and non-blocking APIs in Node.js.
-
-  - How do we implement async in Node.js?
+# Async/Await
 
 
 
-1. ### async/await用来干什么？
-
-   
-
-   
-
-   每次我们使用 await, 解释器都创建一个 promise 对象，然后把剩下的 async 函数中的操作放到 then 回调函数中
-
-   
-
-   
-
-   
-
-   https://juejin.cn/post/6844903988584775693
-
-上面的案例只是用setTimeout和Promise模拟了一些场景来帮助理解，并没有用到async/await下面我们从什么是async/await开始讲起。
-
-我们创建了 promise 但不能同步等待它执行完成。我们只能通过 then 传一个回调函数这样很容易再次陷入 promise 的回调地狱。
-
-实际上，async/await 在底层转换成了 promise 和 then 回调函数。也就是说，这是 promise 的语法糖。
-
-每次我们使用 await, 解释器都创建一个 promise 对象，然后把剩下的 async 函数中的操作放到 then 回调函数中。async/await 的实现，离不开 Promise。
-
-从字面意思来理解，async 是“异步”的简写，而 await 是 async wait 的简写可以认为是等待异步方法执行完成。
-
-### 
-
-用来优化 promise 的回调问题，被称作是异步的终极解决方案。
+### async/await用来干什么？
 
 
 
-单一的 Promise 链并不能发现 async/await 的优势，但是如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。
+A single Promise chain cannot find the advantages of async/await, but if you need to deal with then chains composed of multiple Promises, the advantages can be reflected (Promise solves the problem of multi-layer callbacks through then chains, and now uses async/await to further optimize it).
 
-1. async定义的是一个Promise函数和普通函数一样只要不调用就不会进入事件队列。
-2. async内部如果没有主动return Promise，那么async会把函数的返回值用Promise包装。
-3. await关键字必须出现在async函数中，await后面不是必须要跟一个异步操作，也可以是一个普通表达式。
-4. 遇到await关键字，await右边的语句会被立即执行然后await下面的代码进入等待状态，等待await得到结果。 await后面如果不是 promise 对象, await会阻塞后面的代码，先执行async外面的同步代码，同步代码执行完，再回到async内部，把这个非promise的东西，作为 await表达式的结果。 await后面如果是 promise 对象，await 也会暂停async后面的代码，先执行async外面的同步代码，等着 Promise 对象 fulfilled，然后把 resolve 的参数作为 await 表达式的运算结果。
-
-
-
-在执行 `async1()` 函数时，遇到 `await async2()` 语句，JavaScript 引擎会将 `async1()` 函数的执行上下文推入调用栈（Call Stack）中，并创建一个空的 Promise 对象。然后，它会暂停 `async1()` 函数的执行，并返回该 Promise 对象，作为 `await async2()` 的值。
-
-当 `async2()` 函数返回的 Promise 对象 resolve 时，JavaScript 引擎会将该 Promise 对象的 then 回调函数推入 microtask 队列中等待执行。
-
-```javascript
-const firstPromise = new Promise((resolve, reject) => {
-  // 异步操作
-  setTimeout(() => {
-    console.log('第一个 Promise 执行完成');
-    resolve('成功');
-  }, 1000);
-});
-
-const secondPromise = new Promise((resolve, reject) => {
-  // 异步操作
-  setTimeout(() => {
-    console.log('第二个 Promise 执行完成');
-    reject('失败');
-  }, 2000);
-});
-
-firstPromise.then((result) => {
-  console.log(result);
-  return secondPromise;
-}).then((result) => {
-  console.log(result);
-  console.log('所有 Promise 都已经执行完成');
-}).catch((error) => {
-  console.error(error);
-});
-```
-
-
-
-```
-const firstPromise = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('第一个 Promise 执行完成');
-      resolve('成功');
-    }, 1000);
-  });
-};
-
-const secondPromise = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('第二个 Promise 执行完成');
-      reject('失败');
-    }, 2000);
-  });
-};
-
-const executePromises = async () => {
-  try {
-    const result1 = await firstPromise();
-    console.log(result1);
-    const result2 = await secondPromise();
-    console.log(result2);
-    console.log('所有 Promise 都已经执行完成');
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-executePromises();
-```
-
-
+1. async defines a Promise function that will not enter the event queue as long as it is not called like a normal function.
+2. If there is no active return Promise inside async, then async will wrap the return value of the function with Promise.
+3. The await keyword must appear in the async function. The await is not necessarily followed by an asynchronous operation, but can also be an ordinary expression.
+4. When the await keyword is encountered, the statement on the right of await will be executed immediately, and the code below await will enter the waiting state, waiting for await to get the result.
+    1. If there is no promise object after await, await will block the following code, first execute the synchronous code outside async, after the synchronous code is executed, return to the interior of async, and use this non-promise thing as the result of the await expression.
+    2. If there is a promise object after await, await will also suspend the code behind async, first execute the synchronization code outside of async, wait for the promise object to be fulfilled, and then use the resolve parameter as the operation result of the await expression.
 
 
 
@@ -157,21 +35,21 @@ async1()
 
 
 
-1. 将完整代码作为一个macon任务去执行，
-   1. 打印1, 2
-   2. macro : 
-   3. micro : Promise1.then
-   4. Call Stack: function context and await 自动生成的 空Promise (Wait for Promise resolve)
-2. Promise 完成resolve， Call Stack 推入 micro Task,  
-   1. 打印
-   2. macro : 
-   3. micro : Promise1.then， await  context Promise 
-   4. Call Stack: ,
-3. 完成
-   1. 打印3, 4
-   2. macro : 
-   3. micro : 
-   4. Call Stack: ,
+1. Execute the complete code as a macon task,
+   1. print 1, 2
+   2. macro:
+   3. micro: Promise1. then
+   4. Call Stack: function context and await Automatically generated empty Promise (Wait for Promise resolve)
+2. Promise completes resolve, Call Stack is pushed into micro Task,
+    1. print
+    2. macro:
+    3. micro: Promise1. then, await context Promise
+    4. Call Stack: ,
+3. finish
+    1. print 3, 4
+    2. macro:
+    3. micro:
+    4. Call Stack: ,
 
 
 
@@ -186,7 +64,7 @@ async function async1() {
 async function async2() {
   return new Promise(function (resolve) {
     console.log('3')
-    resolve('await的结果')
+    resolve('await result')
   }).then(function (data) { // Promise1
     console.log('6')
     return data
@@ -211,54 +89,80 @@ console.log('5')
 
 
 
-1. 将完整代码作为一个macon任务去执行，分发 macro Task,  分发 micro Task,  
+When the `async1()` function is executed and the `await async2()` statement is encountered, the JavaScript engine will push the execution context of the `async1()` function into the call stack (Call Stack) and create an empty Promise object . It then suspends the execution of the `async1()` function and returns that Promise object as the value of `await async2()`.
 
-   1. 打印1, 2, 3, 4, 5
-   2. macro :  setTimeout
-   3. micro : Promise1.then ,  Promise2.then
-   4. Call Stack: ,await1 context Promise
-
-2. Promise 完成resolve， Call Stack 推入 micro Task,
-
-   1. 打印
-   2. macro :  setTimeout
-   3. micro : Promise1.then ,  Promise2.then，await1 context Promise
-   4. Call Stack: 
-
-3. Finish all Micro Task,
-
-    
-
-   
+When the Promise object returned by the `async2()` function resolves, the JavaScript engine will push the then callback function of the Promise object into the microtask queue for execution.
 
 
 
+1. Execute the complete code as a macon task, distribute macro Task, distribute micro Task,
+
+    1. Print 1, 2, 3, 4, 5
+    2. macro: setTimeout
+    3. micro: Promise1.then, Promise2.then
+    4. Call Stack: ,await1 context Promise
+
+2. Promise completes resolve, Call Stack is pushed into micro Task,
+
+    1. print
+    2. macro: setTimeout
+    3. micro: Promise1.then, Promise2.then，await1 context Promise
+    4. Call Stack:
+
+3. Finish all Micro Tasks
 
 
 
+### Questions
 
-```javascript
-async function async1() {
-  console.log('2')
-  const data = await async2() // await1
-  console.log(data)
-}
-async function async2() {
-  return new Promise(function (resolve) {
-    console.log('3')
-    resolve('8')
-  }).then(function (data) { // Promise1
-    console.log('6')
-    return data
-  })
-}
-async1()
-new Promise(function (resolve) { // Promise2
-  console.log('4')
-  resolve()
-}).then(function () {
-  console.log('7')
-})
-```
 
-https://juejin.cn/post/6844903740667854861
+  - What is the difference between Asynchronous and Non-blocking?
+
+
+    - Asynchronous: In Node.js, an asynchronous operation means that the program can continue executing while waiting for a time-consuming operation to complete. When an asynchronous operation is initiated, the program moves on to the next line of code without waiting for the operation to finish. Once the operation is complete, a callback function is called to handle the result. Asynchronous operations are usually implemented using callback functions, promises, or async/await syntax.
+    - Non-blocking: In Node.js, non-blocking I/O means that the program can continue to process other requests while waiting for I/O operations to complete. This is achieved through the use of an event loop that listens for I/O events and delegates the handling of these events to separate threads. When an I/O operation is initiated, the event loop moves on to the next request without blocking the current thread. Once the I/O operation is complete, the event loop signals the thread to resume processing the result.
+
+  - How to measure the duration and performance of asynchronous operations?
+
+
+    - console.time()
+    - `performance` module 
+
+  - What are the input arguments for an asynchronous queue?
+
+
+    - An asynchronous queue is a data structure that allows you to execute asynchronous tasks in a sequential order. In Node.js, there are several implementations of asynchronous queues, each with its own set of input arguments. Here are some common input arguments for an asynchronous queue in Node.js:
+
+      1. `concurrency`: This argument specifies the maximum number of tasks that can be executed concurrently in the queue. If not specified, the default value is usually set to 1.
+      2. `task`: This argument represents the function to be executed in the queue. The function can be an asynchronous function that returns a Promise or a callback function.
+      3. `tasks`: This argument is an array of functions to be executed in the queue. Each function can be an asynchronous function that returns a Promise or a callback function.
+      4. `callback`: This argument is a function that is called after all tasks in the queue have been executed. The callback function typically receives an error object (if there is an error) and the results of all tasks in the queue.
+      5. `autostart`: This argument specifies whether the queue should start executing tasks immediately after they are added to the queue. If set to `false`, you need to manually start the queue using a `start()` method.
+      6. `priority`: This argument allows you to prioritize tasks in the queue. Tasks with a higher priority are executed before tasks with a lower priority.
+
+      Here's an example of how to use the `async` package to create an asynchronous queue with some of these input arguments:
+
+      ```javascript
+      const async = require('async');
+      
+      const queue = async.queue(async (task, done) => {
+        // Execute an asynchronous task
+        const result = await doAsyncTask(task);
+        done(null, result);
+      }, 2);
+      
+      queue.push([{param1: 'value1'}, {param2: 'value2'}]);
+      
+      queue.drain(() => {
+        console.log('All tasks have been completed');
+      });
+      ```
+
+      In this example, the `concurrency` argument is set to `2`, which means that a maximum of two tasks can be executed concurrently in the queue. The `task` argument is an asynchronous function that executes an asynchronous task, and the `callback` argument is a function that is called after all tasks in the queue have been executed. Finally, the `push` method is used to add an array of tasks to the queue.
+
+  - How do we implement async in Node.js?
+
+
+    - Callbacks
+    - Promises
+    - Async/await

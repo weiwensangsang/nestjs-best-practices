@@ -20,3 +20,4 @@
   -  What is the use of the crypto module in Node.js?
   -  Explain the concept of Punycode in Node.js?
   -  Why is assert used in Node.js?
+  -  How does the DNS lookup function work in Node.js?
