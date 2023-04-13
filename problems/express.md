@@ -99,5 +99,3 @@ In conclusion, if you are looking for a lightweight, simple-to-use framework, Ex
 
   - Middleware in Node.js is a function that sits between the client request and the server response, and can perform various tasks such as modifying the request or response objects, logging requests, authentication, error handling, etc. Middleware functions are executed in the order they are defined, and can be used to modify the behavior of an application without changing the core functionality.
   - Middleware in Node.js is used to provide additional functionality to an application, such as handling authentication, logging, error handling, or modifying the request and response objects. Middleware functions can be added to an Express.js application using the `app.use()` method, and can be written by the developer or obtained from third-party modules. Middleware functions can help to keep the core logic of an application clean and concise, while providing additional functionality that can be shared across different routes and components of the application.
-
-  

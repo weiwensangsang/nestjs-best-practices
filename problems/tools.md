@@ -30,3 +30,6 @@
   -  Does Node.js provide any Debugger?
   -  What is meant by tracing in Node.js?
   -  What is the purpose of NODE_ENV?
+
+1. Why is assert used in Node.js? The assert module in Node.js is used to perform assertions in code, which means checking whether a condition is met during program execution. If the condition is not met, an AssertionError exception is thrown. The assert module is useful in writing test code to check whether the output of a function matches the expected output.
+2. How does the DNS lookup function work in Node.js? In Node.js, you can use the `dns.lookup()` function to perform a DNS lookup, which resolves a given hostname to an IP address. If the hostname cannot be resolved, an exception is thrown. You can control the behavior of the DNS lookup by specifying an options object, such as whether to use IPv4 or IPv6 addresses, setting a timeout, and more.
