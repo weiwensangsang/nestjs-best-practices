@@ -62,6 +62,7 @@ This project describes the architectural principles and best practices of NestJS
 - 如何在 NestJS 中使用 Docker 进行容器化部署？
 - 如何在 NestJS 中使用 Kubernetes 进行容器编排和部署？
 - 什么是 NestJS 中的异步模块（async module）？如何使用异步模块？
+- nestjs Bull
 
 
 
