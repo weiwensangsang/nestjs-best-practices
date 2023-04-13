@@ -1,28 +1,94 @@
 # Event Loop
 
+The core idea of Node is event-driven programming.
 
+### Why is JavaScript single-threaded?
 
-Node 的核心理念是事件驱动编程。这对程序员来说，意味着你必须知道有哪些事件，以 及如何响应这些事件。很多人接触事件驱动编程是从用户界面开始的：用户点击了什么， 然后你处理“点击事件”。
+JavaScript was originally designed to manipulate DOM elements in browser verification forms. It is a scripting language. If js is multi-threaded, then two threads perform conflicting operations on a DOM element at the same time, then the browser's parser is unenforceable.
 
-### JS为什么是单线程的?
+If there is no asynchrony in JavaScript, it can only be executed from top to bottom. If the parsing time of the previous line is very long, then the following code will be blocked. For users, blocking means "stuck", which leads to a poor user experience. For example, when making an ajax request, if the code behind the data is not returned, there is no way to execute it.
 
-最初设计JS是用来在浏览器验证表单操控DOM元素的是一门脚本语言，如果js是多线程的那么两个线程同时对一个DOM元素进行了相互冲突的操作，那么浏览器的解析器是无法执行的。
+### Why does JavaScript need to be asynchronous?
 
-### JS为什么需要异步?
+The function of the event loop is to monitor the stack (call stack) and the task queue (task queue). When there is no execution item in the stack, the content in the queue is pulled to the stack for execution.
 
-event loop 的作用是去監控堆疊（call stack）和工作佇列（task queue），當堆疊當中沒有執行項目的時候，便把佇列中的內容拉到堆疊中去執行。
-
-JS可以在前端使用，也可以在后端使用。在前端使用时，异步函数是很合适的。因为长时间的等待会导致用户直接刷新页面。但是在后端，异步函数使用的场景不多，因为后端任务中采集获取大量第三方数据，再根据汇总数据计算结果是一个非常正常的情况。
-
-如果JS中不存在异步，只能自上而下执行，如果上一行解析时间很长，那么下面的代码就会被阻塞。对于用户而言，阻塞就意味着"卡死"，这样就导致了很差的用户体验。比如在进行ajax请求的时候如果没有返回数据后面的代码就没办法执行。
-
-写这篇文章之前我一直以为事件循环简单的很，就是先执行同步操作，然后把异步操作排在事件队列里，等同步操作都运行完了（运行栈空闲），按顺序运行事件队列里的内容。
+JavaScript can be used on the front end as well as on the back end. When used on the front end, async functions are a good fit. Because waiting for a long time will cause the user to refresh the page directly. However, in the backend, there are not many scenarios where asynchronous functions are used, because it is very normal to collect a large amount of third-party data in the backend task, and then calculate the result based on the aggregated data.
 
 
 
-Node.js的輕巧高效來自於他只使用單執行緒與Event Loop(事件迴圈)的概念.任何需要等待結果的、請求外部資源才能進行的函式，一律丟到Event Loop中等待。
+------
 
 
+
+### Event Loop
+
+The lightness and efficiency of Node.js comes from the fact that it only uses a single thread and Event Loop (event loop). Any function that needs to wait for the result and requests external resources to proceed will be thrown into the Event Loop to wait.
+
+
+
+An event polling Event Loop requires three components:
+
+1. The event queue Event Queue belongs to the FIFO model. One end pushes event data, and the other end pulls event data. The two ends only communicate through this queue, which belongs to an asynchronous loose coupling.
+2. The read polling thread of the queue, the consumer of the event, and the protagonist of the Event Loop.
+3. A separate thread pool, Thread Pool, is specially used to perform long tasks, heavy tasks, and heavy physical work.
+
+![event-loop](../pictures/event-loop.png)
+
+In the event loop, there is an event queue, which is used to store various events, such as network requests, timers, file reading and writing, and so on. These events are asynchronous in that they typically take a certain amount of time to complete. Once an event completes, it is added to the event queue to be processed by the event loop.
+
+The event loop will process the events in the event queue in a certain order. Specifically, it will continuously perform the following steps:
+
+1. Check whether there are timer timeout events (timers) that need to be processed, and if so, execute the corresponding callback function.
+2. Checks if there are pending I/O events (I/O), and if so, executes the corresponding callback function.
+3. Check whether there is an event in the idle state (idle), and if so, execute the corresponding callback function.
+4. Check whether there is an event that needs to be checked (check), and if so, execute the corresponding callback function.
+5. Check whether there is an event (close) that needs to be closed, and if so, execute the corresponding callback function.
+6. Check whether there are signals (signals) that need to be processed, and if so, execute the corresponding callback function.
+7. If there are still events in the event queue, go back to step 1.
+
+![event-loop-queue](../pictures/event-loop-queue.png)
+
+The Event Loop in Node.js is divided into 6 phases:
+
+1. timers: Used to execute timer callback functions.
+2. I/O callbacks: Used to execute almost all callback functions, except for the callback function of the shutdown event.
+3. idle, prepare: In general, these two phases are empty and will only be triggered when used internally.
+4. poll: used to wait for new I/O events, execute I/O-related callback functions, and enter the next stage when appropriate.
+5. check: Used to execute the setImmediate() callback function.
+6. close callbacks: Callback functions used to execute events such as socket.on('close') .
+
+
+
+In Node.js, because there is only one single thread that continuously checks whether there are events in the queue, for I/O operations such as database file system, including HTTP requests, etc., which are easy to block and wait, if it is also in this single thread Realization will definitely block and affect the execution of other work tasks. Javascript/Node.js will delegate to the underlying thread pool for execution, and will tell the thread pool a callback function, so that the single thread continues to execute other things. When these blocking operations are completed, The result is put into the queue together with the provided callback function. When the single thread continuously reads events from the queue and reads the results of these blocked operations, it will use these operation results as the input parameters of the callback function, and then activate the operation Callback.
+
+Please note that the single thread of Node.js is not only responsible for reading queue events, but also executes the running callback function. This is a main feature different from the multi-threaded mode. In multi-threaded mode, the single thread is only responsible for reading the queue. Events will no longer do other things, and will entrust other threads to do other things, especially in the case of multi-core, one CPU core is responsible for reading queue events, and one CPU core is responsible for executing activated tasks. This method is most suitable for CPU-intensive calculations. task. Conversely, the execution activation task of Node..js, that is, the task in the callback function, is still executed in the single thread responsible for polling, which is doomed that it cannot perform CPU-heavy tasks, such as converting JSON to other data formats, etc. , these tasks affect the efficiency of event polling.
+
+Regardless of whether it is written by the user or the built-in javascript code (nodejs API) of nodejs itself, all javascript codes run in **the same thread**. From the point of view of nodejs, all javascript code is either synchronous code or asynchronous code. Perhaps we can say that the execution of all synchronous codes is done by v8, and the execution of all asynchronous codes is done by the event loop function module provided by libuv
+
+
+
+------
+
+
+
+### libuv and v8
+
+The core of Node.js is composed of two parts: v8 engine and libuv library.
+
+1. v8: is a JavaScript engine developed by Google, which is used to interpret and execute JavaScript code.
+2. libuv: is a cross-platform C library for implementing asynchronous I/O operations and event loops.
+
+
+
+In Node.js, v8 is responsible for parsing and executing JavaScript code, while libuv is responsible for managing the event loop and I/O operations.
+
+
+
+------
+
+
+
+### Running the Code
 
 引出来很多其他概念，比如event table和event queue，我们来看运行过程：
 
@@ -415,33 +481,7 @@ console.log('2')
    ### 
    
 
-一个事件轮询Event Loop需要三个组件：
 
-1. 事件队列Event Queue，属于FIFO模型，一端推入事件数据，另外一端拉出事件数据，两端只通过这个队列通讯，属于一种异步的松耦合。
-2. 队列的读取轮询线程，事件的消费者，Event Loop的主角。
-3. 单独线程池Thread Pool，专门用来执行长任务，重任务，干繁重体力活的。
-
-
-
-
-
-![event-loop](../pictures/event-loop.png)
-
-
-
-![event-loop-queue](../pictures/event-loop-queue.png)
-
-在Node.js中，因为只有一个单线程不断地轮回查询队列中是否有事件，对于数据库 文件系统等I/O操作，包括HTTP请求等等这些容易堵塞等待的操作，如果也是在这个单线程中实现，肯定会堵塞影响其他工作任务的执行，Javascript/Node.js会委托给底层的线程池执行，并会告诉线程池一个回调函数，这样单线程继续执行其他事情，当这些堵塞操作完成后，其结果与提供的回调函数一起再放入队列中，当单线程从队列中不断读取事件，读取到这些堵塞的操作结果后，会将这些操作结果作为回调函数的输入参数，然后激活运行回调函数。
-
-　　请注意，Node.js的这个单线程不只是负责读取队列事件，还会执行运行回调函数，这是它区别于多线程模式的一个主要特点，多线程模式下，单线程只负责读取队列事件，不再做其他事情，会委托其他线程做其他事情，特别是多核的情况下，一个CPU核负责读取队列事件，一个CPU核负责执行激活的任务，这种方式最适合很耗费CPU计算的任务。反过来，Node..js的执行激活任务也就是回调函数中的任务还是在负责轮询的单线程中执行，这就注定了它不能执行CPU繁重的任务，比如JSON转换为其他数据格式等等，这些任务会影响事件轮询的效率。
-
-
-
-不管是用户写的还是nodejs本身内置的javascript代码（nodejs API），所有的javascript代码都运行在**同一个线程里面**。在nodejs的角度看来，所有的javascript代码要么是同步代码，要么就是异步代码。或许我们可以这样说，所有的同步代码的执行都是由v8来完成的，所有异步代码的执行都是由libuv提供的event loop功能模块来完成的
-
-
-
-The event loop is what allows Node.js to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible.
 
 
 
@@ -494,30 +534,32 @@ Environment* CreateEnvironment(Isolate* isolate, uv_loop_t* loop, Handle<Context
 
 
 
+### EventEmitter
+
+EventEmitter is a module for implementing event handling in Node.js. It is a module based on the Observer Pattern, which is used to establish a one-to-many dependency relationship between objects to trigger and process events.
+
+In Node.js, all objects capable of emitting events are instances of EventEmitter. It provides on, emit, once and other methods for adding listeners and triggering events.
 
 
 
+```javascript
+const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
 
-Questions
+// add a listener
+myEmitter.on('event', () => {
+   console.log('an event was triggered');
+});
+// trigger event
+myEmitter. emit('event');
+```
 
-10. For Node.js, why does Google use the V8 engine?
-11. What is a reactor pattern in Node.js?
-12. 什么是事件循环 (Event Loop)？它是如何工作的？
-13. What does event-driven programming mean?
-14. 
-15. Differentiate between process.nextTick() and setImmediate()?
-16. What is an EventEmitter in Node.js?
-17. What do you understand by Event-driven programming?
-18. 
-19. List down the tasks which should be done asynchronously using the event loop?
-20. What is the difference between setImmediate() and setTimeout()?
-21. 
-22. 
-23. Node.js 中的事件发射器是什么 ？ 
-24. 
-25. What is the primary reason to use the event-based model in Node.js?
-26. 
-27. List down the various timing features of Node.js.
+
+In the above code, an EventEmitter instance is created and an event event listener is added. When the event event is triggered using the emit method, the corresponding callback function will be executed and a message will be output to the console.
+
+
+
+### Control Flow
 
 - Control Flow
 
@@ -526,3 +568,43 @@ Questions
   -  How does control flow manage the function calls?
   -  List down the steps using which “Control Flow” controls the function calls in Node.js?
   -  What is the order of execution in control flow statements?
+
+### Questions
+
+
+
+10. What is a reactor pattern in Node.js?
+
+11. 什么是事件循环 (Event Loop)？它是如何工作的？
+
+12. What does event-driven programming mean?
+
+    
+
+13. Differentiate between process.nextTick() and setImmediate()?
+
+14. 
+
+15. What do you understand by Event-driven programming?
+
+16. 
+
+17. List down the tasks which should be done asynchronously using the event loop?
+
+18. What is the difference between setImmediate() and setTimeout()?
+
+19. 
+
+20. 
+
+21. 
+
+22. 
+
+23. What is the primary reason to use the event-based model in Node.js?
+
+24. 
+
+25. List down the various timing features of Node.js.
+
+- 
