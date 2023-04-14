@@ -106,3 +106,9 @@ V8 is an open-source JavaScript engine developed by Google for the Chrome browse
   -  Why is assert used in Node.js? 
 
      -  The assert module in Node.js is used to perform assertions in code, which means checking whether a condition is met during program execution. If the condition is not met, an AssertionError exception is thrown. The assert module is useful in writing test code to check whether the output of a function matches the expected output.
+
+
+
+### class-validator 
+
+data validation.
