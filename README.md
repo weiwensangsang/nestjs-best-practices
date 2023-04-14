@@ -19,10 +19,10 @@ This project describes the architectural principles and best practices of NestJS
 
 
 - [Libuv, V8 and Common Tools](problems/tools.md) 
-- [Test and Security](problems/test-security.md) 
+- [Test and Security](problems/test-security.md)
 
 
-  -  [Build some things](problems/build.md) 
+  -  [Build some Things](problems/build.md) 
   -  [Cons of Node.js](problems/cons.md) 
   -  [44 very hard pure JavaScript questions](problems/44-hard-questions.md) 
 
