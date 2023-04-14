@@ -34,11 +34,9 @@ This project describes the architectural principles and best practices of NestJS
 - [Interceptor](problems/interceptor.md) 
 - [Middleware](problems/middleware.md) 
 - [Guard](problems/guard.md) 
-
-- Pipe
 - [Nestjs Modules and Some Practices](problems/nestjs-modules.md) 
 - Best Full Stack Practice
   - Why we use GraphQL/TypeORM？
   - How we use microservices？
   - How to Deploy with Docker/AWS Lambda/Kubernetes
-  - Real Project: React + Nodejs + Typeorm + GraphQL + PostgreSQL
+- Real Project: React + Nodejs + Typeorm + GraphQL + PostgreSQL
