@@ -1,0 +1,5 @@
+# Microservice
+
+In NestJS, microservices are powered by the @nestjs/microservices module. This module is built on top of Node.js' TCP, UDP and HTTP protocols, and can be used to build microservices based on messaging and remote procedure calls. @nestjs/microservices also provides some common transports such as NATS, Redis, MQTT, gRPC, and AMQP.
+
+The core principle of NestJS's microservice module implementation is to use the message passing mechanism for communication between services. Specifically, each microservice is an independent process, and they communicate through message queues or RPC (remote procedure calls). When a microservice needs to call a method of another microservice, it sends a message to a message queue or makes a remote call via RPC. After another microservice receives the message, it will execute the corresponding method and return the result to the caller.

@@ -44,8 +44,8 @@ This project describes the architectural principles and best practices of NestJS
 
 - Best Full Stack Practice
   - [JWT login](problems/jwt.md) 
-  - Why we use GraphQL/TypeORM？
-  - How we use microservices？
-  - How to Deploy with Docker/AWS Lambda/Kubernetes
+  - [Why We Use GraphQL/TypeORM？](problems/why-graphql-typeorm.md) 
+  - [How We Use Microservices](problems/microservice.md) 
+  - [How to Deploy with Docker/AWS Lambda/Kubernetes](problems/docker.md) 
   
 - Real Project: React + Nodejs + Typeorm + GraphQL + PostgreSQL
