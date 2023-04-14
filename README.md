@@ -22,7 +22,7 @@ This project describes the architectural principles and best practices of NestJS
 - [Test and Security](problems/test-security.md)
 
 
-  -  [Build some Things](problems/build.md) 
+  -  [Build Some Things: Websocket and Cache](problems/build.md) 
   -  [Cons of Node.js](problems/cons.md) 
   -  [44 very hard pure JavaScript questions](problems/44-hard-questions.md) 
 
@@ -62,7 +62,7 @@ This project describes the architectural principles and best practices of NestJS
 - 如何在 NestJS 中使用 Docker 进行容器化部署？
 - 如何在 NestJS 中使用 Kubernetes 进行容器编排和部署？
 - 什么是 NestJS 中的异步模块（async module）？如何使用异步模块？
-- nestjs Bull
+- Nestjs Bull
 
 是的，NestJS Bull使用子进程在单独的Node.js进程中运行作业，与主应用程序分离。这被称为进程隔离或分叉。
 
