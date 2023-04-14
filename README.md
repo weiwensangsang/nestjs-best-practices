@@ -30,8 +30,8 @@ This project describes the architectural principles and best practices of NestJS
 
 ### NestJS
 
-- [Framework: a JavaScript Version Spring, DI and AOP](problems/framework.md) 
-- [Interceptor](problems/interceptor.md) 
+- [Framework: a JavaScript Version Spring, DI](problems/framework.md) 
+- [Interceptor and AOP](problems/interceptor.md) 
 - [Middleware](problems/middleware.md) 
 - [Guard](problems/guard.md) 
 - [Nestjs Modules and Some Practices](problems/nestjs-modules.md) 
