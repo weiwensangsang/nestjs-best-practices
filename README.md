@@ -40,7 +40,7 @@ This project describes the architectural principles and best practices of NestJS
 
 - [Guard](problems/guard.md) 
 
-- [Nestjs Modules and Some Practices](problems/nestjs-modules.md) 
+- [NestJS Modules and Some Practices](problems/nestjs-modules.md) 
 
 - Best Full Stack Practice
   - jwt login
