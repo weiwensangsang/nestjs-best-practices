@@ -43,15 +43,7 @@ This project describes the architectural principles and best practices of NestJS
 - [NestJS Modules and Some Practices](problems/nestjs-modules.md) 
 
 - Best Full Stack Practice
-  - jwt login
-  
-    - 如何在 NestJS 中实现身份验证（authentication）和授权（authorization）？
-      - @AuthGuard()
-  
-    - 如何在 NestJS 中使用 Passport 实现多种身份验证策略？
-    - 如何在 NestJS 中使用 JWT 进行身份验证？
-      - @UseGuards()
-      - @nestjs/jwt 
+  - [JWT login](problems/jwt.md) 
   - Why we use GraphQL/TypeORM？
   - How we use microservices？
   - How to Deploy with Docker/AWS Lambda/Kubernetes
