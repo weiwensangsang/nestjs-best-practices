@@ -1,6 +1,6 @@
-# nestjs-project-structure
+# nestjs-project
 
-Node.js framework NestJS project structure
+Node.js framework NestJS project
 > Started from this issue: [nestjs/nest#2249](https://github.com/nestjs/nest/issues/2249#issuecomment-494734673)
 
 ## Configuration
