@@ -11,7 +11,7 @@ This project describes the architectural principles and best practices of NestJS
 - [Event Loop, Timers, and process.nextTick()](problems/event-loop.md) 
 - [Async and Await](problems/async-await.md) 
 
-- [NPM and modules](problems/npm.md) 
+- [NPM and Modules](problems/npm.md) 
 
 - [Express.js](problems/express.md) 
 
@@ -22,9 +22,9 @@ This project describes the architectural principles and best practices of NestJS
 - [Test and Security](problems/test-security.md)
 
 
--  [Build Some Things: Websocket and Cache](problems/build.md) 
--  [Cons of Node.js](problems/cons.md) 
--  [44 very hard pure JavaScript questions](problems/44-hard-questions.md) 
+- [Build Some Things: Websocket and Cache](problems/build.md) 
+- [Cons of Node.js](problems/cons.md) 
+- [44 very hard pure JavaScript questions](problems/44-hard-questions.md) 
 
 
 
