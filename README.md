@@ -48,4 +48,4 @@ This project describes the architectural principles and best practices of NestJS
   - [How We Use Microservices](problems/microservice.md) 
   - [How to Deploy with Docker/AWS Lambda/Kubernetes](problems/docker.md) 
   
-- Real Project: [Nodejs + Typeorm + GraphQL + MySQL](project/README.md)
+- Real Project: [NestJS + Typeorm + GraphQL + MySQL](project/README.md)
