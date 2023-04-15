@@ -29,9 +29,8 @@ function Promise(fn) {
 
 function doResolve(fn, promise) {
   var done = false;
-    //注意，fn就是我们new Promise时传入的（resolve， reject）=> { if success resolve else reject},tryCallTwo会将第二个参数传给resolve,将第三个参数传给reject，这样当我们在声明的Promise中调用resolve时实际上调用的时trayCallTwo的第二个参数。
   var res = tryCallTwo(fn, function (value) { // try catch
-    if (done) return;// 防止运行两次
+    if (done) return;
     done = true;
     resolve(promise, value);
   }, function (reason) {
