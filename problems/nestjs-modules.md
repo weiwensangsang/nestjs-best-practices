@@ -74,29 +74,6 @@ In this example, UsersController injects UsersService into its constructor and u
 In short, modules provide a way to organize and structure applications, and make the application structure clearer, easier to maintain and extend. In NestJS, creating and using modules is easy, just follow the above steps.
 
 
-
-
-
-如何在 NestJS 中使用 gRPC 实现微服务通信？
-
-如何在 NestJS 中实现缓存（cache）功能？
-
-如何在 NestJS 中进行日志记录（logging）？
-
-如何在 NestJS 中实现异步任务（asynchronous task）？
-
-什么是 NestJS 中的异步模块（async module）？如何使用异步模块？
-
-如何在 NestJS 中使用 ACL 进行授权管理？
-
-如何在 NestJS 中使用 Redis 实现高性能缓存？
-
-如何在 NestJS 中处理异常（exception）和错误（error）？
-
-如何在 NestJS 中进行测试（testing）？
-
-
-
 ### How to implement microservice communication using gRPC in NestJS?
 
 NestJS provides the official @nestjs/microservices module for microservice communication, supporting multiple communication protocols, including gRPC. You can configure the gRPC server and client using the GrpcOptions object provided by @nestjs/microservices. Create a gRPC service by defining a gRPC method by defining the @GrpcMethod decorator. You can use the @Client decorator in your NestJS application to create gRPC clients and call service methods.
