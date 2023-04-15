@@ -48,7 +48,6 @@ await new Promise((res, rej) => {
       }
     })
   })
-复制代码
 ```
 
 initJson essentially calls the init method in init-package-json. The main thing to do is to write to the package.json file
