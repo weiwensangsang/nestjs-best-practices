@@ -6,7 +6,7 @@
 
 ### parseInt with map
 
-  ```
+  ```javascript
    ["1", "2", "3"].map(parseInt)
   
   // A. ["1", "2", "3"]
@@ -27,7 +27,7 @@ Therefore, when ["1", "2", "3"].map(parseInt) is executed, the first element is 
 
 ### Weird null
 
-```
+```javascript
 [typeof null, null instanceof Object]
 
 
@@ -47,7 +47,7 @@ The instanceof operator is used to test whether an object has a prototype proper
 
 ### reduce
 
-```
+```javascript
  [ [3,2,1].reduce(Math.pow), [].reduce(Math.pow) ]
 
 
@@ -293,12 +293,14 @@ The answer is C. -9 % 2 = -1 and Infinity % 2 = NaN, the remainder operator pres
 
 ### The array prototype is an array
 
+```
 Array.isArray( Array.prototype )
 
 // A.true
 // B. false
 // C. error
 // D. other
+```
 
 
 
@@ -334,12 +336,14 @@ The specification points out that in == equality, if one of the operands is a Bo
 
 ### Son of Satan "=="
 
+```javascript
 []==[]
 
 // A.true
 // B. false
 // C. error
 // D. other
+```
 
 
 
@@ -351,6 +355,7 @@ The answer is B. ES5 specification 11.9.3.1-f points out: If the two compared ob
 
 ### plus sign vs minus sign
 
+```javascript
 '5' + 3;
 '5' - 3;
 
@@ -358,6 +363,7 @@ The answer is B. ES5 specification 11.9.3.1-f points out: If the two compared ob
 // B. 8, 2
 // C. error
 // D. other
+```
 
 
 
@@ -369,6 +375,7 @@ The answer is A. "5" + 2 = "52" is easy to understand, as long as one of the + o
 
 ### Kill that madman
 
+```javascript
 1 + - + + + - + 1
 
 //A.2
@@ -377,6 +384,7 @@ The answer is A. "5" + 2 = "52" is easy to understand, as long as one of the + o
 // D. other
 
 
+```
 
 The answer is A. This can only appear in the example code, if you find some crazy person who wrote this in the production code, kill him. All you need to know is that + 1 = 1 and - 1 = -1, and pay attention to the spaces between the symbols. The two minus signs cancel out, so the final result is equivalent to 1 + 1 = 2. Or you can also insert 0 between the symbols to understand, that is, 1 + 0 - 0 + 0 + 0 + 0 - 0 + 1, so you can understand it at a glance! Never write such code, because you may be killed!
 
@@ -386,6 +394,7 @@ The answer is A. This can only appear in the example code, if you find some craz
 
 ### Count me all
 
+```javascript
 function sidEffecting(ary) {
 ary[0] = ary[2];
 }
@@ -404,6 +413,7 @@ bar(1, 1, 1);
 //B.12
 // C. error
 // D. other
+```
 
 
 
@@ -413,6 +423,7 @@ The answer is D. Actually the result is 21. In JavaScript, parameter variables a
 
 ### IEEE 754 loss of precision
 
+```javascript
 var a = 111111111111111110000;
 var b = 1111;
 console.log(a + b);
@@ -421,6 +432,7 @@ console.log(a + b);
 // B. 111111111111111110000
 // C.NaN
 // D. Infinity
+```
 
 
 
@@ -430,6 +442,7 @@ The answer is B. This is a scapegoat of the IEEE 754 specification, not a JavaSc
 
 ### Invert the world
 
+```javascript
 var x = [].reverse;
 x();
 
@@ -439,6 +452,7 @@ x();
 //D.window
 
 
+```
 
 The answer is D. The description of reverse in the MDN specification:
 
@@ -454,12 +468,14 @@ MDN: Array.prototype.reverse()¶
 
 ### Smallest positive value
 
+```javascript
 Number.MIN_VALUE > 0
 
 // A. false
 // B.true
 // C. error
 // D. other
+```
 
 
 
@@ -481,12 +497,14 @@ MDN: Number.MIN_VALUE
 
 ### Remember priority
 
+```javascript
 [1 < 2 < 3, 3 < 2 < 1]
 
 // A. [true, true]
 // B. [true, false]
 // C. error
 // D. other
+```
 
 
 
@@ -498,6 +516,7 @@ The answer is A. The priority of < and > is from left to right, so 1 < 2 < 3 wil
 
 ### The fighter in the cheating
 
+```javascript
 // the most classic wtf
 2 == [[[2]]]
 
@@ -505,6 +524,7 @@ The answer is A. The priority of < and > is from left to right, so 1 < 2 < 3 wil
 // B. false
 // C. undefined
 // D. other
+```
 
 
 
@@ -514,6 +534,7 @@ The answer is A. According to the ES5 specification, if one of the two values be
 
 ### Decimal point magic
 
+```javascript
 3.toString();
 3..toString();
 3...toString();
@@ -522,6 +543,7 @@ The answer is A. According to the ES5 specification, if one of the two values be
 // B. "3", "3.0", error
 // C. error, "3", error
 // D. other
+```
 
 
 
@@ -531,6 +553,7 @@ The answer is C. The dot operator is recognized as part of a numeric constant be
 
 ### Automatic promotion to global variables
 
+```javascript
 (function() {
 var x = y = 1;
 })();
@@ -541,6 +564,7 @@ console. log(x);
 // B. error, error
 // C. 1, error
 // D. other
+```
 
 
 
@@ -550,6 +574,7 @@ The answer is C. A classic example is that the variable y is not declared with v
 
 ### Regular expression example
 
+```javascript
 var a = /123/;
 var b = /123/;
 a == b;
@@ -559,6 +584,7 @@ a === b;
 // B. true, false
 // C. false, false
 // D. other
+```
 
 
 
@@ -568,6 +594,7 @@ The answer is C. Each literal regular expression is a separate instance, even if
 
 ### Arrays also love ratio size
 
+```javascript
 var a = [1, 2, 3];
 var b = [1, 2, 3];
 var c = [1, 2, 4];
@@ -584,6 +611,7 @@ a < c;
 // D. other
 
 
+```
 
 The answer is A. Arrays are also objects. The ES5 specification states that if two objects are compared for equality, true will only be returned if they point to the same object, and false will be returned in other cases. For object size comparison, the toString method will be called to convert it into a string for comparison, so the result becomes the string "1,2,3" and "1,2,4" are compared in lexicographical order (if you don't believe it , you can reproduce the toString method of two variables for testing).
 
@@ -591,6 +619,7 @@ The answer is A. Arrays are also objects. The ES5 specification states that if t
 
 ### Prototype Tricks
 
+```javascript
 var a = {};
 var b = Object.prototype;
 
@@ -601,6 +630,7 @@ var b = Object.prototype;
 // B. [true, true]
 // C. [false, false]
 // D. other
+```
 
 
 
@@ -610,6 +640,7 @@ The answer is A. Objects do not have a prototype property, so a.prototype is und
 
 ### Constructor function
 
+```javascript
 function f() {}
 var a = f.prototype;
 var b = Object. getPrototypeOf(f);
@@ -619,11 +650,13 @@ a === b;
 // B. false
 // C. null
 // D. other
+```
 
 
 
 The answer is B. This explanation is a bit convoluted, let's look at another piece of code first:
 
+```javascript
 function Person() {}
 var p = new Person();
 
@@ -639,6 +672,7 @@ var e = Object. getPrototypeOf(Person);
 var f = Function.prototype;
 console.log(d === e, d === f, e === f);
 // true, true, true
+```
 
 
 
@@ -650,6 +684,7 @@ My explanation is not very good, if readers have a better explanation, welcome t
 
 ### Prohibit modifying the function name
 
+```javascript
 function foo() {}
 var oldName = foo.name;
 foo.name = "bar";
@@ -659,6 +694,7 @@ foo.name = "bar";
 //B.["", ""]
 // C. ["foo", "foo"]
 // D. ["foo", "bar"]
+```
 
 
 
@@ -672,12 +708,14 @@ MDN: Function.name
 
 ### Replace Traps
 
+```javascript
 "1 2 3".replace(/\d/g, parseInt);
 
 // A. "1 2 3"
 // B. "0 1 2"
 // C. "NaN 2 3"
 // D. "1 NaN 3"
+```
 
 
 
@@ -691,6 +729,7 @@ MDN: String.prototype.replace()
 
 ### Function name
 
+```javascript
 function f() {}
 var parent = Object. getPrototypeOf(f);
 console.log(f.name);
@@ -702,23 +741,25 @@ console.log(typeof eval(parent.name));
 // B. "f", undefined, "function", error
 // C. "f", "Empty", "function", error
 // D. other
+```
 
 
 
 The answer is C. According to the explanation of question 30, we know that the parent in the code is actually Function.prototype, and its output in the console is:
 
+```javascript
 function () {
    [native code]
 }
-1.
-2.
-3.
+```
+
 Its name attribute is "", so you don't get anything with eval("").
 
 
 
 ### Regex test pitfalls
 
+```javascript
 var lowerCaseOnly = /^[a-z]+$/;
 [lowerCaseOnly.test(null), lowerCaseOnly.test()]
 
@@ -726,6 +767,7 @@ var lowerCaseOnly = /^[a-z]+$/;
 // B. error
 // C. [true, true]
 // D. [false, true]
+```
 
 
 
@@ -735,12 +777,14 @@ The answer is C. If the parameter of the test method is not a string, it will be
 
 ### Commas define arrays
 
+```javascript
 [,,,]. join(", ")
 
 // A. ", , , "
 // B. "undefined, undefined, undefined, undefined"
 // C. ", , "
 // D. ""
+```
 
 
 
@@ -756,6 +800,7 @@ MDN: Array.prototype.join()¶
 
 ### Reserved words class
 
+```javascript
 var a = {class: "Animal", name: "Fido"};
 console. log(a. class);
 
@@ -763,6 +808,7 @@ console. log(a. class);
 // B. Object
 // C. an error
 // D. other
+```
 
 
 
@@ -772,12 +818,14 @@ The answer is D. Actually the real answer depends on the browser. class is a res
 
 ### invalid date
 
+```javascript
 var a = new Date("epoch");
 
 // A. Thu Jan 01 1970 01:00:00 GMT+0100(CET)
 // B. current time
 // C. error
 // D. other
+```
 
 
 
@@ -787,6 +835,7 @@ The answer is D. The actual result is Invalid Date, which is actually a Date obj
 
 ### Unpredictable function length
 
+```javascript
 var a = Function. length;
 var b = new Function(). length;
 console.log(a === b);
@@ -795,6 +844,7 @@ console.log(a === b);
 // B. false
 // C. error
 // D. other
+```
 
 
 
@@ -818,6 +868,7 @@ MDN: Function. length
 
 ### Date's mask
 
+```javascript
 var a = Date(0);
 var b = new Date(0);
 var c = new Date();
@@ -827,6 +878,7 @@ var c = new Date();
 // B. [false, false, false]
 // C. [false, true, false]
 // D. [true, false, false]
+```
 
 
 
@@ -840,8 +892,11 @@ References:
 
 MDN: Date
 
+
+
 #### min dances with max
 
+```javascript
 var min = Math.min();
 var max = Math. max();
 console.log(min < max);
@@ -850,6 +905,7 @@ console.log(min < max);
 // B. false
 // C. error
 // D. other
+```
 
 
 
@@ -863,12 +919,16 @@ With no arguments, the result is -Infinity.
 
 References:
 
-
 MDN: Math.min
 MDN: Math.max
 
+
+
+
+
 #### Be wary of global matching
 
+```javascript
 function captureOne(re, str) {
 var match = re. exec(str);
 return match && match[1];
@@ -889,6 +949,7 @@ var numRe = /num=(\d+)/ig,
 // B. [false, false]
 // C. [true, false]
 // D. [false, true]
+```
 
 
 
@@ -906,6 +967,7 @@ MDN: RegExp.prototype.exec()¶
 
 #### The most familiar stranger
 
+```javascript
 var a = new Date("2014-03-19");
 var b = new Date(2014, 03, 19);
 [a. getDay() == b. getDay(), a. getMonth() == b. getMonth()]
@@ -914,6 +976,7 @@ var b = new Date(2014, 03, 19);
 // B. [true, false]
 // C. [false, true]
 // D. [false, false]
+```
 
 . First look at a note from MDN about Date:
 
@@ -929,6 +992,7 @@ MDN: Date
 
 ### Match implicit conversions
 
+```javascript
 if("http://giftwrapped.com/picture.jpg".match(".gif")) {
 console.log("a gif file");
 } else {
@@ -939,6 +1003,7 @@ console.log("not a gif file");
 // B. "not a gif file"
 // C. error
 // D. other
+```
 
 
 
@@ -958,6 +1023,7 @@ MDN: String.prototype.match()¶
 
 ### Duplicate variable declaration
 
+```javascript
 function foo(a) {
 var a;
 return a;
@@ -975,6 +1041,7 @@ function bar(a) {
 // B. ["hello", "bye"]
 // C.["bye", "bye"]
 // D. other
+```
 
 
 
